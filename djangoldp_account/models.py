@@ -16,10 +16,22 @@ class Account(models.Model):
     def __str__(self):
         return '{} ({})'.format(self.user.get_full_name(), self.user.username)
 
+class ChatConfig(models.Model):
+    jabberID = models.CharField(max_length=255, blank=True, null=True)
+    jabberRoom = models.BooleanField(default=True)
+
+    class Meta:
+        permissions = (
+            ('view_chatroom', 'Read'),
+            ('control_chatroom', 'Control'),
+        )
+
+    def __str__(self):
+        return '{} ({})'.format(self.jabberID, self.jabberRoom)
 
 class ChatProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    jabberID = models.CharField(max_length=255, blank=True, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="chatProfile")
+    config = models.OneToOneField(ChatConfig)
 
     class Meta:
         permissions = (
@@ -28,5 +40,7 @@ class ChatProfile(models.Model):
         )
 
     def __str__(self):
-        return '{} (jabberID: {})'.format(self.user.get_full_name(), self.jabberID)
+        return '{} (jabberID: {})'.format(self.user.get_full_name(), self.config.jabberID)
+
+
 
