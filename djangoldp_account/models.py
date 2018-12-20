@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse_lazy
 
 class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    picture = models.URLField()
+    picture = models.URLField(blank=True, null=True)
 
     class Meta:
         permissions = (

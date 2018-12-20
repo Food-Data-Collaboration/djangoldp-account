@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(name='djangoldp_account',
-      version='0.0.2',
+      version='0.0.4',
       description='djangoldp package for account and chat data models',
       url='http://git.happy-dev.fr/startinblox/djangoldp_account',
       author="Startin'blox",
