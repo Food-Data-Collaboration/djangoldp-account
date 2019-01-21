@@ -10,11 +10,12 @@ from .models import ChatProfile, Account, ChatConfig
 from .views import userinfocustom
 
 djangoldp_modules = list(filter(lambda app: app.startswith('djangoldp_'), settings.INSTALLED_APPS))
-user_fields = []
-user_nested_fields = []
+user_fields = ['@id', 'first_name', 'groups', 'last_name', 'username', 'email', 'profile', 'account',
+               'ldnotification_set', 'chatProfile']
+user_nested_fields = ['account', 'profile', 'groups', 'ldnotification_set', 'chatProfile']
 for dldp_module in djangoldp_modules:
     try:
-        user_fields += import_module(dldp_module + '.settings').USER_FIELDS
+        user_fields += import_module(dldp_module + '.settings').USER_NESTED_FIELDS
         user_nested_fields += import_module(dldp_module + '.settings').USER_NESTED_FIELDS
     except:
         pass
