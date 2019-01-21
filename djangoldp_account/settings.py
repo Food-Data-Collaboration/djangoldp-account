@@ -1,5 +1,6 @@
-from django.urls import reverse_lazy
 from django.conf import settings
+from django.urls import reverse_lazy
+
 
 def userinfo(claims, user):
     # Populate claims dict.
@@ -7,3 +8,4 @@ def userinfo(claims, user):
     claims['email'] = user.email
     claims['website'] = '{0}{1}'.format(settings.BASE_URL, reverse_lazy('user-detail', kwargs={'pk': user.pk}))
     return claims
+
