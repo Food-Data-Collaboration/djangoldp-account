@@ -8,6 +8,7 @@ def migrate_data(apps, schema_editor):
     ChatProfile = apps.get_model('djangoldp_account', 'ChatProfile')
     for profile in ChatProfile.objects.all():
         profile.jabberID = profile.config.jabberID
+        profile.save()
 
 class Migration(migrations.Migration):
 

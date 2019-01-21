@@ -28,7 +28,7 @@ class ChatProfile(models.Model):
         )
 
     def __str__(self):
-        return '{} (jabberID: {})'.format(self.user.get_full_name(), self.config.jabberID)
+        return '{} (jabberID: {})'.format(self.user.get_full_name(), self.jabberID)
 
 
 
