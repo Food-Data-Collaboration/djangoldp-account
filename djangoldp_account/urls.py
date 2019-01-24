@@ -12,7 +12,7 @@ from .views import userinfocustom
 
 djangoldp_modules = list(filter(lambda app: app.startswith('djangoldp_'), settings.INSTALLED_APPS))
 user_fields = ['@id', 'first_name', 'groups', 'last_name', 'username', 'email', 'profile', 'account',
-               'ldnotification_set', 'chatProfile']
+               'ldnotification_set', 'chatProfile', 'name']
 user_nested_fields = ['account', 'profile', 'groups', 'ldnotification_set', 'chatProfile']
 for dldp_module in djangoldp_modules:
     try:
