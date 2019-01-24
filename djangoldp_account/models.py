@@ -1,6 +1,5 @@
-from django.db import models
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse_lazy
+from django.db import models
 
 
 class Account(models.Model):
@@ -8,6 +7,7 @@ class Account(models.Model):
     picture = models.URLField(blank=True, null=True)
 
     class Meta:
+        auto_author = 'user'
         permissions = (
             ('view_account', 'Read'),
             ('control_account', 'Control'),
@@ -22,6 +22,7 @@ class ChatProfile(models.Model):
     jabberID = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
+        auto_author = 'user'
         permissions = (
             ('view_chatprofile', 'Read'),
             ('control_chatprofile', 'Control'),
@@ -29,6 +30,3 @@ class ChatProfile(models.Model):
 
     def __str__(self):
         return '{} (jabberID: {})'.format(self.user.get_full_name(), self.jabberID)
-
-
-
