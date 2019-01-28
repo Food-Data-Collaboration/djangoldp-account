@@ -1,6 +1,6 @@
 import factory
 import hashlib
-from .models import Account, ChatConfig, ChatProfile
+from .models import Account, ChatProfile
 from django.db.models.signals import post_save
 from djangoldp.factories import UserFactory
 
@@ -21,17 +21,10 @@ class AccountFactory(factory.django.DjangoModelFactory):
         self.save()
 
 @factory.django.mute_signals(post_save)
-class ChatConfigFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = ChatConfig
-
-    jabberID = factory.Faker('uuid4')
-    jabberRoom = factory.Faker('boolean')
-
-@factory.django.mute_signals(post_save)
 class ChatProfileFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = ChatProfile
 
     user = factory.SubFactory(UserFactory)
-    config = factory.SubFactory(ChatConfigFactory)
+    jabberID = factory.Faker('email')
+
