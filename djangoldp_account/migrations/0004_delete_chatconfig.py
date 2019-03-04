@@ -9,7 +9,6 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('djangoldp_circle', '0004_remove_circle_chatconfig'),
-        ('djangoldp_project', '0004_remove_project_chatconfig'),
         ('djangoldp_account', '0003_auto_20190121_1659'),
     ]
 
