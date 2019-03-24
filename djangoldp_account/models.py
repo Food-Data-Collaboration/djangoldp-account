@@ -1,5 +1,8 @@
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 def name(self):
@@ -37,3 +40,15 @@ class ChatProfile(models.Model):
 
     def __str__(self):
         return '{} (jabberID: {})'.format(self.user.get_full_name(), self.jabberID)
+
+
+@receiver(post_save, sender=User)
+def create_account(sender, instance, created, **kwargs):
+    if created:
+        Account.objects.create(user=instance)
+        chat_profile = ChatProfile.objects.create(user=instance)
+        if settings.JABBER_DEFAULT_HOST:
+            chat_profile.jabberID = '{}@{}'.format(instance.username, settings.JABBER_DEFAULT_HOST)
+            chat_profile.save()
+    else:
+        instance.account.save()
