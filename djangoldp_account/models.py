@@ -51,4 +51,7 @@ def create_account(sender, instance, created, **kwargs):
             chat_profile.jabberID = '{}@{}'.format(instance.username, settings.JABBER_DEFAULT_HOST)
             chat_profile.save()
     else:
-        instance.account.save()
+        try:
+            instance.account.save()
+        except:
+            pass
