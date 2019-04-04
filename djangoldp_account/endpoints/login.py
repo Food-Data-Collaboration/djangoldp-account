@@ -1,15 +1,15 @@
 import validators
 from django.conf import settings
 from django.urls import reverse
-from oic import rndstr
-from requests import session
 
 from djangoldp_account.errors import LDPLoginError
+from djangoldp_account.models import OPClient
+from oic import rndstr
 from oic.oic import Client
 from oic.utils.authn.client import CLIENT_AUTHN_METHOD
 
 
-class RLLoginEndpoint(object):
+class RPLoginEndpoint(object):
     """
     RL login endpoint
     This is *not* the OP login endpoint (OP part is managed by django_oidc)
@@ -48,6 +48,7 @@ class RLLoginEndpoint(object):
 
     def op_login_url(self):
         subject = self.params['subject']
+        redirect_uris = [settings.SITE_URL + reverse('ldp_login_callback')]
         try:
             issuer = self.client.discover(subject)
             provider_info = self.client.provider_config(issuer)
@@ -58,29 +59,36 @@ class RLLoginEndpoint(object):
             except:
                 raise LDPLoginError("cannot_get_provider_info")
 
-        is_register = False # TODO check if the server is already registered
-        if not is_register:
+        existing_op_client = OPClient.objects.filter(issuer=provider_info._dict['issuer']).first()
+        if existing_op_client is None:
             try:
                 registration_endpoint = provider_info._dict["registration_endpoint"]
                 args = {
-                    "redirect_uris": [settings.SITE_URL + reverse('djangoldp_account:ldp_login_call_back')],
-                    "contacts": ["foo@example.com"]
+                    "client_name": settings.SITE_URL,
+                    "response_types": ["id_token token"],
+                    "redirect_uris": redirect_uris,
                 }
 
                 registration_response = self.client.register(
                     registration_endpoint, **args)
+
+                OPClient.objects.create(issuer=provider_info._dict['issuer'],
+                                client_id=self.client.client_id)
             except:
                 raise LDPLoginError("cannot_register")
+        else:
+            self.client.client_id = existing_op_client.client_id
 
-        session["state"] = rndstr()
-        session["nonce"] = rndstr()
+        self.request.session['nonce'] = rndstr()
+        self.request.session['state'] = rndstr()
+
         args = {
             "client_id": self.client.client_id,
-            "response_type": "code",
-            "scope": ["openid"],
-            "nonce": session["nonce"],
-            "redirect_uri": self.client.registration_response["redirect_uris"][0],
-            "state": session["state"]
+            "response_type": ["id_token token"],
+            "scope": ["openid profile email"],
+            "nonce": self.request.session['nonce'],
+            "redirect_uri": redirect_uris[0],
+            "state": self.request.session['state']
         }
 
         auth_req = self.client.construct_AuthorizationRequest(request_args=args)

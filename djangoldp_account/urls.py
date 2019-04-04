@@ -8,7 +8,7 @@ from django.contrib.auth.models import Group, User
 from djangoldp.permissions import AnonymousReadOnly
 from djangoldp.views import LDPViewSet
 from .models import ChatProfile, Account
-from .views import userinfocustom, RLLoginView, RLLoginCallBackView
+from .views import userinfocustom, RPLoginView, RPLoginCallBackView
 
 djangoldp_modules = list(filter(lambda app: app.startswith('djangoldp_'), settings.INSTALLED_APPS))
 user_fields = ['@id', 'first_name', 'groups', 'last_name', 'username', 'email', 'account', 'chatProfile', 'name']
@@ -19,6 +19,7 @@ for dldp_module in djangoldp_modules:
         user_nested_fields += import_module(dldp_module + '.settings').USER_NESTED_FIELDS
     except:
         pass
+
 urlpatterns = [
     url(r'^groups/',
         LDPViewSet.urls(model=Group, fields=['@id', 'name', 'user_set'], permission_classes=[AnonymousReadOnly])),
@@ -28,9 +29,9 @@ urlpatterns = [
     url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^accounts/', LDPViewSet.urls(model=Account, permission_classes=[AnonymousReadOnly])),
     url(r'^chat-profile/', LDPViewSet.urls(model=ChatProfile, permission_classes=[AnonymousReadOnly])),
-    url(r'^ldp/login/callback/?$', RLLoginCallBackView.as_view(), name='ldp_login_callback'),
-    url(r'^ldp/login/?$', RLLoginView.as_view(), name='ldp_login'),
-    url(r'^userinfo', userinfocustom),
+    url(r'^ldp/login/callback/?$', RPLoginCallBackView.as_view(), name='ldp_login_callback'),
+    url(r'^ldp/login/?$', RPLoginView.as_view(), name='ldp_login'),
+    url(r'^userinfo/?$', userinfocustom),
     url(r'^', include('oidc_provider.urls', namespace='oidc_provider')),
 ]
 

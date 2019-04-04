@@ -1,9 +1,9 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.views import View
+from oic.oic import AuthorizationResponse
 
-from djangoldp_account.endpoints.login import RLLoginEndpoint
+from djangoldp_account.endpoints.login import RPLoginEndpoint
 from djangoldp_account.errors import LDPLoginError
-from oic.utils.http_util import Redirect
 from oidc_provider.views import userinfo
 
 
@@ -20,13 +20,13 @@ def userinfocustom(request, *args, **kwargs):
     return userinfo(request, *args, **kwargs)
 
 
-class RLLoginView(View):
+class RPLoginView(View):
     """
-    RL authentication workflow
+    RP authentication workflow
     See https://github.com/solid/webid-oidc-spec/blob/master/example-workflow.md
     Wa're using oid module : https://pyoidc.readthedocs.io/en/latest/examples/rp.html
     """
-    login_endpoint_class = RLLoginEndpoint
+    login_endpoint_class = RPLoginEndpoint
 
     def get(self, request, *args, **kwargs):
         return self.on_request(request)
@@ -36,7 +36,7 @@ class RLLoginView(View):
         try:
             login.validate_params()
 
-            return Redirect(login.op_login_url())
+            return HttpResponseRedirect(login.op_login_url())
 
         except LDPLoginError as error:
             return JsonResponse(error.create_dict(), status=400)
@@ -45,10 +45,17 @@ class RLLoginView(View):
         return self.on_request(request)
 
 
-class RLLoginCallBackView(View):
+class RPLoginCallBackView(View):
 
     def get(self, request, *args, **kwargs):
 
+        response = request.environ["QUERY_STRING"]
+
+        # aresp = client.parse_response(AuthorizationResponse, info=response,
+        #                               sformat="urlencoded")
+        #
+        # code = aresp["code"]
+        # assert aresp["state"] == request.session['state']
         try:
             pass
         except:

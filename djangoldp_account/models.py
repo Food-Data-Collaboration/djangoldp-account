@@ -42,6 +42,11 @@ class ChatProfile(models.Model):
         return '{} (jabberID: {})'.format(self.user.get_full_name(), self.jabberID)
 
 
+class OPClient(models.Model):
+    issuer = models.URLField()
+    client_id = models.CharField(max_length=255)
+
+
 @receiver(post_save, sender=User)
 def create_account(sender, instance, created, **kwargs):
     if created:
