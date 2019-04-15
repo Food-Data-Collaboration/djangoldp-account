@@ -48,7 +48,7 @@ class RPLoginEndpoint(object):
 
     def op_login_url(self):
         subject = self.params['subject']
-        redirect_uris = [settings.SITE_URL + reverse('ldp_login_callback')]
+        redirect_uris = [settings.SITE_URL + reverse('ldp_login_callback'), settings.SITE_URL]
         try:
             issuer = self.client.discover(subject)
             provider_info = self.client.provider_config(issuer)
@@ -65,7 +65,7 @@ class RPLoginEndpoint(object):
                 registration_endpoint = provider_info._dict["registration_endpoint"]
                 args = {
                     "client_name": settings.SITE_URL,
-                    "response_types": ["id_token token", "code"],
+                    "response_types": ["code"],
                     "redirect_uris": redirect_uris,
                 }
 
@@ -73,7 +73,8 @@ class RPLoginEndpoint(object):
                     registration_endpoint, **args)
 
                 OPClient.objects.create(issuer=provider_info._dict['issuer'],
-                                        client_id=self.client.client_id)
+                                        client_id=self.client.client_id,
+                                        client_secret=registration_response['secret'])
             except:
                 raise LDPLoginError(error="cannot_register")
         else:
@@ -136,7 +137,7 @@ class RPLoginCallBackEndpoint(object):
     def initial_url(self):
         args = {
             "code": self.params["code"],
-            "redirect_uri": self.request.session['next'] or settings.SITE_URL
+            "redirect_uri": settings.SITE_URL
 
         }
         resp = self.client.do_access_token_request(state=self.params["state"],
