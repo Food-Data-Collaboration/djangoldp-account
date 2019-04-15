@@ -45,6 +45,10 @@ class ChatProfile(models.Model):
 class OPClient(models.Model):
     issuer = models.URLField()
     client_id = models.CharField(max_length=255)
+    client_secret = models.CharField(max_length=255)
+
+    def __str__(self):
+        return '{} ({})'.format(self.issuer, self.client_id)
 
 
 @receiver(post_save, sender=User)
