@@ -89,7 +89,7 @@ class RPLoginEndpoint(object):
         args = {
             "client_id": self.client.client_id,
             "response_type": ["code"],
-            "scope": ["openid webid"],
+            "scope": ["openid profile webid"],
             "nonce": self.request.session['nonce'],
             "redirect_uri": redirect_uris[0],
             "state": self.request.session['state']
@@ -148,5 +148,35 @@ class RPLoginCallBackEndpoint(object):
             raise LDPLoginError(dict=resp)
 
         userinfo = self.client.do_user_info_request(method='GET', state=self.params["state"])
-        # TODO : put a session cookie
+        webid = self.extract_web_id(userinfo)
+        self.confirm_webid(webid)
+
         return self.request.session['next'] or settings.SITE_URL
+
+    def extract_web_id(self, userinfo):
+        """
+        @See https://github.com/solid/webid-oidc-spec/blob/master/README.md#method-1---custom-webid-claim
+        :param userinfo:
+        :return:
+        """
+        if 'webid' in userinfo:
+            return userinfo["webid"]
+        elif validators.url(userinfo['sub']):
+            return userinfo['sub']
+        elif 'website' in userinfo:
+            return userinfo["website"]
+        else:
+            raise LDPLoginError('cannot_get_webid')
+
+    def confirm_webid(self, webid):
+        """
+        @see https://github.com/solid/webid-oidc-spec/blob/master/README.md#webid-provider-confirmation
+        :param webid:
+        :return:
+        """
+        if webid.startswith(self.client.issuer):
+            pass
+        else:
+            raise LDPLoginError('cannot_confirm_webid')
+        # TODO : add the other cases
+

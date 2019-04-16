@@ -7,6 +7,8 @@ class LDPLoginError(Exception):
         'invalid_state': "Invalid state",
         'wrong_issuer': "Cannot find OP client from this issuer",
         'cannot_get_provider_info': "Cannot get provider informations",
+        'cannot_get_webid': "Cannot get the webid",
+        'cannot_confirm_webid': "Cannot confirm the webid. Is your authentication server host same as your webid host ?",
         'cannot_register': "Unable to register, is the provider accepting registration ? If not contact <todo : give an email> to make a manual registration"
     }
 
