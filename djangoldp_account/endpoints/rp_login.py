@@ -89,7 +89,7 @@ class RPLoginEndpoint(object):
         args = {
             "client_id": self.client.client_id,
             "response_type": ["code"],
-            "scope": ["openid website"],
+            "scope": ["openid webid"],
             "nonce": self.request.session['nonce'],
             "redirect_uri": redirect_uris[0],
             "state": self.request.session['state']
