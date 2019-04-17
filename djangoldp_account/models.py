@@ -1,19 +1,32 @@
+import validators
 from django.conf import settings
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.urls import reverse_lazy
 
 
 def name(self):
     return self.get_full_name()
 
 
-User.name = name
+def webid(self):
+    # hack : We user webid as username for external user (since it's an uniq identifier too)
+    if validators.url(self.username):
+        webid = self.username
+    else:
+        webid = '{0}{1}'.format(settings.BASE_URL, reverse_lazy('user-detail', kwargs={'pk': self.pk}))
+    return webid
+
+
+user_model = get_user_model()
+user_model.name = name
+user_model.webid = webid
 
 
 class Account(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     picture = models.URLField(blank=True, null=True)
 
     class Meta:
@@ -28,7 +41,7 @@ class Account(models.Model):
 
 
 class ChatProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="chatProfile")
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="chatProfile")
     jabberID = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
@@ -51,7 +64,7 @@ class OPClient(models.Model):
         return '{} ({})'.format(self.issuer, self.client_id)
 
 
-@receiver(post_save, sender=User)
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_account(sender, instance, created, **kwargs):
     if created:
         Account.objects.create(user=instance)

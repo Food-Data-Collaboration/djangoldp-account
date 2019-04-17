@@ -1,5 +1,6 @@
 import validators
 from django.conf import settings
+from django.contrib.auth import login, get_user_model
 from django.urls import reverse
 
 from djangoldp_account.errors import LDPLoginError
@@ -89,7 +90,7 @@ class RPLoginEndpoint(object):
         args = {
             "client_id": self.client.client_id,
             "response_type": ["code"],
-            "scope": ["openid profile webid"],
+            "scope": ["openid profile webid email"],
             "nonce": self.request.session['nonce'],
             "redirect_uri": redirect_uris[0],
             "state": self.request.session['state']
@@ -150,6 +151,7 @@ class RPLoginCallBackEndpoint(object):
         userinfo = self.client.do_user_info_request(method='GET', state=self.params["state"])
         webid = self.extract_web_id(userinfo)
         self.confirm_webid(webid)
+        self.login(userinfo, webid)
 
         return self.request.session['next'] or settings.SITE_URL
 
@@ -180,3 +182,14 @@ class RPLoginCallBackEndpoint(object):
             raise LDPLoginError('cannot_confirm_webid')
         # TODO : add the other cases
 
+    def login(self, userinfo, webid):
+        if webid.startswith(settings.SITE_URL):
+            existing_user = get_user_model().objects.get(pk=userinfo['sub'])
+        else:
+            existing_user = get_user_model().objects.get(username=webid)
+        if existing_user is not None:
+            user = existing_user
+        else:
+            user = get_user_model().objects.create_user(username=webid, first_name=userinfo['given_name'],
+                                           last_name=userinfo['family_name'], email=userinfo['email'])
+        login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')

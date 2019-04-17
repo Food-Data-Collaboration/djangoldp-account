@@ -3,13 +3,15 @@ from importlib import import_module
 
 from django.conf import settings
 from django.conf.urls import url, include
-from django.contrib.auth.models import Group, User
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 
 from djangoldp.permissions import AnonymousReadOnly
 from djangoldp.views import LDPViewSet
 from .models import ChatProfile, Account
 from .views import userinfocustom, RPLoginView, RPLoginCallBackView
 
+user_model = get_user_model()
 djangoldp_modules = list(filter(lambda app: app.startswith('djangoldp_'), settings.INSTALLED_APPS))
 user_fields = ['@id', 'first_name', 'groups', 'last_name', 'username', 'email', 'account', 'chatProfile', 'name']
 user_nested_fields = ['account', 'groups', 'chatProfile']
@@ -38,5 +40,5 @@ urlpatterns = [
 s_fields = []
 s_fields.extend(user_fields)
 s_fields.extend(user_nested_fields)
-User._meta.serializer_fields = s_fields
+user_model._meta.serializer_fields = s_fields
 Group._meta.serializer_fields = ['name']
