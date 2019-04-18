@@ -1,7 +1,4 @@
 class LDPLoginError(Exception):
-    """
-    """
-
     _errors = {
         'invalid_request': "The request provider parameter must contains an url or an email",
         'invalid_state': "Invalid state",

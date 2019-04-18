@@ -14,7 +14,7 @@ from oic.utils.authn.client import CLIENT_AUTHN_METHOD
 
 class RPLoginEndpoint(object):
     """
-    RL login endpoint
+    RP login endpoint
     This is *not* the OP login endpoint (OP part is managed by django_oidc)
     """
     client_class = Client
@@ -51,7 +51,7 @@ class RPLoginEndpoint(object):
 
     def op_login_url(self):
         subject = self.params['subject']
-        redirect_uris = [settings.SITE_URL + reverse('ldp_login_callback'), settings.SITE_URL]
+        redirect_uris = [settings.SITE_URL + reverse('oidc_login_callback'), settings.SITE_URL]
         try:
             issuer = self.client.discover(subject)
             provider_info = self.client.provider_config(issuer)

@@ -38,7 +38,7 @@
 
     <p> or login using another authentification provider</p>
 
-<form method="post" action="{% url 'ldp_login' %}">
+<form method="post" action="{% url 'oidc_login' %}">
     {% csrf_token %}
     <table>
         <tr>
