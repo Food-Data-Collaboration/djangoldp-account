@@ -5,6 +5,8 @@ from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
+from django.urls import reverse_lazy
+from django.views.generic import RedirectView
 
 from djangoldp.permissions import AnonymousReadOnly
 from djangoldp.views import LDPViewSet
@@ -30,13 +32,12 @@ urlpatterns = [
                         nested_fields=user_nested_fields)),
     url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^accounts/', LDPViewSet.urls(model=Account, permission_classes=[AnonymousReadOnly])),
-    url(r'^chat-profile/', LDPViewSet.urls(model=ChatProfile, permission_classes=[AnonymousReadOnly])),
+    url(r'^chat-profile/?', LDPViewSet.urls(model=ChatProfile, permission_classes=[AnonymousReadOnly])),
     url(r'^ldp/login/callback/?$', RPLoginCallBackView.as_view(), name='ldp_login_callback'),
     url(r'^ldp/login/?$', RPLoginView.as_view(), name='ldp_login'),
-    url(r'^userinfo/?$', userinfocustom),
-    url(r'^', include('oidc_provider.urls', namespace='oidc_provider')),
+    url(r'^openid/userinfo/?$', userinfocustom),
+    url(r'^openid/', include('oidc_provider.urls', namespace='oidc_provider'))
 ]
-
 s_fields = []
 s_fields.extend(user_fields)
 s_fields.extend(user_nested_fields)

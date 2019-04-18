@@ -1,3 +1,5 @@
+from urllib.parse import urlparse
+
 import validators
 from django.conf import settings
 from django.contrib.auth import login, get_user_model
@@ -157,7 +159,7 @@ class RPLoginCallBackEndpoint(object):
 
     def extract_web_id(self, userinfo):
         """
-        @See https://github.com/solid/webid-oidc-spec/blob/master/README.md#method-1---custom-webid-claim
+        See https://github.com/solid/webid-oidc-spec/blob/master/README.md#method-1---custom-webid-claim
         :param userinfo:
         :return:
         """
@@ -172,11 +174,13 @@ class RPLoginCallBackEndpoint(object):
 
     def confirm_webid(self, webid):
         """
-        @see https://github.com/solid/webid-oidc-spec/blob/master/README.md#webid-provider-confirmation
+        See https://github.com/solid/webid-oidc-spec/blob/master/README.md#webid-provider-confirmation
         :param webid:
         :return:
         """
-        if webid.startswith(self.client.issuer):
+        url = urlparse(self.client.issuer)
+        webid_url = urlparse(webid)
+        if webid_url.netloc == url.netloc:
             pass
         else:
             raise LDPLoginError('cannot_confirm_webid')
@@ -190,6 +194,8 @@ class RPLoginCallBackEndpoint(object):
         if existing_user is not None:
             user = existing_user
         else:
-            user = get_user_model().objects.create_user(username=webid, first_name=userinfo['given_name'],
-                                           last_name=userinfo['family_name'], email=userinfo['email'])
+            user = get_user_model().objects.create_user(username=webid,
+                                                        first_name=userinfo['given_name'],
+                                                        last_name=userinfo['family_name'],
+                                                        email=userinfo['email'])
         login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
