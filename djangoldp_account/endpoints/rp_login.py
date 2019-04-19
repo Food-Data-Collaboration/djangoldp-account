@@ -2,9 +2,10 @@ from urllib.parse import urlparse
 
 import validators
 from django.conf import settings
-from django.contrib.auth import login, get_user_model
+from django.contrib.auth import login, get_user_model, authenticate
 from django.urls import reverse
 
+from djangoldp_account.auth.backends import ExternalUserBackend
 from djangoldp_account.errors import LDPLoginError
 from djangoldp_account.models import OPClient
 from oic import rndstr
@@ -190,7 +191,10 @@ class RPLoginCallBackEndpoint(object):
         if webid.startswith(settings.SITE_URL):
             existing_user = get_user_model().objects.get(pk=userinfo['sub'])
         else:
-            existing_user = get_user_model().objects.get(username=webid)
+            try:
+                existing_user = get_user_model().objects.get(username=webid)
+            except get_user_model().DoesNotExist:
+                existing_user = None
         if existing_user is not None:
             user = existing_user
         else:
@@ -198,4 +202,4 @@ class RPLoginCallBackEndpoint(object):
                                                         first_name=userinfo['given_name'],
                                                         last_name=userinfo['family_name'],
                                                         email=userinfo['email'])
-        login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
+        login(self.request, user, backend='djangoldp_account.auth.backends.ExternalUserBackend')
