@@ -32,6 +32,7 @@ LOGIN_URL = '/accounts/login/'
 OIDC_USERINFO = 'djangoldp_account.settings.userinfo'
 OIDC_REGISTRATION_ENDPOINT_REQ_TOKEN = False
 OIDC_REGISTRATION_ENDPOINT_ALLOW_HTTP_ORIGIN = True
+OIDC_IDTOKEN_SUB_GENERATOR = 'djangoldp_account.settings.sub_generator'
 
 AUTHENTICATION_BACKENDS = [...,'djangoldp_account.auth.backends.ExternalUserBackend']
 ```
