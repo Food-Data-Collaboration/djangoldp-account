@@ -24,3 +24,26 @@ class LDPLoginError(Exception):
         }
 
         return dic
+
+
+class WebFingerError(Exception):
+    _errors = {
+        'invalid_request': "The request provider parameter must contains an url or an email",
+        'invalid_acct_format': "Invalid acct format"
+    }
+
+    def __init__(self, error=None, dict=None):
+        if dict is None:
+            self.error = error
+            self.description = self._errors.get(error)
+        else:
+            self.error = dict['error']
+            self.description = dict['error_description']
+
+    def create_dict(self):
+        dic = {
+            'error': self.error,
+            'error_description': self.description,
+        }
+
+        return dic

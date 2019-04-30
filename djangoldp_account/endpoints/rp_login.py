@@ -53,14 +53,21 @@ class RPLoginEndpoint(object):
     def op_login_url(self):
         subject = self.params['subject']
         redirect_uris = [settings.SITE_URL + reverse('oidc_login_callback'), settings.SITE_URL]
+        provider_info = None
         try:
             issuer = self.client.discover(subject)
             provider_info = self.client.provider_config(issuer)
         except:
+            pass
+
+        if provider_info is None:
+            provider_info = self.check_on_known_providers(subject)
+
+        if provider_info is None and subject.startswith("http"):
             # assume that the subject is the provider
-            try:
-                provider_info = self.client.provider_config(subject)
-            except:
+            provider_info = self.client.provider_config(subject)
+
+        if provider_info is None:
                 raise LDPLoginError(error="cannot_get_provider_info")
 
         existing_op_client = OPClient.objects.filter(issuer=provider_info._dict['issuer']).first()
@@ -101,6 +108,17 @@ class RPLoginEndpoint(object):
 
         auth_req = self.client.construct_AuthorizationRequest(request_args=args)
         return auth_req.request(self.client.authorization_endpoint)
+
+    def check_on_known_providers(self, subject):
+        provider_info = None
+        for opclient in OPClient.objects.all():
+            try:
+                provider_info = self.client.discover(subject, urlparse(opclient.issuer).netloc)
+                if provider_info is not None:
+                    break
+            except:
+                pass
+        return provider_info
 
 
 class RPLoginCallBackEndpoint(object):
