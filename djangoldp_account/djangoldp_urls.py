@@ -9,7 +9,7 @@ from django.contrib.auth.models import Group
 from djangoldp.permissions import AnonymousReadOnly
 from djangoldp.views import LDPViewSet
 from .models import ChatProfile, Account
-from .views import userinfocustom, RPLoginView, RPLoginCallBackView
+from .views import userinfocustom, RPLoginView, RPLoginCallBackView, WebFingerView
 
 user_model = get_user_model()
 djangoldp_modules = list(filter(lambda app: app.startswith('djangoldp_'), settings.INSTALLED_APPS))
@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^chat-profile/?', LDPViewSet.urls(model=ChatProfile, permission_classes=[AnonymousReadOnly])),
     url(r'^oidc/login/callback/?$', RPLoginCallBackView.as_view(), name='oidc_login_callback'),
     url(r'^oidc/login/?$', RPLoginView.as_view(), name='oidc_login'),
+    url(r'^\.well-known/webfinger/?$', WebFingerView.as_view()),
     url(r'^openid/userinfo/?$', userinfocustom),
     url(r'^openid/', include('oidc_provider.urls', namespace='oidc_provider'))
 ]
