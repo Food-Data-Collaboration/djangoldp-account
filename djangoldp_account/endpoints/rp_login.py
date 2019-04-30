@@ -4,7 +4,9 @@ import validators
 from django.conf import settings
 from django.contrib.auth import login, get_user_model, authenticate
 from django.urls import reverse
+from oic.exception import CommunicationError
 
+from djangoldp.models import Model
 from djangoldp_account.auth.backends import ExternalUserBackend
 from djangoldp_account.errors import LDPLoginError
 from djangoldp_account.models import OPClient
@@ -65,10 +67,13 @@ class RPLoginEndpoint(object):
 
         if provider_info is None and subject.startswith("http"):
             # assume that the subject is the provider
-            provider_info = self.client.provider_config(subject)
+            try:
+                provider_info = self.client.provider_config(subject)
+            except CommunicationError as error:
+                pass
 
         if provider_info is None:
-                raise LDPLoginError(error="cannot_get_provider_info")
+            raise LDPLoginError(error="cannot_get_provider_info")
 
         existing_op_client = OPClient.objects.filter(issuer=provider_info._dict['issuer']).first()
         if existing_op_client is None:
@@ -207,7 +212,7 @@ class RPLoginCallBackEndpoint(object):
 
     def login(self, userinfo, webid):
         if webid.startswith(settings.SITE_URL):
-            existing_user = get_user_model().objects.get(pk=userinfo['sub'])
+            existing_user = Model.resolve_id(userinfo['sub'][len(settings.SITE_URL):])
         else:
             try:
                 existing_user = get_user_model().objects.get(username=webid)
@@ -220,4 +225,7 @@ class RPLoginCallBackEndpoint(object):
                                                         first_name=userinfo['given_name'],
                                                         last_name=userinfo['family_name'],
                                                         email=userinfo['email'])
+        user.account.issuer = self.client.issuer
+        user.account.save()
+
         login(self.request, user, backend='djangoldp_account.auth.backends.ExternalUserBackend')

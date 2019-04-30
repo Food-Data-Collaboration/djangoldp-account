@@ -61,7 +61,6 @@ class WebFingerEndpoint(object):
     def response(self):
         """
         This endpoint only reply to rel="http://openid.net/specs/connect/1.0/issuer"
-        If user is found, send the webid host ad the Issuer (which is not right, just a v0 shorcut)
         :return: a dict representing the Json response
         """
 
@@ -74,9 +73,14 @@ class WebFingerEndpoint(object):
             user = get_user_model().objects.filter(email="{}@{}".format(self.acct.userinfo, self.acct.host)).first()
             if user is not None:
                 url = urlparse(user.webid())
+                if user.account.issuer is None:
+                    href = "{}://{}".format(url.scheme, url.netloc)
+                else:
+                    href = user.account.issuer
+
                 dict['links'].append({
                     'rel': "http://openid.net/specs/connect/1.0/issuer",
-                    'href': "{}://{}".format(url.scheme, url.netloc)
+                    'href': href
                 })
 
         return dict

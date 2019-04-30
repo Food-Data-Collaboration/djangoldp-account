@@ -28,6 +28,7 @@ user_model.webid = webid
 class Account(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     picture = models.URLField(blank=True, null=True)
+    issuer = models.URLField(blank=True, null=True)
 
     class Meta:
         auto_author = 'user'
