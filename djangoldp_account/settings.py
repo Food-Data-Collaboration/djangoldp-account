@@ -2,6 +2,8 @@ import validators
 from django.conf import settings
 from django.urls import reverse_lazy
 
+from djangoldp_account.models import webid
+
 
 def userinfo(claims, user):
     # Populate claims dict.
@@ -10,3 +12,7 @@ def userinfo(claims, user):
     claims['website'] = user.webid()
     claims['webid'] = user.webid()
     return claims
+
+
+def sub_generator(user):
+    return webid(user)
