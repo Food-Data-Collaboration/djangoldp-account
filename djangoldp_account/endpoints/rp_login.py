@@ -2,7 +2,7 @@ from urllib.parse import urlparse
 
 import validators
 from django.conf import settings
-from django.contrib.auth import login, get_user_model, authenticate
+from django.contrib.auth import login, get_user_model
 from django.urls import reverse
 from oic.exception import CommunicationError
 
@@ -13,6 +13,10 @@ from djangoldp_account.models import OPClient
 from oic import rndstr
 from oic.oic import Client, AuthorizationResponse
 from oic.utils.authn.client import CLIENT_AUTHN_METHOD
+
+from djangoldp_account.auth.solid import Solid
+from djangoldp_account.errors import LDPLoginError
+from djangoldp_account.models import OPClient
 
 
 class RPLoginEndpoint(object):
@@ -176,8 +180,9 @@ class RPLoginCallBackEndpoint(object):
 
         userinfo = self.client.do_user_info_request(method='GET', state=self.params["state"])
         webid = self.extract_web_id(userinfo)
-        self.confirm_webid(webid)
-        self.login(userinfo, webid)
+        Solid.confirm_webid(webid, self.client.issuer)
+        user = Solid.get_or_create_user(userinfo, webid)
+        login(self.request, user, backend='djangoldp_account.auth.backends.ExternalUserBackend')
 
         return self.request.session['next'] or settings.SITE_URL
 
