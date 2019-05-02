@@ -35,6 +35,9 @@ OIDC_REGISTRATION_ENDPOINT_ALLOW_HTTP_ORIGIN = True
 OIDC_IDTOKEN_SUB_GENERATOR = 'djangoldp_account.settings.sub_generator'
 
 AUTHENTICATION_BACKENDS = [...,'djangoldp_account.auth.backends.ExternalUserBackend']
+
+MIDDLEWARE = [ ..., 'djangoldp_account.auth.middleware.JWTUserMiddleware']
+
 ```
 
 ## Authenticate from an external provider
