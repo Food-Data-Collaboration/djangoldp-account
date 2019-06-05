@@ -6,6 +6,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse_lazy
 
+from djangoldp.models import Model
+
 
 def name(self):
     return self.get_full_name()
@@ -25,7 +27,7 @@ user_model.name = name
 user_model.webid = webid
 
 
-class Account(models.Model):
+class Account(Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     picture = models.URLField(blank=True, null=True)
     issuer = models.URLField(blank=True, null=True)
@@ -42,7 +44,7 @@ class Account(models.Model):
         return '{} ({})'.format(self.user.get_full_name(), self.user.username)
 
 
-class ChatProfile(models.Model):
+class ChatProfile(Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="chatProfile")
     jabberID = models.CharField(max_length=255, blank=True, null=True)
 
@@ -58,7 +60,7 @@ class ChatProfile(models.Model):
         return '{} (jabberID: {})'.format(self.user.get_full_name(), self.jabberID)
 
 
-class OPClient(models.Model):
+class OPClient(Model):
     issuer = models.URLField()
     client_id = models.CharField(max_length=255)
     client_secret = models.CharField(max_length=255)

@@ -30,7 +30,7 @@ urlpatterns = [
                         nested_fields=user_nested_fields)),
     url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^accounts/', LDPViewSet.urls(model=Account, permission_classes=[AnonymousReadOnly])),
-    url(r'^chat-profile/?', LDPViewSet.urls(model=ChatProfile, permission_classes=[AnonymousReadOnly])),
+    url(r'^chat-profile/', LDPViewSet.urls(model=ChatProfile, permission_classes=[AnonymousReadOnly])),
     url(r'^oidc/login/callback/?$', RPLoginCallBackView.as_view(), name='oidc_login_callback'),
     url(r'^oidc/login/?$', RPLoginView.as_view(), name='oidc_login'),
     url(r'^\.well-known/webfinger/?$', WebFingerView.as_view()),
