@@ -34,8 +34,8 @@ urlpatterns = [
     url(r'^oidc/login/callback/?$', RPLoginCallBackView.as_view(), name='oidc_login_callback'),
     url(r'^oidc/login/?$', RPLoginView.as_view(), name='oidc_login'),
     url(r'^\.well-known/webfinger/?$', WebFingerView.as_view()),
-    url(r'^openid/userinfo/?$', userinfocustom),
-    url(r'^openid/', include('oidc_provider.urls', namespace='oidc_provider'))
+    url(r'^userinfo/?$', userinfocustom),
+    url(r'^', include('oidc_provider.urls', namespace='oidc_provider'))
 ]
 s_fields = []
 s_fields.extend(user_fields)

@@ -31,8 +31,13 @@ LOGIN_URL = '/accounts/login/'
 
 OIDC_USERINFO = 'djangoldp_account.settings.userinfo'
 OIDC_REGISTRATION_ENDPOINT_REQ_TOKEN = False
+OIDC_REGISTRATION_ENDPOINT_ALLOW_HTTP_ORIGIN = True
+OIDC_IDTOKEN_SUB_GENERATOR = 'djangoldp_account.settings.sub_generator'
 
 AUTHENTICATION_BACKENDS = [...,'djangoldp_account.auth.backends.ExternalUserBackend']
+
+MIDDLEWARE = [ ..., 'djangoldp_account.auth.middleware.JWTUserMiddleware']
+
 ```
 
 ## Authenticate from an external provider
@@ -44,7 +49,8 @@ Note: The url provided must contains /openid-configuration (for instance : https
 
 Once authentication on theothersite.com an account will be create on mysite.org and you'll be authentified both on theothersite.com and on mysite.com. 
 
-## How to know a user is authenticated
+## How to know a user is authenticated (Not on any specification)
+Useful in case of the client do NOT wants to store token in storage for security reason.
 
 When a user is authenticated on the server, any request will contains the header `User` with user webid
 For instance :
