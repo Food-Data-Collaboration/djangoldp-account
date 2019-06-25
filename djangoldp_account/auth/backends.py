@@ -17,7 +17,10 @@ class ExternalUserBackend(ModelBackend):
             username = kwargs.get(UserModel.USERNAME_FIELD)
             _jwt = JWT()
             unpacked = json.loads(_jwt.unpack(jwt).part[1])
-            id_token = json.loads(_jwt.unpack(unpacked['id_token']).part[1])
+            try:
+                id_token = json.loads(_jwt.unpack(unpacked['id_token']).part[1])
+            except KeyError:
+                id_token = unpacked
             userinfo = {
                 'sub': id_token['sub']
             }
