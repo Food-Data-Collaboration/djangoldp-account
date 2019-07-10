@@ -92,4 +92,4 @@ GROUP_PERMISSION_CLASSES=[CustomGroupPermission]
 USER_PERMISSION_CLASSES=[CustomUserPermission]
 ```
 
-On the server settings (should be override only one time)
+On the server settings (should be overriden only one time)
