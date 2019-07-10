@@ -12,7 +12,7 @@ from .models import ChatProfile, Account
 from .views import userinfocustom, RPLoginView, RPLoginCallBackView, WebFingerView
 
 user_model = get_user_model()
-djangoldp_modules = list(filter(lambda app: app.startswith('djangoldp_'), settings.INSTALLED_APPS))
+djangoldp_modules = list(settings.DJANGOLDP_PACKAGES)
 user_fields = ['@id', 'first_name', 'groups', 'last_name', 'username', 'email', 'account', 'chatProfile', 'name']
 user_nested_fields = ['account', 'groups', 'chatProfile']
 for dldp_module in djangoldp_modules:
