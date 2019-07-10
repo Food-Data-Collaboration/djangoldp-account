@@ -81,6 +81,15 @@ Because `/user/1` is an account of an external user with webid `https://theother
 djangoldp_account use `django.contribs.auth.User` and mange its serialization into JsonLd format
 If you need to extends it with you own relation use `USER_NESTED_FIELDS` on settings.py :
 
-````
+```
 USER_NESTED_FIELDS=['skills']
 ```
+
+Also, if you need to override the default permission (AnonymousReadOnly) on User or Group use :
+
+```
+GROUP_PERMISSION_CLASSES=[CustomGroupPermission]
+USER_PERMISSION_CLASSES=[CustomUserPermission]
+```
+
+On the server settings (should be override only one time)

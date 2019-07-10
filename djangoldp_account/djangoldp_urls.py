@@ -17,16 +17,17 @@ user_fields = ['@id', 'first_name', 'groups', 'last_name', 'username', 'email', 
 user_nested_fields = ['account', 'groups', 'chatProfile']
 for dldp_module in djangoldp_modules:
     try:
-        user_fields += import_module(dldp_module + '.settings').USER_NESTED_FIELDS
-        user_nested_fields += import_module(dldp_module + '.settings').USER_NESTED_FIELDS
+        module_user_nested_fields = import_module(dldp_module + '.settings').USER_NESTED_FIELDS
+        user_fields += module_user_nested_fields
+        user_nested_fields += module_user_nested_fields
     except:
         pass
 
 urlpatterns = [
     url(r'^groups/',
-        LDPViewSet.urls(model=Group, fields=['@id', 'name', 'user_set'], permission_classes=[AnonymousReadOnly])),
+        LDPViewSet.urls(model=Group, fields=['@id', 'name', 'user_set'], permission_classes=getattr(settings, 'GROUP_PERMISSION_CLASSES', [AnonymousReadOnly]))),
     url(r'^users/',
-        LDPViewSet.urls(model=settings.AUTH_USER_MODEL, fields=user_fields, permission_classes=[AnonymousReadOnly],
+        LDPViewSet.urls(model=settings.AUTH_USER_MODEL, fields=user_fields, permission_classes=getattr(settings, 'USER_PERMISSION_CLASSES', [AnonymousReadOnly]),
                         nested_fields=user_nested_fields)),
     url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^accounts/', LDPViewSet.urls(model=Account, permission_classes=[AnonymousReadOnly])),
