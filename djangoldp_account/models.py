@@ -39,6 +39,7 @@ class Account(Model):
             ('view_account', 'Read'),
             ('control_account', 'Control'),
         )
+        rdf_context = {'picture': 'foaf:depiction'}
 
     def __str__(self):
         return '{} ({})'.format(self.user.get_full_name(), self.user.username)
