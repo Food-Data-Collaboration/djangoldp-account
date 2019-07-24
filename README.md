@@ -1,6 +1,6 @@
 ## Synopsis
 
-This module is an add-on for Django that provides Web-OIDC accounts management. It plays two roles:
+This module is an add-on for Django that provides WebID-OIDC accounts management. It plays two roles:
 - The Relying Party
 - The Authentification provider
 
@@ -40,6 +40,9 @@ MIDDLEWARE = [ ..., 'djangoldp_account.auth.middleware.JWTUserMiddleware']
 
 ```
 
+You should also ensure that `SITE_URL` and `BASE_URL` are set correctly. 
+
+
 ## Authenticate from an external provider
 
 - go to mysite.org/accounts/login
@@ -78,8 +81,8 @@ Because `/user/1` is an account of an external user with webid `https://theother
 
 # Extending User serialization
 
-djangoldp_account use `django.contribs.auth.User` and mange its serialization into JsonLd format
-If you need to extends it with you own relation use `USER_NESTED_FIELDS` on settings.py :
+djangoldp_account uses `django.contribs.auth.User` and manages its serialization into JsonLd format
+If you need to extend it with you own relation use `USER_NESTED_FIELDS` on settings.py :
 
 ```
 USER_NESTED_FIELDS=['skills']
