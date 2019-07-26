@@ -1,6 +1,7 @@
 import json
 
 from django.contrib.auth.backends import ModelBackend, UserModel
+from jwkest import BadSyntax
 from jwkest.jwt import JWT
 
 from djangoldp_account.auth.solid import Solid
@@ -16,7 +17,10 @@ class ExternalUserBackend(ModelBackend):
                 jwt = jwt[7:]
             username = kwargs.get(UserModel.USERNAME_FIELD)
             _jwt = JWT()
-            unpacked = json.loads(_jwt.unpack(jwt).part[1])
+            try:
+                unpacked = json.loads(_jwt.unpack(jwt).part[1])
+            except BadSyntax:
+                return
             try:
                 id_token = json.loads(_jwt.unpack(unpacked['id_token']).part[1])
             except KeyError:
