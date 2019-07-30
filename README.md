@@ -89,11 +89,17 @@ If you need to extend it with you own relation use `USER_NESTED_FIELDS` on setti
 USER_NESTED_FIELDS=['skills']
 ```
 
-Also, if you need to override the default permission (AnonymousReadOnly) on User or Group use :
+Also, if you need to override the default permissions on User or Group use :
 
 ```
 GROUP_PERMISSION_CLASSES=[CustomGroupPermission]
-USER_PERMISSION_CLASSES=[CustomUserPermission]
+GROUP_ANONYMOUS_PERMISSIONS=['view']
+GROUP_AUTHENTICATED_PERMISSIONS=['inherit']
+GROUP_OWNER_PERMISSIONS=['view', 'control', 'update']
+
+USER_ANONYMOUS_PERMISSIONS=['view']
+USER_AUTHENTICATED_PERMISSIONS=['inherit']
+USER_OWNER_PERMISSIONS=['view', 'control', 'update']
 ```
 
 On the server settings (should be overriden only one time)

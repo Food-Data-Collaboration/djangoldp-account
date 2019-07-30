@@ -6,7 +6,7 @@ from django.conf.urls import url, include
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 
-from djangoldp.permissions import AnonymousReadOnly
+from djangoldp.permissions import LDPPermissions
 from djangoldp.views import LDPViewSet
 from .models import ChatProfile, Account
 from .views import userinfocustom, RPLoginView, RPLoginCallBackView, WebFingerView
@@ -25,13 +25,17 @@ for dldp_module in djangoldp_modules:
 
 urlpatterns = [
     url(r'^groups/',
-        LDPViewSet.urls(model=Group, fields=['@id', 'name', 'user_set'], permission_classes=getattr(settings, 'GROUP_PERMISSION_CLASSES', [AnonymousReadOnly]))),
+        LDPViewSet.urls(model=Group, fields=['@id', 'name', 'user_set'],
+                        permission_classes=getattr(settings, 'GROUP_PERMISSION_CLASSES', [LDPPermissions]),
+                        )),
     url(r'^users/',
-        LDPViewSet.urls(model=settings.AUTH_USER_MODEL, fields=user_fields, permission_classes=getattr(settings, 'USER_PERMISSION_CLASSES', [AnonymousReadOnly]),
-                        nested_fields=user_nested_fields)),
+        LDPViewSet.urls(model=settings.AUTH_USER_MODEL, fields=user_fields,
+                        permission_classes=getattr(settings, 'USER_PERMISSION_CLASSES', [LDPPermissions]),
+                        nested_fields=user_nested_fields
+                        )),
     url(r'^accounts/', include('django.contrib.auth.urls')),
-    url(r'^accounts/', LDPViewSet.urls(model=Account, permission_classes=[AnonymousReadOnly])),
-    url(r'^chat-profile/', LDPViewSet.urls(model=ChatProfile, permission_classes=[AnonymousReadOnly])),
+    url(r'^accounts/', LDPViewSet.urls(model=Account, permission_classes=[LDPPermissions])),
+    url(r'^chat-profile/', LDPViewSet.urls(model=ChatProfile, permission_classes=[LDPPermissions])),
     url(r'^oidc/login/callback/?$', RPLoginCallBackView.as_view(), name='oidc_login_callback'),
     url(r'^oidc/login/?$', RPLoginView.as_view(), name='oidc_login'),
     url(r'^\.well-known/webfinger/?$', WebFingerView.as_view()),
@@ -42,4 +46,10 @@ s_fields = []
 s_fields.extend(user_fields)
 s_fields.extend(user_nested_fields)
 user_model._meta.serializer_fields = s_fields
+user_model._meta.anonymous_perms=getattr(settings, 'USER_ANONYMOUS_PERMISSIONS', ['view'])
+user_model._meta.authenticated_perms=getattr(settings, 'USER_AUTHENTICATED_PERMISSIONS', ['inherit'])
+user_model._meta.owner_perms=getattr(settings, 'USER_OWNER_PERMISSIONS', ['inherit'])
 Group._meta.serializer_fields = ['name']
+Group._meta.anonymous_perms=getattr(settings, 'GROUP_ANONYMOUS_PERMISSIONS', ['view'])
+Group._meta.authenticated_perms=getattr(settings, 'GROUP_AUTHENTICATED_PERMISSIONS', ['inherit']),
+Group._meta.owner_perms=getattr(settings, 'GROUP_OWNER_PERMISSIONS', ['inherit']),

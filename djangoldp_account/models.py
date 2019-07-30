@@ -33,7 +33,6 @@ class Account(Model):
     issuer = models.URLField(blank=True, null=True)
 
     class Meta:
-        depth = 0
         auto_author = 'user'
         permissions = (
             ('view_account', 'Read'),
@@ -50,7 +49,6 @@ class ChatProfile(Model):
     jabberID = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
-        depth = 0
         auto_author = 'user'
         permissions = (
             ('view_chatprofile', 'Read'),
