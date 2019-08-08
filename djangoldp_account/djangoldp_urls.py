@@ -5,6 +5,7 @@ from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
+from django.views.decorators.csrf import csrf_exempt
 
 from djangoldp.permissions import LDPPermissions
 from djangoldp.views import LDPViewSet
@@ -39,7 +40,7 @@ urlpatterns = [
     url(r'^oidc/login/callback/?$', RPLoginCallBackView.as_view(), name='oidc_login_callback'),
     url(r'^oidc/login/?$', RPLoginView.as_view(), name='oidc_login'),
     url(r'^\.well-known/webfinger/?$', WebFingerView.as_view()),
-    url(r'^userinfo/?$', userinfocustom),
+    url(r'^userinfo/?$', csrf_exempt(userinfocustom)),
     url(r'^', include('oidc_provider.urls', namespace='oidc_provider'))
 ]
 s_fields = []

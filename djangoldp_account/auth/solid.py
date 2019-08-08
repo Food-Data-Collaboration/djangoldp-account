@@ -38,7 +38,7 @@ class Solid(object):
             user = existing_user
         else:
             user = get_user_model().objects.create_user(username=webid,
-                                                        first_name=userinfo['given_name'],
-                                                        last_name=userinfo['family_name'],
-                                                        email=userinfo['email'])
+                                                        first_name=userinfo.get('given_name', "Unknown"),
+                                                        last_name=userinfo.get('family_name', "Unknown"),
+                                                        email=userinfo.get('email', None))
         return user
