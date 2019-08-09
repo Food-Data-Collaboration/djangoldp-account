@@ -1,5 +1,6 @@
-from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.views import View
+from djangoldp_account import settings
 
 from djangoldp_account.endpoints.rp_login import RPLoginCallBackEndpoint, RPLoginEndpoint
 from djangoldp_account.endpoints.webfinger import WebFingerEndpoint
@@ -18,6 +19,27 @@ def userinfocustom(request, *args, **kwargs):
         return response
 
     return userinfo(request, *args, **kwargs)
+
+
+def check_user(request, *args, **kwargs):
+    if request.method == 'OPTIONS':
+        response = HttpResponse({}, status=200)
+        response['Access-Control-Allow-Origin'] = '*'
+        response['Access-Control-Allow-Headers'] = 'Authorization'
+        response['Cache-Control'] = 'no-store'
+        response['Pragma'] = 'no-cache'
+
+        return response
+
+    if request.user.is_authenticated():
+        response = JsonResponse(settings.userinfo({}, request.user))
+        try:
+            response['User'] = request.user.webid()
+        except AttributeError:
+            pass
+        return response
+    else :
+        return HttpResponseNotFound()
 
 
 class RPLoginView(View):

@@ -201,20 +201,6 @@ class RPLoginCallBackEndpoint(object):
         else:
             raise LDPLoginError('cannot_get_webid')
 
-    def confirm_webid(self, webid):
-        """
-        See https://github.com/solid/webid-oidc-spec/blob/master/README.md#webid-provider-confirmation
-        :param webid:
-        :return:
-        """
-        url = urlparse(self.client.issuer)
-        webid_url = urlparse(webid)
-        if webid_url.netloc == url.netloc:
-            pass
-        else:
-            raise LDPLoginError('cannot_confirm_webid')
-        # TODO : add the other cases
-
     def login(self, userinfo, webid):
         if webid.startswith(settings.SITE_URL):
             existing_user = Model.resolve_id(userinfo['sub'][len(settings.SITE_URL):])

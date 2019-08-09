@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from djangoldp.permissions import LDPPermissions
 from djangoldp.views import LDPViewSet
 from .models import ChatProfile, Account
-from .views import userinfocustom, RPLoginView, RPLoginCallBackView, WebFingerView
+from .views import userinfocustom, RPLoginView, RPLoginCallBackView, WebFingerView, check_user
 
 user_model = get_user_model()
 djangoldp_modules = list(settings.DJANGOLDP_PACKAGES)
@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^oidc/login/?$', RPLoginView.as_view(), name='oidc_login'),
     url(r'^\.well-known/webfinger/?$', WebFingerView.as_view()),
     url(r'^userinfo/?$', csrf_exempt(userinfocustom)),
+    url(r'^check-user/?$', csrf_exempt(check_user)),
     url(r'^', include('oidc_provider.urls', namespace='oidc_provider'))
 ]
 s_fields = []

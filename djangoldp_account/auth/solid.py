@@ -1,3 +1,4 @@
+import time
 from urllib.parse import urlparse
 
 from django.conf import settings
@@ -9,6 +10,11 @@ from djangoldp_account.errors import LDPLoginError
 
 
 class Solid(object):
+
+    @classonlymethod
+    def check_id_token_exp(cls, exp):
+        if exp < time.time():
+            raise LDPLoginError('id_token_expired')
 
     @classonlymethod
     def confirm_webid(cls, webid, iss):

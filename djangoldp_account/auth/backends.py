@@ -1,10 +1,12 @@
 import json
 
 from django.contrib.auth.backends import ModelBackend, UserModel
+from django.core.exceptions import PermissionDenied
 from jwkest import BadSyntax
 from jwkest.jwt import JWT
 
 from djangoldp_account.auth.solid import Solid
+from djangoldp_account.errors import LDPLoginError
 
 
 class ExternalUserBackend(ModelBackend):
@@ -25,11 +27,16 @@ class ExternalUserBackend(ModelBackend):
                 id_token = json.loads(_jwt.unpack(unpacked['id_token']).part[1])
             except KeyError:
                 id_token = unpacked
+            try:
+                Solid.check_id_token_exp(id_token['exp'])
+
+
+                Solid.confirm_webid(id_token['sub'], id_token['iss'])
+            except LDPLoginError as e:
+                raise PermissionDenied(e.description)
             userinfo = {
                 'sub': id_token['sub']
             }
-
-            Solid.confirm_webid(id_token['sub'], id_token['iss'])
             user = Solid.get_or_create_user(userinfo, id_token['sub'])
         else:
             if username is None:

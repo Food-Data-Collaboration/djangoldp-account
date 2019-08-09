@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from djangoldp_account.models import webid
 
+
 def userinfo(claims, user):
     # Populate claims dict.
     claims['name'] = '{0} {1}'.format(user.first_name, user.last_name)
