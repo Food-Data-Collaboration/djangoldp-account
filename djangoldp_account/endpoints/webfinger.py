@@ -31,9 +31,9 @@ class AccountWebFinger(WebFinger):
                 else:
                     href = user.account.issuer
 
-                dict['links'].append({
+                response_dict['links'].append({
                     'rel': "http://openid.net/specs/connect/1.0/issuer",
                     'href': href
                 })
 
-        return dict
+        return response_dict
