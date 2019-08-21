@@ -22,7 +22,7 @@ class Acct(object):
 class AccountWebFinger(WebFinger):
 
     def response(self, response_dict, rel, acct):
-        if "http://openid.net/specs/connect/1.0/issuer" in rel:
+        if rel is None or "http://openid.net/specs/connect/1.0/issuer" in rel:
             user = get_user_model().objects.filter(email="{}@{}".format(acct.userinfo, acct.host)).first()
             if user is not None:
                 url = urlparse(user.webid())
