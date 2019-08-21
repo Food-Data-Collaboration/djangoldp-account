@@ -3,8 +3,7 @@ from django.views import View
 from djangoldp_account import settings
 
 from djangoldp_account.endpoints.rp_login import RPLoginCallBackEndpoint, RPLoginEndpoint
-from djangoldp_account.endpoints.webfinger import WebFingerEndpoint
-from djangoldp_account.errors import LDPLoginError, WebFingerError
+from djangoldp_account.errors import LDPLoginError
 from oidc_provider.views import userinfo
 
 
@@ -87,21 +86,3 @@ class RPLoginCallBackView(View):
         return self.on_request(request)
 
 
-class WebFingerView(View):
-    endpoint_class = WebFingerEndpoint
-
-    def get(self, request, *args, **kwargs):
-        return self.on_request(request)
-
-    def on_request(self, request):
-        endpoint = self.endpoint_class(request)
-        try:
-            endpoint.validate_params()
-
-            return JsonResponse(endpoint.response())
-
-        except WebFingerError as error:
-            return JsonResponse(error.create_dict(), status=400)
-
-    def post(self, request, *args, **kwargs):
-        return self.on_request(request)
