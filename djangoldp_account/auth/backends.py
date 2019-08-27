@@ -38,16 +38,7 @@ class ExternalUserBackend(ModelBackend):
                 'sub': id_token['sub']
             }
             user = Solid.get_or_create_user(userinfo, id_token['sub'])
-        else:
-            if username is None:
-                username = kwargs.get(UserModel.USERNAME_FIELD)
-            try:
-                user = UserModel._default_manager.get_by_natural_key(username)
-            except UserModel.DoesNotExist:
-                # Run the default password hasher once to reduce the timing
-                # difference between an existing and a non-existing user (#20760).
-                UserModel().set_password(password)
 
-        if self.user_can_authenticate(user):
-            return user
+            if self.user_can_authenticate(user):
+                return user
 
