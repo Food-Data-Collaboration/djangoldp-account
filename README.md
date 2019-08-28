@@ -43,6 +43,20 @@ MIDDLEWARE = [ ..., 'djangoldp_account.auth.middleware.JWTUserMiddleware']
 
 You should also ensure that `SITE_URL` and `BASE_URL` are set correctly. 
 
+## User registration
+Add these settings on settings.py :
+
+```python
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'you@gmail.com'
+EMAIL_HOST_PASSWORD = 'password'
+EMAIL_PORT = 587
+```
+
+The workflow starts at : http://127.0.0.1:8000/accounts/register/
+
 
 ## Authenticate from an external provider
 
