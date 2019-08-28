@@ -34,6 +34,7 @@ urlpatterns = [
                         permission_classes=getattr(settings, 'USER_PERMISSION_CLASSES', [LDPPermissions]),
                         nested_fields=user_nested_fields
                         )),
+    url(r'^accounts/', include('django_registration.backends.activation.urls')),
     url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^accounts/', LDPViewSet.urls(model=Account, permission_classes=[LDPPermissions])),
     url(r'^chat-profile/', LDPViewSet.urls(model=ChatProfile, permission_classes=[LDPPermissions])),
