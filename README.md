@@ -47,6 +47,7 @@ You should also ensure that `SITE_URL` and `BASE_URL` are set correctly.
 Add these settings on settings.py :
 
 ```python
+ACCOUNT_ACTIVATION_DAYS=7 #Number of days you want to keep the activation token valid
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
