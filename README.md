@@ -44,7 +44,10 @@ MIDDLEWARE = [ ..., 'djangoldp_account.auth.middleware.JWTUserMiddleware']
 You should also ensure that `SITE_URL` and `BASE_URL` are set correctly. 
 
 ## User registration
-Add these settings on settings.py :
+User registration use django_registration module : https://django-registration.readthedocs.io/en/3.0.1/
+
+To use it :
+Firts, add these settings on settings.py :
 
 ```python
 ACCOUNT_ACTIVATION_DAYS=7 #Number of days you want to keep the activation token valid
@@ -57,6 +60,8 @@ EMAIL_PORT = 587
 ```
 
 The workflow starts at : http://127.0.0.1:8000/accounts/register/
+
+Then, override template by copying the directory `djangoldp_account/templates/django_registration/` to your project and modify them.
 
 
 ## Authenticate from an external provider
