@@ -3,6 +3,8 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from importlib import import_module
+
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse_lazy
@@ -10,6 +12,22 @@ from django.utils.translation import ugettext_lazy as _
 
 from djangoldp.models import Model
 
+from djangoldp.permissions import LDPPermissions
+
+djangoldp_modules = list(settings.DJANGOLDP_PACKAGES)
+user_fields = ['@id', 'first_name', 'groups', 'last_name', 'username', 'email', 'account', 'chatProfile', 'name']
+user_nested_fields = ['account', 'groups', 'chatProfile']
+for dldp_module in djangoldp_modules:
+    try:
+        module_user_nested_fields = import_module(dldp_module + '.settings').USER_NESTED_FIELDS
+        user_fields += module_user_nested_fields
+        user_nested_fields += module_user_nested_fields
+    except:
+        pass
+
+s_fields = []
+s_fields.extend(user_fields)
+s_fields.extend(user_nested_fields)
 
 class LDPUser(AbstractUser, Model):
     slug = models.SlugField(unique=True, blank=True, null=True)
@@ -20,6 +38,13 @@ class LDPUser(AbstractUser, Model):
         rdf_type = 'foaf:user'
         owner_field = 'id'
         lookup_field = 'slug'
+        container_path = 'users'
+        permission_classes=getattr(settings, 'USER_PERMISSION_CLASSES', [LDPPermissions])
+        nested_fields=user_nested_fields
+        serializer_fields = s_fields
+        anonymous_perms = getattr(settings, 'USER_ANONYMOUS_PERMISSIONS', ['view'])
+        authenticated_perms = getattr(settings, 'USER_AUTHENTICATED_PERMISSIONS', ['inherit'])
+        owner_perms = getattr(settings, 'USER_OWNER_PERMISSIONS', ['inherit'])
 
     def name(self):
         return self.get_full_name()
@@ -29,7 +54,7 @@ class LDPUser(AbstractUser, Model):
         if validators.url(self.username):
             webid = self.username
         else:
-            webid = '{0}{1}'.format(settings.BASE_URL, reverse_lazy('ldpuser-detail', kwargs={'pk': self.pk}))
+            webid = '{0}{1}'.format(settings.BASE_URL, reverse_lazy('ldpuser-detail', kwargs={'slug': self.slug}))
         return webid
 
 
