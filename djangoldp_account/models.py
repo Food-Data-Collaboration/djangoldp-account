@@ -39,6 +39,7 @@ class LDPUser(AbstractUser, Model):
         owner_field = 'id'
         lookup_field = 'slug'
         container_path = 'users'
+        owner_field = 'urlid'
         permission_classes=getattr(settings, 'USER_PERMISSION_CLASSES', [LDPPermissions])
         nested_fields=user_nested_fields
         serializer_fields = s_fields
@@ -111,15 +112,17 @@ def create_account(sender, instance, created, **kwargs):
         if settings.JABBER_DEFAULT_HOST:
             chat_profile.jabberID = '{}@{}'.format(instance.username, settings.JABBER_DEFAULT_HOST)
             chat_profile.save()
-        instance.slug = instance.username
-        instance.save()
-    else:
-        try:
+        if instance.slug != instance.username:
             instance.slug = instance.username
             instance.save()
-            instance.account.slug = instance.username
-            instance.account.save()
-            instance.chatProfile.slug = instance.username
-            instance.chatProfile.save()
+    else:
+        try:
+            if instance.slug != instance.username:
+                instance.slug = instance.username
+                instance.save()
+                instance.account.slug = instance.username
+                instance.account.save()
+                instance.chatProfile.slug = instance.username
+                instance.chatProfile.save()
         except:
             pass
