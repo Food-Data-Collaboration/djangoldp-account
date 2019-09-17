@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from importlib import import_module
 
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
@@ -104,6 +104,12 @@ class OPClient(Model):
         return '{} ({})'.format(self.issuer, self.client_id)
 
 
+@receiver(pre_save, sender=settings.AUTH_USER_MODEL)
+def pre_create_account(sender, instance, **kwargs):
+    if getattr(instance, Model.slug_field(instance)) != instance.username:
+        setattr(instance, Model.slug_field(instance), instance.username)
+
+
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_account(sender, instance, created, **kwargs):
     if created:
@@ -112,17 +118,11 @@ def create_account(sender, instance, created, **kwargs):
         if settings.JABBER_DEFAULT_HOST:
             chat_profile.jabberID = '{}@{}'.format(instance.username, settings.JABBER_DEFAULT_HOST)
             chat_profile.save()
-        if instance.slug != instance.username:
-            instance.slug = instance.username
-            instance.save()
     else:
         try:
-            if instance.slug != instance.username:
-                instance.slug = instance.username
-                instance.save()
-                instance.account.slug = instance.username
-                instance.account.save()
-                instance.chatProfile.slug = instance.username
-                instance.chatProfile.save()
+            instance.account.slug = instance.username
+            instance.account.save()
+            instance.chatProfile.slug = instance.username
+            instance.chatProfile.save()
         except:
             pass
