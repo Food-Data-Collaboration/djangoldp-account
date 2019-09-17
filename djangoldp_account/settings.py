@@ -3,8 +3,6 @@ from django.conf import settings
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
 
-from djangoldp_account.models import webid
-
 
 def userinfo(claims, user):
     # Populate claims dict.
@@ -16,4 +14,4 @@ def userinfo(claims, user):
 
 
 def sub_generator(user):
-    return webid(user)
+    return user.webid()
