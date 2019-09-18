@@ -27,7 +27,7 @@ DJANGOLDP_PACKAGES = [
     'djangoldp_account',
     ...
 ]
-LOGIN_URL = '/accounts/login/'
+LOGIN_URL = '/auth/login/'
 
 OIDC_USERINFO = 'djangoldp_account.settings.userinfo'
 OIDC_REGISTRATION_ENDPOINT_REQ_TOKEN = False
