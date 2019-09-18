@@ -84,5 +84,3 @@ class RPLoginCallBackView(View):
 
     def post(self, request, *args, **kwargs):
         return self.on_request(request)
-
-
