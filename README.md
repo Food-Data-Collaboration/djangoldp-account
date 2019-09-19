@@ -117,9 +117,17 @@ GROUP_ANONYMOUS_PERMISSIONS=['view']
 GROUP_AUTHENTICATED_PERMISSIONS=['inherit']
 GROUP_OWNER_PERMISSIONS=['view', 'control', 'update']
 
-USER_ANONYMOUS_PERMISSIONS=['view']
+USER_ANONYMOUS_PERMISSIONS=['add', 'view']
 USER_AUTHENTICATED_PERMISSIONS=['inherit']
-USER_OWNER_PERMISSIONS=['view', 'control', 'update']
+USER_OWNER_PERMISSIONS=['inherit', 'control', 'update']
 ```
 
 On the server settings (should be overriden only one time)
+
+# Federation
+If you want to enable full federation capabilities you have to use the `LDPUser` instead of django `User`
+
+Add to your `settings.py` :
+```
+AUTH_USER_MODEL = 'djangoldp_account.LDPUser'
+```
