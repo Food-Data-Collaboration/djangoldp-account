@@ -2,12 +2,13 @@
 
 from django.conf import settings
 from django.conf.urls import url, include
-from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.views.decorators.csrf import csrf_exempt
 
+from django_registration.backends.activation.views import RegistrationView
 from djangoldp.permissions import LDPPermissions
 from djangoldp.views import LDPViewSet
+from djangoldp_account.forms import LDPUserForm
 from .models import ChatProfile, Account
 from .views import userinfocustom, RPLoginView, RPLoginCallBackView, check_user
 
@@ -16,6 +17,12 @@ urlpatterns = [
         LDPViewSet.urls(model=Group, fields=['@id', 'name', 'user_set'],
                         permission_classes=getattr(settings, 'GROUP_PERMISSION_CLASSES', [LDPPermissions]),
                         )),
+    url(r'^auth/register/$',
+        RegistrationView.as_view(
+            form_class=LDPUserForm
+        ),
+        name='django_registration_register',
+        ),
     url(r'^auth/', include('django_registration.backends.activation.urls')),
     url(r'^auth/', include('django.contrib.auth.urls')),
     url(r'^accounts/', LDPViewSet.urls(model=Account, permission_classes=[LDPPermissions])),
