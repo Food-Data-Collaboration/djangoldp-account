@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}
+    {% trans "Informations access request" %}
+{% endblock %}
+
+{% block supplementary_css %}
+<link rel="stylesheet" href="{% static 'base.css' %}"/>
+<link rel="stylesheet" href="{% static 'oidc_provider/authorize.css' %}"/>
+{% endblock %}
+
+{% block content %}
+
+<div class="sib-oidc-authorization-page">
+
+    <h1>{% trans "Request for Permission" %}</h1>
+
+    {% if scopes|length > 0 %}
+    <p>{% trans "Client" %} <strong>{{ client.name }}</strong> {% trans "would like to access this information of you:" %}</p>
+    {% else %}
+    <p>{% trans "Client" %} <strong>{{ client.name }}</strong> {% trans "would like to access your account." %}</p>
+    {% endif %}
+
+    <form method="post" action="{% url 'oidc_provider:authorize' %}">
+        {% csrf_token %}
+        {{ hidden_inputs }}
+        <ul>
+            {% for scope in scopes %}
+            <li><strong>{{ scope.name }}</strong><br><i>{{ scope.description }}</i></li>
+            {% endfor %}
+        </ul>
+        <input class="sib-oidc-authorization-page-button decline-button" type="submit" value="Decline"/>
+        <input class="sib-oidc-authorization-page-button accept-button" name="allow" type="submit" value="Authorize"/>
+    </form>
+</div>
+{% endblock %}

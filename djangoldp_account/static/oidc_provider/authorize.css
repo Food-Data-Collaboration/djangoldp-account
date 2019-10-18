@@ -1,0 +1,14 @@
+.sib-oidc-authorization-page .decline-button,
+.sib-oidc-authorization-page .accept-button {
+    width: 10em;
+}
+
+.sib-oidc-authorization-page .decline-button:hover {
+    background-color: darkred;
+    color: white;
+    width: 10em;
+}
+.sib-oidc-authorization-page .accept-button:hover {
+    background-color: darkslategrey;
+    color: white;
+}
