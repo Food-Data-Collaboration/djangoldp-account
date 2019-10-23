@@ -1,54 +1,70 @@
 {% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}
+    {% trans "Login" %}
+{% endblock %}
+
+{% block supplementary_css %}
+    <link rel="stylesheet" href="{% static 'base.css' %}"/>
+    <link rel="stylesheet" href="{% static 'registration/login.css' %}"/>
+{% endblock %}
 
 {% block content %}
-
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
-
-{% if next %}
-    {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
-    {% else %}
-    <p>Please login TEST to see this page.</p>
+    {% if next %}
+        <div class="sib-login-title">
+            {% if user.is_authenticated %}
+                <h2>
+                    {% blocktrans %}
+                        Your account doesn't have access to this page. To proceed,
+                        please login with an account that has access.
+                    {% endblocktrans %}
+                </h2>
+            {% else %}
+                <h2>{% trans "Please login to see this page." %}</h2>
+            {% endif %}
+        </div>
     {% endif %}
-{% endif %}
 
-<form method="post" action="{% url 'login' %}">
-{% csrf_token %}
-<table>
-<tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
-</tr>
-<tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
-</tr>
-</table>
+    <div class="sib-login-forms">
+        {% if form.errors %}
+            <p class="error">{% trans "Your username and password didn't match. Please try again." %}</p>
+        {% endif %}
+        <form class="sib-login-form" method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <table class="sib-form-table">
+                <tr>
+                    <td>{{ form.username.label_tag }}</td>
+                    <td>{{ form.username }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.password.label_tag }}</td>
+                    <td>{{ form.password }}</td>
+                </tr>
+            </table>
 
-<input type="submit" value="login" />
-<input type="hidden" name="next" value="{{ next }}" />
-</form>
+            <input class="sib-validate" type="submit" value="{% trans 'login' %}"/>
+            <input type="hidden" name="next" value="{{ next }}"/>
+        </form>
 
-{# Assumes you setup the password_reset view in your URLconf #}
-<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+        <a class="sib-btn-link" href="{% url 'password_reset' %}">{% trans "Lost password?" %}</a>
 
+        <hr class="separator"/>
 
-    <p> or login using another authentification provider</p>
+        <p>{% trans "or login using another authentification provider" %}</p>
 
-<form method="post" action="{% url 'oidc_login' %}">
-    {% csrf_token %}
-    <table>
-        <tr>
-            <td><label for="id_subject">email, web-id, or provider url:</label></td>
-            <td><input type="text" name="subject" required id="id_subject"/></td>
-        </tr>
-    </table>
+        <form class="sib-login-form" method="post" action="{% url 'oidc_login' %}">
+            {% csrf_token %}
+            <table class="sib-form-table">
+                <tr>
+                    <td><label for="id_subject">{% trans "email, web-id, or provider url:" %}</label></td>
+                    <td><input type="text" name="subject" required id="id_subject"/></td>
+                </tr>
+            </table>
 
-    <input type="submit" value="login" />
-    <input type="hidden" name="next" value="{{ next }}" />
-</form>
-
+            <input class="sib-validate" type="submit" value="{% trans 'login' %}"/>
+            <input type="hidden" name="next" value="{{ next }}"/>
+        </form>
+    </div>
 {% endblock %}

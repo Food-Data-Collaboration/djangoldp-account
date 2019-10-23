@@ -1,0 +1,58 @@
+#content {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+
+#content .sib-login-title {
+    max-width: 800px;
+}
+
+#content .sib-login-forms {
+    max-width: 500px;
+    padding: 2rem;
+    border: 1px solid gray;
+    border-radius: 0.5rem;
+}
+
+hr.separator {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), gray, rgba(0, 0, 0, 0));
+}
+
+#content .sib-login-forms .error {
+    color: red;
+    padding: 0;
+    margin: 0 0 2rem 0;
+}
+
+#content .sib-btn-link {
+    color: #80BCFF;
+    font-weight: bold;
+    padding: 1rem;
+    margin: 0;
+    text-decoration: none;
+    transition: color 0.5s;
+}
+
+#content .sib-btn-link:hover {
+    color: #99C9FF;
+    text-decoration: underline;
+    transition: color 0.5s;
+}
+
+#content .sib-login-forms .sib-form-table {
+    display: flex;
+    align-self: center;
+}
+
+#content .sib-login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+#content .sib-validate {
+    margin-left: 0;
+    margin-right: 0;
+}
