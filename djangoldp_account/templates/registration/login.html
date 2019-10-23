@@ -35,7 +35,7 @@
             {% csrf_token %}
             <table class="sib-form-table">
                 <tr>
-                    <td>{{ form.username.label_tag }}</td>
+                    <td>{%  trans "Username or email:" %}</td>
                     <td>{{ form.username }}</td>
                 </tr>
                 <tr>
@@ -56,13 +56,8 @@
 
         <form class="sib-login-form" method="post" action="{% url 'oidc_login' %}">
             {% csrf_token %}
-            <table class="sib-form-table">
-                <tr>
-                    <td><label for="id_subject">{% trans "email, web-id, or provider url:" %}</label></td>
-                    <td><input type="text" name="subject" required id="id_subject"/></td>
-                </tr>
-            </table>
-
+            <label for="id_subject">{% trans "email, web-id, or provider url:" %}</label>
+            <input type="text" name="subject" required id="id_subject"/>
             <input class="sib-validate" type="submit" value="{% trans 'login' %}"/>
             <input type="hidden" name="next" value="{{ next }}"/>
         </form>
