@@ -63,6 +63,14 @@ The workflow starts at : http://127.0.0.1:8000/accounts/register/
 
 Then, override template by copying the directory `djangoldp_account/templates/django_registration/` to your project and modify them.
 
+## Enabling login by email and username
+
+Modify the `AUTHENTICATION_BACKENDS` variable in `settings.py` to replace 
+`'django.contrib.auth.backends.ModelBackend'` by 
+`'djangoldp_account.auth.backends.EmailOrUsernameAuthBackend'`.
+
+Ensure `'djangoldp_account.auth.backends.EmailOrUsernameAuthBackend'` is 
+first in the list.
 
 ## Authenticate from an external provider
 

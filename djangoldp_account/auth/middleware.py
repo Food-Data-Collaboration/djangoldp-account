@@ -4,7 +4,6 @@ from django.utils.deprecation import MiddlewareMixin
 
 
 class JWTUserMiddleware(MiddlewareMixin):
-
     def process_request(self, request):
         # AuthenticationMiddleware is required so that request.user exists.
         if not hasattr(request, 'user'):

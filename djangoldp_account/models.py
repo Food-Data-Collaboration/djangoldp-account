@@ -1,6 +1,6 @@
 import validators
 from django.conf import settings
-from django.contrib.auth import get_user_model
+from django.core.validators import validate_email
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from importlib import import_module
@@ -29,6 +29,7 @@ s_fields = []
 s_fields.extend(user_fields)
 s_fields.extend(user_nested_fields)
 
+
 class LDPUser(AbstractUser, Model):
     slug = models.SlugField(unique=True, blank=True, null=True)
 
@@ -36,12 +37,11 @@ class LDPUser(AbstractUser, Model):
         verbose_name = _('user')
         verbose_name_plural = _('users')
         rdf_type = 'foaf:user'
-        owner_field = 'id'
         lookup_field = 'slug'
         container_path = 'users'
         owner_field = 'urlid'
-        permission_classes=getattr(settings, 'USER_PERMISSION_CLASSES', [LDPPermissions])
-        nested_fields=user_nested_fields
+        permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES', [LDPPermissions])
+        nested_fields = user_nested_fields
         serializer_fields = s_fields
         anonymous_perms = getattr(settings, 'USER_ANONYMOUS_PERMISSIONS', ['view'])
         authenticated_perms = getattr(settings, 'USER_AUTHENTICATED_PERMISSIONS', ['inherit'])
