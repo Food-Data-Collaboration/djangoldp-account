@@ -1,14 +1,16 @@
+import re
 import validators
 from django.conf import settings
-from django.core.validators import validate_email
+from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from importlib import import_module
-
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.urls import reverse_lazy
+from django.utils.deconstruct import deconstructible
 from django.utils.translation import ugettext_lazy as _
+from importlib import import_module
+
 
 from djangoldp.models import Model
 
@@ -30,8 +32,29 @@ s_fields.extend(user_fields)
 s_fields.extend(user_nested_fields)
 
 
+@deconstructible
+class UsernameValidator(RegexValidator):
+    regex = r'^[\w.+-]+$'
+    message = _(
+        'Enter a valid username. This value may contain only letters, '
+        'numbers, and ./+/-/_ characters.'
+    )
+    flags = re.UNICODE
+
+
 class LDPUser(AbstractUser, Model):
     slug = models.SlugField(unique=True, blank=True, null=True)
+    username_validator = UsernameValidator()
+    username = models.CharField(
+        _('username'),
+        max_length=150,
+        unique=True,
+        help_text=_('Required. 150 characters or fewer. Letters, digits and ./+/-/_ only.'),
+        validators=[username_validator],
+        error_messages={
+            'unique': _("A user with that username already exists."),
+        },
+    )
 
     class Meta:
         verbose_name = _('user')
