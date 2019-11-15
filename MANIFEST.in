@@ -1,1 +1,2 @@
 recursive-include djangoldp_account/templates *
+recursive-include djangoldp_account/static *
