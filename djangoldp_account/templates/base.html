@@ -12,9 +12,11 @@
 </head>
 
 <body>
-    <main id="content">
-        {% block content %}{% endblock %}
-    </main>
+    <div class="container">
+        <main id="content" class="flex-column">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
 </body>
 </html>
 

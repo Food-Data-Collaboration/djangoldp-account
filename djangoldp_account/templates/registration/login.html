@@ -28,38 +28,36 @@
     {% endif %}
 
     <div class="sib-login-forms">
-        {% if form.errors %}
-            <p class="error">{% trans "Your username and password didn't match. Please try again." %}</p>
-        {% endif %}
-        <form class="sib-login-form" method="post" action="{% url 'login' %}">
-            {% csrf_token %}
-            <table class="sib-form-table">
-                <tr>
-                    <td>{%  trans "Username or email:" %}</td>
-                    <td>{{ form.username }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.password.label_tag }}</td>
-                    <td>{{ form.password }}</td>
-                </tr>
-            </table>
+        <div class="flex-column">
+            {% if form.errors %}
+                <p class="error">{% trans "Your username and password didn't match. Please try again." %}</p>
+            {% endif %}
+            <form class="flex-column" method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="input-line">
+                    <label for="id_username">{%  trans "Username or e-mail:" %}</label>
+                    {{ form.username }}
+                </div>
+                <div class="input-line">
+                    {{ form.password.label_tag }}
+                    {{ form.password }}
+                </div>
+                <input type="submit" value="{% trans 'login' %}"/>
+                <input type="hidden" name="next" value="{{ next }}"/>
+            </form>
+            <a class="sib-link" href="{% url 'password_reset' %}">{% trans "Lost password?" %}</a>
+        </div>
 
-            <input class="sib-validate" type="submit" value="{% trans 'login' %}"/>
-            <input type="hidden" name="next" value="{{ next }}"/>
-        </form>
+        <div class="flex-column">
+            <p class="other-login-title text-center">{% trans "Login using another authentification provider" %}</p>
 
-        <a class="sib-btn-link" href="{% url 'password_reset' %}">{% trans "Lost password?" %}</a>
-
-        <hr class="separator"/>
-
-        <p>{% trans "or login using another authentification provider" %}</p>
-
-        <form class="sib-login-form" method="post" action="{% url 'oidc_login' %}">
-            {% csrf_token %}
-            <label for="id_subject">{% trans "email, web-id, or provider url:" %}</label>
-            <input type="text" name="subject" required id="id_subject"/>
-            <input class="sib-validate" type="submit" value="{% trans 'login' %}"/>
-            <input type="hidden" name="next" value="{{ next }}"/>
-        </form>
+            <form class="flex-column" method="post" action="{% url 'oidc_login' %}">
+                {% csrf_token %}
+                <label for="id_subject" title="Your e-mail, web-id or provider url">{% trans "E-mail, web-id or provider url:" %}</label>
+                <input type="text" name="subject" required id="id_subject"/>
+                <input type="submit" value="{% trans 'login' %}"/>
+                <input type="hidden" name="next" value="{{ next }}"/>
+            </form>
+        </div>
     </div>
 {% endblock %}
