@@ -1,45 +1,104 @@
+:root {
+    font-size: 10px;
+    --body-background: #3D4057;
+    --bottom-input: #6157E5;
+    --button-color: #FFB700;
+    --text-color: #686B75;
+    --title-bottom: #E4E8ED;
+    --title-color: #36383B;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
 body {
-    background-color: #3d4057;
-    border: none;
-    color: white;
+    background-color: var(--body-background);
+    color: var(--text-color);
     font-family: Open Sans, sans-serif;
-    margin: 0;
-    padding: 0;
+    font-size: 1.6rem;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.text-center {
+    text-align: center;
 }
 
 #content {
-    border: none;
-    height: 100%;
-    margin: 0;
-    text-align: center;
-    width: 100%;
+    align-items: center;
+    background: white;
+    box-shadow: 0 0 58px 10px rgba(19, 20, 27, 0.35);
+    justify-content: center;
+    margin: auto;
+    max-width: 600px;
+    padding: 5.9em;
+}
+
+#content .input-line {
+    margin-top: 1em;
+}
+
+#content .sib-link {
+    align-self: flex-end;
+    color: var(--text-color);
+    font-size: 1.4rem;
+    margin-top: 0.6em;
+}
+
+#content .sib-link:hover {
+    text-decoration: none;
+    transition: color 0.5s;
 }
 
 input {
-    align-content: center;
-    align-items: center;
-    background-color: white;
-    border: 1px solid grey;
-    display: inline-flex;
-    height: 2.5em;
+    -webkit-tap-highlight-color: var(--bottom-input);
+    background: #EDF1FA;
+    border: 2px solid #EDF1FA;
+    color: var(--text-color);
+    font-size: 1.6rem;
+    margin-top: 0.3em;
+    padding: 0.7em 1.2em;
+    width: 100%;
 }
 
 input:hover, input:active, input:focus  {
-    border-color: #424242;
+    border-bottom: 2px solid var(--bottom-input);
+    outline: none;
 }
 
 input[type="submit"] {
-    box-shadow: 4px 4px 8px 0 rgba(0, 0, 0, 0.2);
-    color: black;
-    height: 3em;
-    justify-content: center;
+    align-self: center;
+    background-color: var(--button-color);
+    border: 1px solid var(--button-color);
+    border-radius: 19px;
+    color: white;
+    font-weight: bold;
+    height: 38px;
     margin: 1em;
-    padding: 2px 14px;
+    margin-top: 1.9em;
+    padding: 0.1em 0.9em;
+    text-transform: uppercase;
     transition: 0.2s;
+    width: 235px;
 }
 
 input[type="submit"]:hover {
-    background-color: #424242;
-    color: white;
+    background-color: white;
+    color: var(--button-color);
 }
 

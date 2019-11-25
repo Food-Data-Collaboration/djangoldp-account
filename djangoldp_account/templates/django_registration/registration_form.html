@@ -1,6 +1,13 @@
-{% extends "django_registration/registration_base.html" %}
+{% extends "base.html" %}
 {% load i18n %}
+{% load static %}
+
 {% block title %}{% trans "Register for an account" %}{% endblock %}
+{% block supplementary_css %}
+    <link rel="stylesheet" href="{% static 'base.css' %}"/>
+{% endblock %}
+
+
 {% block content %}
 <table>
     <form method='post' action=''>{% csrf_token %}
