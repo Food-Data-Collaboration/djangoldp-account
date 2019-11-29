@@ -92,6 +92,13 @@ class LDPUser(AbstractUser, Model):
             webid = '{0}{1}'.format(settings.BASE_URL, reverse_lazy('ldpuser-detail', kwargs={'slug': self.slug}))
         return webid
 
+    def save(self, *args, **kwargs):
+        # NOTE: this is a temporary measure to ensure an error is thrown if username has somehow got here invalid
+        # it will help us track down when it happens
+        self.full_clean()
+
+        super(LDPUser, self).save(*args, **kwargs)
+
 
 class Account(Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
