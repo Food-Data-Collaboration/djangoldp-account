@@ -55,6 +55,14 @@ class LDPUser(AbstractUser, Model):
             'unique': _("A user with that username already exists."),
         },
     )
+    email = models.EmailField(
+        _('email address'),
+        blank=True,
+        unique=True,
+        error_messages={
+            'unique': _("A user with that uses this email address already exists."),
+        },
+    )
 
     class Meta:
         verbose_name = _('user')
