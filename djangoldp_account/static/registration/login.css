@@ -8,6 +8,13 @@
     margin-top: 45px;
 }
 
+#content .sib-link.sib-register-link {
+    align-self: center;
+    font-size: 1.6rem;
+    font-weight: bold;
+
+}
+
 .other-login-title {
     border-bottom:1px solid var(--title-bottom);
     color: var(--title-color);

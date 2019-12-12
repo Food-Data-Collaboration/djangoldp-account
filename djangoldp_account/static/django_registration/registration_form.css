@@ -1,0 +1,9 @@
+.sib-registration-btn {
+    width: 100% !important;
+    margin: 2em 0 0 0 !important;
+}
+
+.errorlist {
+    color: var(--error-color);
+    font-weight: bold;
+}
