@@ -5,6 +5,7 @@
 {% block title %}{% trans "Register for an account" %}{% endblock %}
 {% block supplementary_css %}
     <link rel="stylesheet" href="{% static 'base.css' %}"/>
+    <link rel="stylesheet" href="{% static 'django_registration/registration_form.css' %}"/>
 {% endblock %}
 
 
@@ -12,7 +13,12 @@
 <table>
     <form method='post' action=''>{% csrf_token %}
         {{ form }}
-        <tr><td></td><td><input type="submit" value="{% trans "Send activation email" %}" /></td>
+        <tr>
+            <td></td>
+            <td>
+                <input class="sib-registration-btn" type="submit" value="{% trans "Send activation email" %}"/>
+            </td>
+        </tr>
     </form>
 </table>
 {% endblock %}
