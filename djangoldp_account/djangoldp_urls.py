@@ -10,7 +10,7 @@ from djangoldp.permissions import LDPPermissions
 from djangoldp.views import LDPViewSet
 from djangoldp_account.forms import LDPUserForm
 from .models import ChatProfile, Account
-from .views import userinfocustom, RPLoginView, RPLoginCallBackView, check_user
+from .views import userinfocustom, RPLoginView, RPLoginCallBackView, check_user, LDPAccountLoginView, RedirectView
 
 Group._meta.serializer_fields = ['name']
 Group._meta.anonymous_perms = getattr(settings, 'GROUP_ANONYMOUS_PERMISSIONS', ['view'])
@@ -29,6 +29,7 @@ urlpatterns = [
         ),
         name='django_registration_register',
     ),
+    url(r'^auth/login/$', LDPAccountLoginView.as_view(),name='login'),
     url(r'^auth/', include('django_registration.backends.activation.urls')),
     url(r'^auth/', include('django.contrib.auth.urls')),
     url(r'^accounts/', LDPViewSet.urls(model=Account, permission_classes=[LDPPermissions])),
@@ -37,5 +38,6 @@ urlpatterns = [
     url(r'^oidc/login/?$', RPLoginView.as_view(), name='oidc_login'),
     url(r'^userinfo/?$', csrf_exempt(userinfocustom)),
     url(r'^check-user/?$', csrf_exempt(check_user)),
+    url(r'^redirect-default/$', RedirectView.as_view(),name='redirect-default'),
     url(r'^', include('oidc_provider.urls', namespace='oidc_provider'))
 ]

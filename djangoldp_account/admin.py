@@ -11,7 +11,7 @@ class LDPUserAdmin(UserAdmin):
     form = LDPUserChangeForm
 
     fieldsets = UserAdmin.fieldsets + (
-            (None, {'fields': ('slug',)}),
+            (None, {'fields': ('slug', 'default_redirect_uri')}),
     )
 
 
