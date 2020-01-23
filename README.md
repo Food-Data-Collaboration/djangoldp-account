@@ -41,7 +41,7 @@ MIDDLEWARE = [ ..., 'djangoldp_account.auth.middleware.JWTUserMiddleware']
 
 ```
 
-You should also ensure that `SITE_URL` and `BASE_URL` are set correctly. 
+You should also ensure that `SITE_URL` and `BASE_URL` are set correctly.
 
 ## User registration
 User registration use django_registration module : https://django-registration.readthedocs.io/en/3.0.1/
@@ -71,6 +71,14 @@ Modify the `AUTHENTICATION_BACKENDS` variable in `settings.py` to replace
 
 Ensure `'djangoldp_account.auth.backends.EmailOrUsernameAuthBackend'` is 
 first in the list.
+
+## Enabling default_redirect_uri behaviour
+
+For many linked-data platforms, there will be multiple authentication providers, and potential multiple client-side apps/websites. In this case it can be difficult to know where to redirect the user. On login it's possible to set `next` as a query parameter pointing to the new site, but the user may have come from sources without this parameter set (e.g. a forgot password link in an email). For user experience, we offer a system which keeps track of the location the user previously logged in from, and falls back onto this if there is not a `next` specified in the URL. To use system this simply add the following to your settings.py
+
+```
+LOGIN_REDIRECT_URL = '/redirect-default/'
+```
 
 ## Authenticate from an external provider
 

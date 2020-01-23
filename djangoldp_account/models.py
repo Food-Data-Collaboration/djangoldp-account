@@ -63,6 +63,8 @@ class LDPUser(AbstractUser, Model):
             'unique': _("A user with that uses this email address already exists."),
         },
     )
+    # updated automatically on login - the default uri to redirect to if none has been passed
+    default_redirect_uri = models.URLField(blank=True, null=True, help_text='A URL to redirect to (home page) when none other is provided in a request, e.g. on forgot password. This will be automatically updated on login')
 
     class Meta:
         verbose_name = _('user')

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}
+    {% trans "Lost" %}
+{% endblock %}
+
+{% block supplementary_css %}
+    <link rel="stylesheet" href="{% static 'base.css' %}"/>
+    <link rel="stylesheet" href="{% static 'registration/login.css' %}"/>
+{% endblock %}
+
+{% block content %}
+        <div class="sib-login-title">
+            <h2>
+                {% blocktrans %}
+                    Sorry, we couldn't find a page to redirect you to. Please navigate to your
+                    preferred application manually
+                {% endblocktrans %}
+            </h2>
+            <p>
+                {% blocktrans %}
+                    If you are not sure, contact a system administrator
+                {% endblocktrans %}
+            </p>
+        </div>
+{% endblock %}

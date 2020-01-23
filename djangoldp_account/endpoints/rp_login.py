@@ -59,6 +59,7 @@ class RPLoginEndpoint(object):
     def op_login_url(self):
         subject = self.params['subject']
         redirect_uris = [settings.SITE_URL + reverse('oidc_login_callback'), settings.SITE_URL]
+        # resolve provider
         provider_info = None
         try:
             issuer = self.client.discover(subject)
@@ -119,6 +120,9 @@ class RPLoginEndpoint(object):
         return auth_req.request(self.client.authorization_endpoint)
 
     def check_on_known_providers(self, subject):
+        """
+        attempts to find a provider/OP for parameterised subject
+        """
         provider_info = None
         for opclient in OPClient.objects.all():
             try:
