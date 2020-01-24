@@ -80,7 +80,7 @@ class LDPAccountLoginView(LoginView):
 
         # if the user has 'next' set which is not default, update their preference
         next = request.POST.get('next')
-        if next != settings.LOGIN_REDIRECT_URL:
+        if next != settings.LOGIN_REDIRECT_URL and request.user.is_authenticated:
             request.user.default_redirect_uri = next
             request.user.save()
 
