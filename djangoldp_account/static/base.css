@@ -3,6 +3,7 @@
     --body-background: #3D4057;
     --bottom-input: #6157E5;
     --button-color: #FFB700;
+    --link-color: #6259E5;
     --text-color: #686B75;
     --title-bottom: #E4E8ED;
     --title-color: #36383B;
@@ -46,7 +47,7 @@ body {
     box-shadow: 0 0 58px 10px rgba(19, 20, 27, 0.35);
     justify-content: center;
     margin: auto;
-    max-width: 600px;
+    min-width: 600px;
     padding: 5.9em;
 }
 
@@ -95,7 +96,7 @@ input[type="submit"] {
     padding: 0.1em 0.9em;
     text-transform: uppercase;
     transition: 0.2s;
-    width: 235px;
+    width: auto;
 }
 
 input[type="submit"]:hover {
@@ -103,3 +104,6 @@ input[type="submit"]:hover {
     color: var(--button-color);
 }
 
+a {
+    color: var(--link-color);
+}

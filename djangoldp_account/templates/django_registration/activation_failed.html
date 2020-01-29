@@ -2,5 +2,6 @@
 {% load i18n %}
 {% block title %}{% trans "Activation failed" %}{% endblock %}
 {% block content %}
-{% blocktrans %}User activation failed.  Please contact your administrator for more information.{% endblocktrans %}
+    <h1 class="text-center">{% trans "User activation failed." %}</h1>
+    <p class="text-center">{% trans "Please contact your administrator for more information." %}</p>
 {% endblock %}
