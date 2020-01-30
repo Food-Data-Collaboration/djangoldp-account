@@ -61,7 +61,7 @@
 
         <div class="flex-column">
             <p class="other-login-title text-center">{% trans "Doesn't have an account yet?" %}</p>
-            <a class="sib-link sib-register-link" href="{% url 'django_registration_register' %}">{% trans "Register now!" %}</a>
+            <a class="sib-link sib-register-link" href="{% url 'django_registration_register' %}?next={{next|urlencode}}">{% trans "Register now!" %}</a>
         </div>
     </div>
 {% endblock %}
