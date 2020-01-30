@@ -57,7 +57,7 @@ class RedirectView(View):
             next = request.user.default_redirect_uri
 
             # attempt to redirect to the user's default_redirect_uri
-            if next is not None and next != '':
+            if next is not None and len(next) > 1:
                 return redirect(next, permanent=False)
 
             # there is no default to fall back on
@@ -81,9 +81,14 @@ class LDPAccountLoginView(LoginView):
 
         # if the user has 'next' set which is not default, update their preference
         next = request.POST.get('next')
-        if next != settings.LOGIN_REDIRECT_URL and request.user.is_authenticated:
-            request.user.default_redirect_uri = next
-            request.user.save()
+        if next is not None and len(next) > 1 and next != settings.LOGIN_REDIRECT_URL\
+                and request.user.is_authenticated:
+            try:
+                request.user.default_redirect_uri = next
+                request.user.save()
+            # if the URL is too long, or invalid, we can just move on
+            except:
+                pass
 
         return return_value
 
