@@ -1,8 +1,7 @@
-User activation failed.  Please contact {{ sitename }} for more information.
-
-{% comment %}
-
-TODO: Add more info from the activation_error dict.
-See https://django-registration.readthedocs.io/en/3.0/quickstart.html#django-registration-activation-failed-html
-
-{% endcomment %}
+{% extends "django_registration/registration_base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Activation failed" %}{% endblock %}
+{% block content %}
+    <h1 class="text-center">{% trans "User activation failed." %}</h1>
+    <p class="text-center">{% trans "Please contact your administrator for more information." %}</p>
+{% endblock %}
