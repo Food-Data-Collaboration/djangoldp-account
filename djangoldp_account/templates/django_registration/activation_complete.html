@@ -4,5 +4,9 @@
 {% block content %}
     {% url 'login' as auth_login_url %}
     <h1 class="text-center">{% trans "Thanks, activation complete!" %}</h1>
-    <p class="text-center">{% trans "You may now <a href='{{ auth_login_url }}'>login</a> using the username and password you set at registration." %}</p>
+    <p class="text-center">
+        {% blocktrans %}
+            You may now <a href='{{ auth_login_url }}'>login</a> using the username and password you set at registration.
+        {% endblocktrans %}
+    </p>
 {% endblock %}

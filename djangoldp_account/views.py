@@ -1,8 +1,13 @@
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.views import View
-from django.contrib.auth.views import LoginView
+from django.contrib.auth import get_user_model
+from django.contrib.auth.views import LoginView, SuccessURLAllowedHostsMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils.http import (
+    is_safe_url, urlsafe_base64_decode,
+)
+from django_registration.backends.activation.views import RegistrationView
 from djangoldp_account import settings
 
 from djangoldp_account.endpoints.rp_login import RPLoginCallBackEndpoint, RPLoginEndpoint
@@ -44,6 +49,20 @@ def check_user(request, *args, **kwargs):
         return HttpResponseNotFound()
 
 
+# auxiliary function to set a user's default_redirect_uri
+def _set_default_redirect_uri(user, redirect_uri):
+    from django.conf import settings
+
+    if redirect_uri is not None and len(redirect_uri) > 1 and redirect_uri != settings.LOGIN_REDIRECT_URL \
+            and hasattr(user, 'default_redirect_uri'):
+        try:
+            user.default_redirect_uri = redirect_uri
+            user.save()
+        # if the URL is too long, or invalid, we can just move on
+        except:
+            pass
+
+
 class RedirectView(View):
     """
     View for managing where to redirect the user after a successful login
@@ -75,20 +94,54 @@ class LDPAccountLoginView(LoginView):
     """
     # Save login url as preferred redirect
     def post(self, request, *args, **kwargs):
-        from django.conf import settings
-
         return_value = super(LDPAccountLoginView, self).post(request, *args, **kwargs)
 
         # if the user has 'next' set which is not default, update their preference
         next = request.POST.get('next')
-        if next is not None and len(next) > 1 and next != settings.LOGIN_REDIRECT_URL\
-                and request.user.is_authenticated:
-            try:
-                request.user.default_redirect_uri = next
-                request.user.save()
-            # if the URL is too long, or invalid, we can just move on
-            except:
-                pass
+
+        _set_default_redirect_uri(request.user, next)
+
+        return return_value
+
+
+class LDPAccountRegsitrationView(SuccessURLAllowedHostsMixin, RegistrationView):
+    """
+    Extension of django-registration's RegistrationView for managing user's default_redirect_uri
+    """
+    def get_redirect_url(self):
+        """Return the user-originating redirect URL if it's safe."""
+        redirect_to = self.request.POST.get(
+            'next',
+            self.request.GET.get('next', '')
+        )
+        url_is_safe = is_safe_url(
+            url=redirect_to,
+            allowed_hosts=self.get_success_url_allowed_hosts(),
+            require_https=self.request.is_secure(),
+        )
+        return redirect_to if url_is_safe else ''
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'next': self.get_redirect_url(),
+        })
+        return context
+
+    def post(self, request, *args, **kwargs):
+        return_value = super(LDPAccountRegsitrationView, self).post(request, *args, **kwargs)
+
+        # if the user has 'next' set which is not default, update their preference
+        next = request.POST.get('next', '')
+        username = request.POST.get('username')
+
+        # fetch the user which should now be created
+        try:
+            user = get_user_model().objects.get(username=username)
+        except get_user_model().DoesNotExist:
+            return return_value
+
+        _set_default_redirect_uri(user, next)
 
         return return_value
 

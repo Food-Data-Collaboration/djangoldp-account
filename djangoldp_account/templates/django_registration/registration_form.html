@@ -12,6 +12,7 @@
 {% block content %}
 <table>
     <form method='post' action=''>{% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}"/>
         {{ form }}
         <tr>
             <td></td>

@@ -5,12 +5,12 @@ from django.conf.urls import url, include
 from django.contrib.auth.models import Group
 from django.views.decorators.csrf import csrf_exempt
 
-from django_registration.backends.activation.views import RegistrationView
 from djangoldp.permissions import LDPPermissions
 from djangoldp.views import LDPViewSet
 from djangoldp_account.forms import LDPUserForm
 from .models import ChatProfile, Account
-from .views import userinfocustom, RPLoginView, RPLoginCallBackView, check_user, LDPAccountLoginView, RedirectView
+from .views import userinfocustom, RPLoginView, RPLoginCallBackView, check_user, LDPAccountLoginView, RedirectView, \
+    LDPAccountRegsitrationView
 
 Group._meta.serializer_fields = ['name']
 Group._meta.anonymous_perms = getattr(settings, 'GROUP_ANONYMOUS_PERMISSIONS', ['view'])
@@ -24,7 +24,7 @@ urlpatterns = [
         )
     ),
     url(r'^auth/register/$',
-        RegistrationView.as_view(
+        LDPAccountRegsitrationView.as_view(
             form_class=LDPUserForm
         ),
         name='django_registration_register',
