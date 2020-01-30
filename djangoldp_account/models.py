@@ -64,7 +64,7 @@ class LDPUser(AbstractUser, Model):
         },
     )
     # updated automatically on login - the default uri to redirect to if none has been passed
-    default_redirect_uri = models.URLField(max_length=5000, blank=True, null=True, help_text='A URL to redirect to (home page) when none other is provided in a request, e.g. on forgot password. This will be automatically updated on login')
+    default_redirect_uri = models.CharField(max_length=5000, blank=True, null=True, help_text='A URL to redirect to (home page) when none other is provided in a request, e.g. on forgot password. This will be automatically updated on login')
 
     class Meta:
         verbose_name = _('user')
