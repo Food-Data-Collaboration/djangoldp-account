@@ -59,6 +59,11 @@ EMAIL_HOST_PASSWORD = 'password'
 EMAIL_PORT = 587
 ```
 
+Optionally you can configure which user fields which you would like to include on the registration form by including `REGISTRATION_FIELDS` in settings.py
+```python
+REGISTRATION_FIELDS = ('username', 'email', 'password1', 'password2')
+```
+
 The workflow starts at : http://127.0.0.1:8000/accounts/register/
 
 Then, override template by copying the directory `djangoldp_account/templates/django_registration/` to your project and modify them.
