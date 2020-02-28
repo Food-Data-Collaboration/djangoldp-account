@@ -92,6 +92,15 @@ class LDPAccountLoginView(LoginView):
     """
     Extension of django.contrib.auth.views.LoginView for managing user's default_redirect_uri
     """
+    def get_context_data(self, **kwargs):
+        from django.conf import settings
+
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'registration_open': getattr(settings, 'REGISTRATION_OPEN', True),
+        })
+        return context
+
     # Save login url as preferred redirect
     def post(self, request, *args, **kwargs):
         return_value = super(LDPAccountLoginView, self).post(request, *args, **kwargs)

@@ -59,9 +59,11 @@
             </form>
         </div>
 
-        <div class="flex-column">
-            <p class="other-login-title text-center">{% trans "Doesn't have an account yet?" %}</p>
-            <a class="sib-link sib-register-link" href="{% url 'django_registration_register' %}?next={{next|urlencode}}">{% trans "Register now!" %}</a>
-        </div>
+        {% if registration_open %}
+            <div class="flex-column">
+                <p class="other-login-title text-center">{% trans "Doesn't have an account yet?" %}</p>
+                <a class="sib-link sib-register-link" href="{% url 'django_registration_register' %}?next={{next|urlencode}}">{% trans "Register now!" %}</a>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
