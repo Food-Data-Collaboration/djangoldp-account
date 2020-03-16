@@ -133,6 +133,11 @@ class OPClient(Model):
     client_id = models.CharField(max_length=255)
     client_secret = models.CharField(max_length=255)
 
+    class Meta(Model.Meta):
+        anonymous_perms = []
+        authenticated_perms = []
+        owner_perms = []
+
     def __str__(self):
         return '{} ({})'.format(self.issuer, self.client_id)
 

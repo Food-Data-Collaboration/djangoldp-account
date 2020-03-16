@@ -180,6 +180,7 @@ class RPLoginView(View):
         return self.on_request(request)
 
 
+# After a login request is made (on RPLoginEndpoint.op_login_url) the OP will redirect the user to this view
 class RPLoginCallBackView(View):
     endpoint_class = RPLoginCallBackEndpoint
 

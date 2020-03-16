@@ -13,15 +13,19 @@ class Solid(object):
 
     @classonlymethod
     def check_id_token_exp(cls, exp):
+        """raises LDPLoginError if parameterised expiry time has passed"""
         if exp < time.time():
             raise LDPLoginError('id_token_expired')
 
     @classonlymethod
     def confirm_webid(cls, webid, iss):
         """
+        validates that the Identity Provider (the value in the issuer claim) is authorized by the holder of the WebID
         See https://github.com/solid/webid-oidc-spec/blob/master/README.md#webid-provider-confirmation
-        :param webid:
-        :return:
+        :param webid: the webid provided
+        :param iss: the issuer, identity provider
+        :return: None
+        :raises: LDPLoginError if unable to confirm the webid
         """
         url = urlparse(iss)
         webid_url = urlparse(webid)
@@ -33,8 +37,15 @@ class Solid(object):
 
     @classonlymethod
     def get_or_create_user(cls, userinfo, webid):
+        """
+        retrieves an existing local copy of the user or creates one. Useful in federation- I have logged in with
+        a user account from another provider to access this server
+        :return: User object (of type configured by server settings)
+        """
+        # provided by this site
         if webid.startswith(settings.SITE_URL):
             existing_user = Model.resolve_id(userinfo['sub'][len(settings.SITE_URL):])
+        # provided by a distant site
         else:
             try:
                 existing_user = get_user_model().objects.get(username=webid)

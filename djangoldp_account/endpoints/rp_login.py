@@ -34,8 +34,6 @@ class RPLoginEndpoint(object):
         self.client = self.client_class(client_authn_method=CLIENT_AUTHN_METHOD)
 
     def _extract_params(self):
-        """
-        """
         # Because in this endpoint we handle both GET
         # and POST request.
         query_dict = (self.request.POST if self.request.method == 'POST'
@@ -57,11 +55,17 @@ class RPLoginEndpoint(object):
             raise LDPLoginError('invalid_request')
 
     def op_login_url(self):
+        """
+        Resolves the URL for making a login request with the OIDC Provider of a parameterised subject
+        Performs issuer discovery if required
+        """
         subject = self.params['subject']
+        # first redirect to the callback, and then to the site url
         redirect_uris = [settings.SITE_URL + reverse('oidc_login_callback'), settings.SITE_URL]
         # resolve provider
         provider_info = None
         try:
+            # pyoidc discovery makes a HTTP request to the subject
             issuer = self.client.discover(subject)
             provider_info = self.client.provider_config(issuer)
         except:
@@ -71,7 +75,7 @@ class RPLoginEndpoint(object):
             provider_info = self.check_on_known_providers(subject)
 
         if provider_info is None and subject.startswith("http"):
-            # assume that the subject is the provider
+            # assume that the subject is the provider (the user inputted the provider)
             try:
                 provider_info = self.client.provider_config(subject)
             except CommunicationError as error:
@@ -80,6 +84,7 @@ class RPLoginEndpoint(object):
         if provider_info is None:
             raise LDPLoginError(error="cannot_get_provider_info")
 
+        # get existing OP client or register a new one
         existing_op_client = OPClient.objects.filter(issuer=provider_info._dict['issuer']).first()
         if existing_op_client is None:
             try:
@@ -101,7 +106,9 @@ class RPLoginEndpoint(object):
         else:
             self.client.client_id = existing_op_client.client_id
 
+        # nonce is a string value used to associate a Client session with an ID Token, and to mitigate replay attacks
         self.request.session['nonce'] = rndstr()
+        # state is used to keep track of responses to outstanding requests (state)
         self.request.session['state'] = rndstr()
         self.request.session['next'] = self.params['next']
         self.request.session['client_id'] = self.client.client_id
@@ -116,12 +123,14 @@ class RPLoginEndpoint(object):
             "state": self.request.session['state']
         }
 
+        # return the url for making an authorisation request
         auth_req = self.client.construct_AuthorizationRequest(request_args=args)
         return auth_req.request(self.client.authorization_endpoint)
 
     def check_on_known_providers(self, subject):
         """
-        attempts to find a provider/OP for parameterised subject
+        attempts to find a provider/OP for parameterised subject. Uses pyoidc's discover method with the resource
+        on each stored OPClient object
         """
         provider_info = None
         for opclient in OPClient.objects.all():
@@ -145,12 +154,14 @@ class RPLoginCallBackEndpoint(object):
         self.params = {}
 
         self.client = self.client_class(client_authn_method=CLIENT_AUTHN_METHOD)
+        # retrieve stored information about the OP
         op_client = OPClient.objects.filter(issuer=self.request.session['issuer']).first()
         if op_client is None:
             raise LDPLoginError(error="wrong_issuer")
 
         self.client.client_id = op_client.client_id
         self.client.client_secret = op_client.client_secret
+        self.client.issuer = op_client.issuer
 
         try:
             provider_info = self.client.provider_config(self.request.session['issuer'])
@@ -170,6 +181,7 @@ class RPLoginCallBackEndpoint(object):
             raise LDPLoginError(error='invalid_state')
 
     def initial_url(self):
+        '''function executed after receiving the callback from the OIDC Provider'''
         args = {
             "code": self.params["code"],
             "redirect_uri": settings.SITE_URL
@@ -184,6 +196,8 @@ class RPLoginCallBackEndpoint(object):
 
         userinfo = self.client.do_user_info_request(method='GET', state=self.params["state"])
         webid = self.extract_web_id(userinfo)
+
+        # ensure that the webid and issuer come from the same source
         Solid.confirm_webid(webid, self.client.issuer)
         user = Solid.get_or_create_user(userinfo, webid)
         login(self.request, user, backend='djangoldp_account.auth.backends.ExternalUserBackend')
@@ -193,7 +207,7 @@ class RPLoginCallBackEndpoint(object):
     def extract_web_id(self, userinfo):
         """
         See https://github.com/solid/webid-oidc-spec/blob/master/README.md#method-1---custom-webid-claim
-        :param userinfo:
+        :param userinfo: UserInfo object returned by the OIDC Provider in do_user_info_request
         :return:
         """
         if 'webid' in userinfo:
