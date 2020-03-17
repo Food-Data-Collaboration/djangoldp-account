@@ -1,4 +1,5 @@
 import time
+import uuid
 from urllib.parse import urlparse
 
 from django.conf import settings
@@ -48,13 +49,14 @@ class Solid(object):
         # provided by a distant site
         else:
             try:
-                existing_user = get_user_model().objects.get(username=webid)
+                existing_user = get_user_model().objects.get(urlid=webid)
             except get_user_model().DoesNotExist:
                 existing_user = None
         if existing_user is not None:
             user = existing_user
         else:
-            user = get_user_model().objects.create_user(username=webid,
+            user = get_user_model().objects.create_user(urlid=webid,
+                                                        username=uuid.uuid4(),
                                                         first_name=userinfo.get('given_name', "Unknown"),
                                                         last_name=userinfo.get('family_name', "Unknown"),
                                                         email=userinfo.get('email', None))

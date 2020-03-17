@@ -1,5 +1,6 @@
 import re
 import validators
+from urllib.parse import urlparse
 from django.conf import settings
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractUser
@@ -84,9 +85,9 @@ class LDPUser(AbstractUser, Model):
         return self.get_full_name()
 
     def webid(self):
-        # hack : We user webid as username for external user (since it's an uniq identifier too)
-        if validators.url(self.username):
-            webid = self.username
+        # remote user
+        if self.urlid is not None and urlparse(self.urlid).netloc != urlparse(settings.BASE_URL).netloc:
+            webid = self.urlid
         else:
             webid = '{0}{1}'.format(settings.BASE_URL, reverse_lazy('ldpuser-detail', kwargs={'slug': self.slug}))
         return webid
