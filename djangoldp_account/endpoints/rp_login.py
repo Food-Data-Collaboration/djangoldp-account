@@ -202,7 +202,7 @@ class RPLoginCallBackEndpoint(object):
         user = Solid.get_or_create_user(userinfo, webid)
         login(self.request, user, backend='djangoldp_account.auth.backends.ExternalUserBackend')
 
-        return self.request.session['next'] or settings.SITE_URL
+        return getattr(self.request.session, 'next', settings.LOGIN_REDIRECT_URL) or settings.LOGIN_REDIRECT_URL
 
     def extract_web_id(self, userinfo):
         """
