@@ -52,7 +52,7 @@
 
             <form class="flex-column" method="post" action="{% url 'oidc_login' %}">
                 {% csrf_token %}
-                <label for="id_subject" title="Your e-mail, web-id or provider url">{% trans "E-mail, web-id or provider url:" %}</label>
+                <label for="id_subject" title="Your webfinger-id or provider url">{% trans "Webfinger-id or provider url:" %}</label>
                 <input type="text" name="subject" required id="id_subject"/>
                 <input type="submit" value="{% trans 'login' %}"/>
                 <input type="hidden" name="next" value="{{ next }}"/>

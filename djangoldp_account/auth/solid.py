@@ -23,7 +23,7 @@ class Solid(object):
         """
         validates that the Identity Provider (the value in the issuer claim) is authorized by the holder of the WebID
         See https://github.com/solid/webid-oidc-spec/blob/master/README.md#webid-provider-confirmation
-        :param webid: the webid provided
+        :param webid: the webfinger id provided
         :param iss: the issuer, identity provider
         :return: None
         :raises: LDPLoginError if unable to confirm the webid
@@ -59,5 +59,5 @@ class Solid(object):
                                                         username=uuid.uuid4(),
                                                         first_name=userinfo.get('given_name', "Unknown"),
                                                         last_name=userinfo.get('family_name', "Unknown"),
-                                                        email=userinfo.get('email', None))
+                                                        email=userinfo.get('email', ''))
         return user
