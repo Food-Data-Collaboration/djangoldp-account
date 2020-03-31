@@ -1,5 +1,5 @@
 import re
-import validators
+import uuid
 from urllib.parse import urlparse
 from django.conf import settings
 from django.core.validators import RegexValidator
@@ -93,6 +93,9 @@ class LDPUser(AbstractUser, Model):
         return webid
 
     def save(self, *args, **kwargs):
+        if self.password == "":
+            self.password = uuid.uuid4().hex.upper()[0:8]
+
         # NOTE: this is a temporary measure to ensure an error is thrown if username has somehow got here invalid
         # it will help us track down when it happens
         self.full_clean()
