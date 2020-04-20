@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <div>
+            <p>Dear {{ instance.first_name }} {{ instance.last_name }},</p>
+            <p style='font-style:italic;color:#777'>An account has been created for you on {{ on }}</p>
+            <p>Please create your password by using the Password Reset from the Login page.</p>
+        </div>
+        <div style='margin-top:10px;'>
+            <p style='font-size:small;color:#777'>
+                --
+                <br>
+                Do not reply to this email directly, go to <a href='//{{ on }}' target='_blank'>http://{{ on }}</a> instead.
+                <br>
+            </p>
+        </div>
+    </body>
+</html>

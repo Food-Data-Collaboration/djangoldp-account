@@ -2,9 +2,11 @@ import re
 import uuid
 from urllib.parse import urlparse
 from django.conf import settings
+from django.core.mail import send_mail
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.template import loader
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.urls import reverse_lazy
@@ -157,6 +159,27 @@ class OPClient(Model):
 def pre_create_account(sender, instance, **kwargs):
     if getattr(instance, Model.slug_field(instance)) != instance.username:
         setattr(instance, Model.slug_field(instance), instance.username)
+
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def send_email(sender, instance, created, **kwargs):
+    if created and not Model.is_external(instance) and instance.email:
+        html_message = loader.render_to_string(
+            'password/email.html',
+            {
+                'on': (settings.INSTANCE_DEFAULT_CLIENT or settings.JABBER_DEFAULT_HOST),
+                'instance': instance
+            }
+        )
+
+        send_mail(
+            'Account creation on ' + (settings.INSTANCE_DEFAULT_CLIENT or settings.JABBER_DEFAULT_HOST),
+            'Account created on ' + (settings.INSTANCE_DEFAULT_CLIENT or settings.JABBER_DEFAULT_HOST),
+            settings.EMAIL_HOST_USER or "noreply@" + settings.JABBER_DEFAULT_HOST,
+            [instance.email],
+            fail_silently=True,
+            html_message=html_message
+        )
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
