@@ -17,9 +17,9 @@
     <h1 class="text-center">{% trans "Request for Permission" %}</h1>
 
     {% if scopes|length > 0 %}
-    <p class="text-center">{% trans "Client" %} <strong>{{ client.name }}</strong> {% trans "would like to access this information of you:" %}</p>
+    <p class="text-center">{% trans "Client" %} <strong>{{ client.name }}</strong> {% trans "voudrait accéder à ces informations te concernant :" %}</p>
     {% else %}
-    <p class="text-center">{% trans "Client" %} <strong>{{ client.name }}</strong> {% trans "would like to access your account." %}</p>
+    <p class="text-center">{% trans "Client" %} <strong>{{ client.name }}</strong> {% trans "voudrait accédet à ton compte." %}</p>
     {% endif %}
 
     <form class="text-center" method="post" action="{% url 'oidc_provider:authorize' %}">
@@ -30,8 +30,8 @@
             <li><strong>{{ scope.name }}</strong><br><i>{{ scope.description }}</i></li>
             {% endfor %}
         </ul>
-        <input class="sib-oidc-authorization-page-button decline-button" type="submit" value="Decline"/>
-        <input class="sib-oidc-authorization-page-button accept-button" name="allow" type="submit" value="Authorize"/>
+        <input class="sib-oidc-authorization-page-button decline-button" type="submit" value="Refuser"/>
+        <input class="sib-oidc-authorization-page-button accept-button" name="allow" type="submit" value="Autoriser"/>
     </form>
 </div>
 {% endblock %}

@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}
-    {% trans "Login" %}
+    {% trans "Se connecter" %}
 {% endblock %}
 
 {% block supplementary_css %}
@@ -16,12 +16,12 @@
             {% if user.is_authenticated %}
                 <h2>
                     {% blocktrans %}
-                        Your account doesn't have access to this page. To proceed,
-                        please login with an account that has access.
+                        Ton compte n'a pas accès à cette page. 
+                        Pour continuer, connecte-toi avec un compte qui y a accès.
                     {% endblocktrans %}
                 </h2>
             {% else %}
-                <h2>{% trans "Please login to see this page." %}</h2>
+                <h2>{% trans "Connecte-toi pour voir cette page." %}</h2>
             {% endif %}
         </div>
     {% endif %}
@@ -29,12 +29,12 @@
     <div class="sib-login-forms">
         <div class="flex-column">
             {% if form.errors %}
-                <p class="error">{% trans "Your username and password didn't match. Please try again." %}</p>
+                <p class="error">{% trans "Ton nom d'utilisateur et ton mot de passe ne correspondent pas. Réessaye." %}</p>
             {% endif %}
             <form class="flex-column" method="post" action="{% url 'login' %}">
                 {% csrf_token %}
                 <div class="input-line">
-                    <label for="id_username">{%  trans "Username or e-mail:" %}</label>
+                    <label for="id_username">{%  trans "Nom d'utilisateur ou e-mail:" %}</label>
                     {{ form.username }}
                 </div>
                 <div class="input-line">
@@ -44,18 +44,18 @@
                 <input type="submit" value="{% trans 'login' %}"/>
                 <input type="hidden" name="next" value="{{ next }}"/>
             </form>
-            <a class="sib-link" href="{% url 'password_reset' %}">{% trans "Lost password?" %}</a>
+            <a class="sib-link" href="{% url 'password_reset' %}">{% trans "Mot de passe oublié ?" %}</a>
         </div>
 
         {% if distant_login %}
         <div class="flex-column">
-            <p class="other-login-title text-center">{% trans "Login using another authentification provider" %}</p>
+            <p class="other-login-title text-center">{% trans "Se connecter avec un autre fournisseur d'identité" %}</p>
 
             <form class="flex-column" method="post" action="{% url 'oidc_login' %}">
                 {% csrf_token %}
-                <label for="id_subject" title="Your webfinger-id or provider url">{% trans "Webfinger-id or provider url:" %}</label>
+                <label for="id_subject" title="Your webfinger-id or provider url">{% trans "Webfinger :" %}</label>
                 <input type="text" name="subject" required id="id_subject"/>
-                <input type="submit" value="{% trans 'login' %}"/>
+                <input type="submit" value="{% trans 'Se connecter' %}"/>
                 <input type="hidden" name="next" value="{{ next }}"/>
             </form>
         </div>
@@ -63,8 +63,8 @@
 
         {% if registration_open %}
             <div class="flex-column">
-                <p class="other-login-title text-center">{% trans "Doesn't have an account yet?" %}</p>
-                <a class="sib-link sib-register-link" href="{% url 'django_registration_register' %}?next={{next|urlencode}}">{% trans "Register now!" %}</a>
+                <p class="other-login-title text-center">{% trans "Tu n'as pas encore de compte ?" %}</p>
+                <a class="sib-link sib-register-link" href="{% url 'django_registration_register' %}?next={{next|urlencode}}">{% trans "S'inscrire !" %}</a>
             </div>
         {% endif %}
     </div>
