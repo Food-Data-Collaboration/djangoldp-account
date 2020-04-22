@@ -151,4 +151,6 @@ If you want to enable full federation capabilities you have to use the `LDPUser`
 Add to your `settings.py` :
 ```
 AUTH_USER_MODEL = 'djangoldp_account.LDPUser'
+# Also, you can allow distant users to login to your server
+DISTANT_LOGIN = True
 ```

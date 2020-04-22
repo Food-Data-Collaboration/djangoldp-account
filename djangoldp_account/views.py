@@ -98,6 +98,7 @@ class LDPAccountLoginView(LoginView):
         context = super().get_context_data(**kwargs)
         context.update({
             'registration_open': getattr(settings, 'REGISTRATION_OPEN', True),
+            'distant_login': getattr(settings, 'DISTANT_LOGIN', False),
         })
         return context
 

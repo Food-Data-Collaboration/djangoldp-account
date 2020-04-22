@@ -47,6 +47,7 @@
             <a class="sib-link" href="{% url 'password_reset' %}">{% trans "Lost password?" %}</a>
         </div>
 
+        {% if distant_login %}
         <div class="flex-column">
             <p class="other-login-title text-center">{% trans "Login using another authentification provider" %}</p>
 
@@ -58,6 +59,7 @@
                 <input type="hidden" name="next" value="{{ next }}"/>
             </form>
         </div>
+        {% endif %}
 
         {% if registration_open %}
             <div class="flex-column">
