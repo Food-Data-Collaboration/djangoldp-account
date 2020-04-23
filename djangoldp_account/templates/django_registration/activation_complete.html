@@ -1,9 +1,9 @@
 {% extends "django_registration/registration_base.html" %}
 {% load i18n %}
-{% block title %}{% trans "Activation complete" %}{% endblock %}
+{% block title %}{% trans "Activation terminée" %}{% endblock %}
 {% block content %}
     {% url 'login' as auth_login_url %}
-    <h1 class="text-center">{% trans "Thanks, activation complete!" %}</h1>
+    <h1 class="text-center">{% trans "Merci, l'activation est terminée !" %}</h1>
     <p class="text-center">
         {% blocktrans %}
             Tu peux maintenant te <a href='{{ auth_login_url }}'>connecter</a> en utilisant le nom d'utilisateur et le mot de passe

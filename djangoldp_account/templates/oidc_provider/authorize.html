@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}
-    {% trans "Informations access request" %}
+    {% trans "Demande d'accès aux informations" %}
 {% endblock %}
 
 {% block supplementary_css %}
@@ -14,12 +14,12 @@
 
 <div class="sib-oidc-authorization-page">
 
-    <h1 class="text-center">{% trans "Request for Permission" %}</h1>
+    <h1 class="text-center">{% trans "Demande d'autorisation" %}</h1>
 
     {% if scopes|length > 0 %}
-    <p class="text-center">{% trans "Client" %} <strong>{{ client.name }}</strong> {% trans "voudrait accéder à ces informations te concernant :" %}</p>
+    <p class="text-center">{% trans "Le client" %} <strong>{{ client.name }}</strong> {% trans "voudrait accéder à ces informations te concernant :" %}</p>
     {% else %}
-    <p class="text-center">{% trans "Client" %} <strong>{{ client.name }}</strong> {% trans "voudrait accédet à ton compte." %}</p>
+    <p class="text-center">{% trans "Le client" %} <strong>{{ client.name }}</strong> {% trans "voudrait accédet à ton compte." %}</p>
     {% endif %}
 
     <form class="text-center" method="post" action="{% url 'oidc_provider:authorize' %}">
