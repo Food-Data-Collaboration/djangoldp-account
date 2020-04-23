@@ -4,8 +4,8 @@
 {% block content %}
 <p>{% trans "Ton compte est maintenant activé." %}</p>
 <div>
-    <p>{% trans "Dear" %} {{ instance.first_name }} {{ instance.last_name }},</p>
-    <p style='font-style:italic;color:#777'>{% trans "un compte a été créé pour toi" %} {{ on }}</p>
+    <p>{{ instance.first_name }},</p>
+    <p style='font-style:italic;color:#777'>{% trans "Un compte a été créé pour toi" %} {{ on }}</p>
     <p>{% trans "Crée ton mot de passe en utilisant la fonction de réinitialisation du mot de passe de la page de connexion." %}
     </p>
 </div>
