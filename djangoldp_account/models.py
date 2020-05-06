@@ -95,6 +95,9 @@ class LDPUser(AbstractUser, Model):
         return webid
 
     def save(self, *args, **kwargs):
+        if self.username == "hubl-workaround-493":
+            return
+
         if self.password == "":
             self.password = uuid.uuid4().hex.upper()[0:8]
 
