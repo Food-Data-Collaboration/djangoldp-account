@@ -19,7 +19,7 @@
     {% if scopes|length > 0 %}
     <p class="text-center">{% trans "Le client" %} <strong>{{ client.name }}</strong> {% trans "voudrait accéder à ces informations te concernant :" %}</p>
     {% else %}
-    <p class="text-center">{% trans "Le client" %} <strong>{{ client.name }}</strong> {% trans "voudrait accédet à ton compte." %}</p>
+    <p class="text-center">{% trans "Le client" %} <strong>{{ client.name }}</strong> {% trans "voudrait accéder à ton compte." %}</p>
     {% endif %}
 
     <form class="text-center" method="post" action="{% url 'oidc_provider:authorize' %}">

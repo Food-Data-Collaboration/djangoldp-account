@@ -176,8 +176,8 @@ def send_email(sender, instance, created, **kwargs):
         )
 
         send_mail(
-            'Account creation on ' + (settings.INSTANCE_DEFAULT_CLIENT or settings.JABBER_DEFAULT_HOST),
-            'Account created on ' + (settings.INSTANCE_DEFAULT_CLIENT or settings.JABBER_DEFAULT_HOST),
+            'Création de compte sur ' + (settings.INSTANCE_DEFAULT_CLIENT or settings.JABBER_DEFAULT_HOST),
+            'Compte créé sur ' + (settings.INSTANCE_DEFAULT_CLIENT or settings.JABBER_DEFAULT_HOST),
             settings.EMAIL_HOST_USER or "noreply@" + settings.JABBER_DEFAULT_HOST,
             [instance.email],
             fail_silently=True,

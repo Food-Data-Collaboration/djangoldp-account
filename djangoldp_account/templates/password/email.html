@@ -2,11 +2,10 @@
 {% load i18n %}
 
 {% block content %}
-<p>{% trans "Ton compte est maintenant activé." %}</p>
 <div>
     <p>{{ instance.first_name }},</p>
     <p style='font-style:italic;color:#777'>{% trans "Un compte a été créé pour toi" %} {{ on }}</p>
-    <p>{% trans "Crée ton mot de passe en utilisant la fonction de réinitialisation du mot de passe de la page de connexion." %}
+    <p>{% trans "Créer ton mot de passe en utilisant la fonction de réinitialisation du mot de passe de la page de connexion." %}
     </p>
 </div>
 <div style='margin-top:10px;'>
