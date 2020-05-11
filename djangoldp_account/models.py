@@ -122,6 +122,11 @@ class Account(Model):
         )
         rdf_context = {'picture': 'foaf:depiction'}
         lookup_field = 'slug'
+        owner_field = 'user'
+        permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES', [LDPPermissions])
+        anonymous_perms = getattr(settings, 'USER_ANONYMOUS_PERMISSIONS', ['view'])
+        authenticated_perms = getattr(settings, 'USER_AUTHENTICATED_PERMISSIONS', ['inherit'])
+        owner_perms = getattr(settings, 'USER_OWNER_PERMISSIONS', ['inherit'])
 
     def __str__(self):
         return '{} ({})'.format(self.user.get_full_name(), self.user.username)
@@ -139,6 +144,11 @@ class ChatProfile(Model):
             ('control_chatprofile', 'Control'),
         )
         lookup_field = 'slug'
+        owner_field = 'user'
+        permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES', [LDPPermissions])
+        anonymous_perms = getattr(settings, 'USER_ANONYMOUS_PERMISSIONS', ['view'])
+        authenticated_perms = getattr(settings, 'USER_AUTHENTICATED_PERMISSIONS', ['inherit'])
+        owner_perms = getattr(settings, 'USER_OWNER_PERMISSIONS', ['inherit'])
 
     def __str__(self):
         return '{} (jabberID: {})'.format(self.user.get_full_name(), self.jabberID)
