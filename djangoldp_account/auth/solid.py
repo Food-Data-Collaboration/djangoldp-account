@@ -55,9 +55,18 @@ class Solid(object):
         if existing_user is not None:
             user = existing_user
         else:
-            user = get_user_model().objects.create_user(urlid=webid,
-                                                        username=uuid.uuid4(),
-                                                        first_name=userinfo.get('given_name', "Unknown"),
-                                                        last_name=userinfo.get('family_name', "Unknown"),
-                                                        email=userinfo.get('email', ''))
+            if hasattr(get_user_model(), 'is_backlink'):
+                user = get_user_model().objects.create_user(urlid=webid,
+                                                            is_backlink=True,
+                                                            username=uuid.uuid4(),
+                                                            first_name=userinfo.get('given_name', "Unknown"),
+                                                            last_name=userinfo.get('family_name', "Unknown"),
+                                                            email=userinfo.get('email', ''),)
+            else:
+                user = get_user_model().objects.create_user(urlid=webid,
+                                                            username=uuid.uuid4(),
+                                                            first_name=userinfo.get('given_name', "Unknown"),
+                                                            last_name=userinfo.get('family_name', "Unknown"),
+                                                            email=userinfo.get('email'),)
+
         return user

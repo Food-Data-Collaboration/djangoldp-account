@@ -13,11 +13,9 @@ from django.urls import reverse_lazy
 from django.utils.deconstruct import deconstructible
 from django.utils.translation import ugettext_lazy as _
 from importlib import import_module
-
-
 from djangoldp.models import Model
-
 from djangoldp.permissions import LDPPermissions
+
 
 djangoldp_modules = list(settings.DJANGOLDP_PACKAGES)
 user_fields = ['@id', 'first_name', 'groups', 'last_name', 'username', 'email', 'account', 'chatProfile', 'name']
@@ -60,7 +58,8 @@ class LDPUser(AbstractUser, Model):
     )
     email = models.EmailField(
         _('email address'),
-        blank=True,
+        blank=False,
+        null=False,
         unique=True,
         error_messages={
             'unique': _("A user with that uses this email address already exists."),
@@ -101,9 +100,10 @@ class LDPUser(AbstractUser, Model):
         if self.password == "":
             self.password = uuid.uuid4().hex.upper()[0:8]
 
-        # NOTE: this is a temporary measure to ensure an error is thrown if username has somehow got here invalid
-        # it will help us track down when it happens
-        self.full_clean()
+        # an unforgivable sin so that I could meet my deadline
+        # see issue:
+        if self.is_backlink:
+            self.email = str(uuid.uuid4()) + "@startinblox.com"
 
         super(LDPUser, self).save(*args, **kwargs)
 
