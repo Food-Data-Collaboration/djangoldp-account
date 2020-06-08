@@ -68,6 +68,10 @@ body {
     transition: color 0.5s;
 }
 
+form.margin {
+    margin-top: 2em;
+}
+
 h1,
 h2 {
     text-align: center;
@@ -119,6 +123,10 @@ a {
     #content {
         min-width: 600px;
         padding: 5.9em;
+    }
+
+    form.margin {
+        margin-top: 0;
     }
 
     input[type="submit"] {

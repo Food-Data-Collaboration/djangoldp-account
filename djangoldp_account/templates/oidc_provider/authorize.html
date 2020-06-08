@@ -22,7 +22,7 @@
     <p class="text-center">{% trans "Le client" %} <strong>{{ client.name }}</strong> {% trans "voudrait accéder à ton compte." %}</p>
     {% endif %}
 
-    <form class="text-center" method="post" action="{% url 'oidc_provider:authorize' %}">
+    <form class="margin text-center" method="post" action="{% url 'oidc_provider:authorize' %}">
         {% csrf_token %}
         {{ hidden_inputs }}
         <ul>
