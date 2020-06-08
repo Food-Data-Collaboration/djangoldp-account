@@ -47,8 +47,8 @@ body {
     box-shadow: 0 0 58px 10px rgba(19, 20, 27, 0.35);
     justify-content: center;
     margin: auto;
-    min-width: 600px;
-    padding: 5.9em;
+    min-width: 0;
+    padding: 0.5em;
 }
 
 #content .input-line {
@@ -65,6 +65,10 @@ body {
 #content .sib-link:hover {
     text-decoration: none;
     transition: color 0.5s;
+}
+
+h2 {
+    text-align: center;
 }
 
 input {
@@ -106,4 +110,13 @@ input[type="submit"]:hover {
 
 a {
     color: var(--link-color);
+}
+
+
+@media (min-width: 1201px) {
+
+    #content {
+        min-width: 600px;
+        padding: 5.9em;
+    }
 }
