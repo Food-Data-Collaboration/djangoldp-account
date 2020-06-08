@@ -79,8 +79,8 @@ h2 {
 
 input {
     -webkit-tap-highlight-color: var(--bottom-input);
-    background: #EDF1FA;
-    border: 2px solid #EDF1FA;
+    background: #EEEDED;
+    border: 2px solid #EEEDED;
     color: var(--text-color);
     font-size: 1.6rem;
     margin-top: 0.3em;
