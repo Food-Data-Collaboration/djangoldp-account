@@ -45,11 +45,19 @@ body {
     align-items: center;
     background: white;
     box-shadow: 0 0 58px 10px rgba(19, 20, 27, 0.35);
+    box-sizing: border-box;
     justify-content: center;
-    margin: auto;
-    min-width: 0;
-    padding: 0.5em;
-    padding-bottom: 1em;
+    width: 600px;
+    max-width: 100%;
+    padding: 1em;
+}
+
+@media (min-width: 1201px) {
+
+    #content {
+        margin: auto;
+        padding: 5.9em;
+    }
 }
 
 #content .input-line {
