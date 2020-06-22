@@ -43,30 +43,7 @@ class Solid(object):
         a user account from another provider to access this server
         :return: User object (of type configured by server settings)
         """
-        # provided by this site
-        if webid.startswith(settings.SITE_URL):
-            existing_user = Model.resolve_id(userinfo['sub'][len(settings.SITE_URL):])
-        # provided by a distant site
-        else:
-            try:
-                existing_user = get_user_model().objects.get(urlid=webid)
-            except get_user_model().DoesNotExist:
-                existing_user = None
-        if existing_user is not None:
-            user = existing_user
-        else:
-            if hasattr(get_user_model(), 'is_backlink'):
-                user = get_user_model().objects.create_user(urlid=webid,
-                                                            is_backlink=True,
-                                                            username=uuid.uuid4(),
+        return Model.get_or_create(get_user_model(), webid, username=uuid.uuid4(),
                                                             first_name=userinfo.get('given_name', "Unknown"),
                                                             last_name=userinfo.get('family_name', "Unknown"),
                                                             email=userinfo.get('email', ''),)
-            else:
-                user = get_user_model().objects.create_user(urlid=webid,
-                                                            username=uuid.uuid4(),
-                                                            first_name=userinfo.get('given_name', "Unknown"),
-                                                            last_name=userinfo.get('family_name', "Unknown"),
-                                                            email=userinfo.get('email'),)
-
-        return user
