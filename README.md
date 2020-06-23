@@ -81,8 +81,14 @@ first in the list.
 
 For many linked-data platforms, there will be multiple authentication providers, and potential multiple client-side apps/websites. In this case it can be difficult to know where to redirect the user. On login it's possible to set `next` as a query parameter pointing to the new site, but the user may have come from sources without this parameter set (e.g. a forgot password link in an email). For user experience, we offer a system which keeps track of the location the user previously logged in from, and falls back onto this if there is not a `next` specified in the URL. To use system this simply add the following to your settings.py
 
-```
+```python
 LOGIN_REDIRECT_URL = '/redirect-default/'
+```
+
+If you would like to define another redirect default, for situations where the user has no saved `redirect_default_uri` (e.g. after registering, without passing a `next` parameter), you can use `LOGIN_REDIRECT_DEFAULT`. Failing this, user's will be redirected to the app's `INSTANCE_DEFAULT_CLIENT`, which is set to the preferred client-side URL. If you don't specify either, users will be taken to the "lost user" error page
+
+```python
+LOGIN_REDIRECT_DEFAULT = '/accounts/profile/'
 ```
 
 ## Authenticate from an external provider

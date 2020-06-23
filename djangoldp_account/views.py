@@ -72,6 +72,8 @@ class RedirectView(View):
     has not set 'next' parameter in the login request, Django will redirect them here
     """
     def get(self, request, *args, **kwargs):
+        from django.conf import settings
+
         if request.user.is_authenticated:
             next = request.user.default_redirect_uri
 
@@ -83,6 +85,12 @@ class RedirectView(View):
             # redirect admins to the admin panel
             if request.user.is_superuser:
                 return redirect(reverse('admin:index'), permanent=False)
+
+        if settings.LOGIN_REDIRECT_DEFAULT:
+            return redirect(settings.LOGIN_REDIRECT_DEFAULT, permanent=False)
+
+        if settings.INSTANCE_DEFAULT_CLIENT:
+            return redirect(settings.INSTANCE_DEFAULT_CLIENT, permanent=False)
 
         # redirect other users to a page apologising
         return render(request, template_name='registration/lost_user.html')
