@@ -14,14 +14,14 @@
     {% if next %}
         <div class="sib-login-title">
             {% if user.is_authenticated %}
-                <h2>
+                <h2 class="text-center">
                     {% blocktrans %}
                         Ton compte n'a pas accès à cette page. 
                         Pour continuer, connecte-toi avec un compte qui y a accès.
                     {% endblocktrans %}
                 </h2>
             {% else %}
-                <h2>{% trans "Connecte-toi pour voir cette page." %}</h2>
+                <h2 class="text-center">{% trans "Connecte-toi pour voir cette page." %}</h2>
             {% endif %}
         </div>
     {% endif %}
@@ -29,7 +29,7 @@
     <div class="sib-login-forms">
         <div class="flex-column">
             {% if form.errors %}
-                <p class="error">{% trans "Ton nom d'utilisateur et ton mot de passe ne correspondent pas. Réessaye." %}</p>
+                <p class="error text-center">{% trans "Ton nom d'utilisateur et ton mot de passe ne correspondent pas. Réessaye." %}</p>
             {% endif %}
             <form class="flex-column" method="post" action="{% url 'login' %}">
                 {% csrf_token %}
