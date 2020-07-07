@@ -2,6 +2,8 @@ import time
 import uuid
 from urllib.parse import urlparse
 
+from django.http import Http404
+from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from django.contrib.auth import login, get_user_model
 from django.utils.decorators import classonlymethod
@@ -43,7 +45,10 @@ class Solid(object):
         a user account from another provider to access this server
         :return: User object (of type configured by server settings)
         """
-        return Model.get_or_create(get_user_model(), webid, username=uuid.uuid4(),
-                                                            first_name=userinfo.get('given_name', "Unknown"),
-                                                            last_name=userinfo.get('family_name', "Unknown"),
-                                                            email=userinfo.get('email', ''),)
+        try:
+            return Model.get_or_create_external(get_user_model(), webid, username=uuid.uuid4(),
+                                                first_name=userinfo.get('given_name', "Unknown"),
+                                                last_name=userinfo.get('family_name', "Unknown"),
+                                                email=userinfo.get('email', ''),)
+        except ObjectDoesNotExist:
+            raise Http404()
