@@ -1,8 +1,22 @@
 ---
+image: python:3.6
+
 stages:
   - release
+  - test
 
 include:
   - project: 'infra/platform'
     ref: master
     file: '/templates/python.ci.yml'
+
+test:
+  stage: test
+  script:
+    - pip install .[dev]
+    - python -m unittest djangoldp_account.tests.runner
+  except:
+    - master
+    - tags
+  tags:
+    - test
