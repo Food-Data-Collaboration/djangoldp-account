@@ -98,7 +98,7 @@ class LDPUser(AbstractUser, Model):
             return
 
         if self.password == "":
-            self.password = uuid.uuid4().hex.upper()[0:8]
+            self.set_password(uuid.uuid4().hex.upper()[0:8])
 
         # an unforgivable sin so that I could meet my deadline
         # see issue:

@@ -29,7 +29,7 @@
     <div class="sib-login-forms">
         <div class="flex-column">
             {% if form.errors %}
-                <p class="error">{% trans "Ton nom d'utilisateur et ton mot de passe ne correspondent pas. Réessaye." %}</p>
+                <p class="error text-center">{% trans "Ton nom d'utilisateur et ton mot de passe ne correspondent pas. Réessaye." %}</p>
             {% endif %}
             <form class="flex-column" method="post" action="{% url 'login' %}">
                 {% csrf_token %}

@@ -29,7 +29,7 @@ body {
 
 .container {
     display: flex;
-    height: 100vh;
+    height: calc(100vh - 1em);
 }
 
 .flex-column {
@@ -58,6 +58,12 @@ body {
         margin: auto;
         padding: 5.9em;
     }
+}
+
+#content .error {
+    color: var(--error-color);
+    margin: 2rem 0;
+    padding: 0;
 }
 
 #content .input-line {
@@ -105,15 +111,16 @@ input[type="submit"] {
     align-self: center;
     background-color: var(--button-color);
     border: 1px solid var(--button-color);
-    border-radius: 19px;
+    border-radius: 100em;
     color: white;
+    cursor: pointer;
     font-weight: bold;
-    height: 38px;
     margin-top: 1.9em;
-    padding: 0.1em 0.9em;
+    padding: 0.55rem 2.5rem;
     text-transform: uppercase;
     transition: 0.2s;
     width: 100%;
+    white-space: normal;
 }
 
 input[type="submit"]:hover {
@@ -129,6 +136,7 @@ a {
 @media (min-width: 992px) {
 
     #content {
+        margin: auto;
         min-width: 600px;
         padding: 5.9em;
     }
