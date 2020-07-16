@@ -52,7 +52,7 @@ body {
     padding: 1em;
 }
 
-@media (min-width: 1201px) {
+@media (min-width: 992px) {
 
     #content {
         margin: auto;
@@ -126,7 +126,7 @@ a {
 }
 
 
-@media (min-width: 1201px) {
+@media (min-width: 992px) {
 
     #content {
         min-width: 600px;

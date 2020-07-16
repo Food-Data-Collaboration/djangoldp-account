@@ -3,7 +3,7 @@
     width: 100%;
 }
 
-@media (min-width: 1201px) {
+@media (min-width: 992px) {
     .sib-oidc-authorization-page .decline-button,
     .sib-oidc-authorization-page .accept-button {
         width: 10em;
