@@ -5,5 +5,13 @@
 
 .errorlist {
     color: var(--error-color);
-    font-weight: bold;
+    list-style: none;
+}
+
+.register-form label {
+    margin-top: 1em;
+}
+
+.register-form br {
+    display: none;
 }

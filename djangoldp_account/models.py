@@ -37,8 +37,8 @@ s_fields.extend(user_nested_fields)
 class UsernameValidator(RegexValidator):
     regex = r'^[\w.+-]+$'
     message = _(
-        'Enter a valid username. This value may contain only letters, '
-        'numbers, and ./+/-/_ characters.'
+        "Entre un nom d'utilisateur valide. Il ne peut contenir que des lettres, "
+        'des chiffres, et les caractères ./+/-/_'
     )
     flags = re.UNICODE
 
@@ -50,10 +50,10 @@ class LDPUser(AbstractUser, Model):
         _('username'),
         max_length=150,
         unique=True,
-        help_text=_('Required. 150 characters or fewer. Letters, digits and ./+/-/_ only.'),
+        help_text=_('Requiert 150 caractères ou moins. Seulement des lettres, chiffres et les caractères ./+/-/_'),
         validators=[username_validator],
         error_messages={
-            'unique': _("A user with that username already exists."),
+            'unique': _("Ce nom d'utilisateur est déjà pris."),
         },
     )
     email = models.EmailField(
@@ -62,7 +62,7 @@ class LDPUser(AbstractUser, Model):
         null=False,
         unique=True,
         error_messages={
-            'unique': _("A user with that uses this email address already exists."),
+            'unique': _("Un utilisateur avec cette adresse mail existe déjà."),
         },
     )
     # updated automatically on login - the default uri to redirect to if none has been passed

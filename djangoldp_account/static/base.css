@@ -29,7 +29,7 @@ body {
 
 .container {
     display: flex;
-    height: calc(100vh - 1em);
+    min-height: calc(100vh - 1em);
 }
 
 .flex-column {
@@ -80,6 +80,11 @@ body {
 #content .sib-link:hover {
     text-decoration: none;
     transition: color 0.5s;
+}
+
+.helptext {
+    font-size: 15px;
+    font-style: italic;
 }
 
 form.margin {
