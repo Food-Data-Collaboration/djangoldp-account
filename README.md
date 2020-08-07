@@ -85,7 +85,7 @@ For many linked-data platforms, there will be multiple authentication providers,
 LOGIN_REDIRECT_URL = '/redirect-default/'
 ```
 
-If you would like to define another redirect default, for situations where the user has no saved `redirect_default_uri` (e.g. after registering, without passing a `next` parameter), you can use `LOGIN_REDIRECT_DEFAULT`. Failing this, user's will be redirected to the app's `INSTANCE_DEFAULT_CLIENT`, which is set to the preferred client-side URL. If you don't specify either, users will be taken to the "lost user" error page
+If the user has no redirect preference set, DjangoLDP will try the preferred client-side app, set automatically on `INSTANCE_DEFAULT_CLIENT`. If this is not set, the server will try `LOGIN_REDIRECT_DEFAULT`
 
 ```python
 LOGIN_REDIRECT_DEFAULT = '/accounts/profile/'

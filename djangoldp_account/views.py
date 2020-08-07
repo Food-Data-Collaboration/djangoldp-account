@@ -81,16 +81,16 @@ class RedirectView(View):
             if next is not None and len(next) > 1:
                 return redirect(next, permanent=False)
 
-            # there is no default to fall back on
-            # redirect admins to the admin panel
-            if request.user.is_superuser:
-                return redirect(reverse('admin:index'), permanent=False)
+        if getattr(settings, 'INSTANCE_DEFAULT_CLIENT', None) is not None:
+            return redirect(settings.INSTANCE_DEFAULT_CLIENT, permanent=False)
 
-        if settings.LOGIN_REDIRECT_DEFAULT:
+        if getattr(settings, 'LOGIN_REDIRECT_DEFAULT', None) is not None:
             return redirect(settings.LOGIN_REDIRECT_DEFAULT, permanent=False)
 
-        if settings.INSTANCE_DEFAULT_CLIENT:
-            return redirect(settings.INSTANCE_DEFAULT_CLIENT, permanent=False)
+        # there is no default to fall back on
+        # redirect admins to the admin panel
+        if request.user.is_authenticated and request.user.is_superuser:
+            return redirect(reverse('admin:index'), permanent=False)
 
         # redirect other users to a page apologising
         return render(request, template_name='registration/lost_user.html')
