@@ -10,7 +10,7 @@ from djangoldp.views import LDPViewSet
 from djangoldp_account.forms import LDPUserForm
 from .models import ChatProfile, Account
 from .views import userinfocustom, RPLoginView, RPLoginCallBackView, check_user, LDPAccountLoginView, RedirectView, \
-    LDPAccountRegsitrationView
+    LDPAccountRegistrationView
 
 Group._meta.serializer_fields = ['name']
 Group._meta.anonymous_perms = getattr(settings, 'GROUP_ANONYMOUS_PERMISSIONS', ['view'])
@@ -24,7 +24,7 @@ urlpatterns = [
         )
     ),
     url(r'^auth/register/$',
-        LDPAccountRegsitrationView.as_view(
+        LDPAccountRegistrationView.as_view(
             form_class=LDPUserForm
         ),
         name='django_registration_register',

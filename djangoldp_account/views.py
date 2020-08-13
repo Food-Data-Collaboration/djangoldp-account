@@ -122,7 +122,7 @@ class LDPAccountLoginView(LoginView):
         return return_value
 
 
-class LDPAccountRegsitrationView(SuccessURLAllowedHostsMixin, RegistrationView):
+class LDPAccountRegistrationView(SuccessURLAllowedHostsMixin, RegistrationView):
     """
     Extension of django-registration's RegistrationView for managing user's default_redirect_uri
     """
@@ -147,7 +147,7 @@ class LDPAccountRegsitrationView(SuccessURLAllowedHostsMixin, RegistrationView):
         return context
 
     def post(self, request, *args, **kwargs):
-        return_value = super(LDPAccountRegsitrationView, self).post(request, *args, **kwargs)
+        return_value = super(LDPAccountRegistrationView, self).post(request, *args, **kwargs)
 
         # if the user has 'next' set which is not default, update their preference
         next = request.POST.get('next', '')
