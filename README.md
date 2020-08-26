@@ -127,7 +127,7 @@ BODY
 
 Because `/user/1` is an account of an external user with webid `https://theothersite.com/users/2`  
 
-# Extending User serialization
+## Extending User serialization
 
 djangoldp_account uses `django.contribs.auth.User` and manages its serialization into JsonLd format
 If you need to extend it with you own relation use `USER_NESTED_FIELDS` on settings.py :
@@ -151,7 +151,7 @@ USER_OWNER_PERMISSIONS=['inherit', 'control', 'update']
 
 On the server settings (should be overriden only one time)
 
-# Federation
+## Federation
 If you want to enable full federation capabilities you have to use the `LDPUser` instead of django `User`
 
 Add to your `settings.py` :
@@ -160,3 +160,19 @@ AUTH_USER_MODEL = 'djangoldp_account.LDPUser'
 # Also, you can allow distant users to login to your server
 DISTANT_LOGIN = True
 ```
+
+## Import users in batch mode
+
+To create a huge number of accounts from an existing database, you can use the `import_csv` command. The imported CSV file must contain user first name in the first column, user last name in the second column and user email in the third column. For example ; 
+
+| Alex          | Bourlier   | alex@startinblox.com                  |
+| ------------- | ---------- | ------------------------------------- |
+| Jean-Baptiste | Pasquier   | jb@startinblox.com                    |
+| Fabien        | Quatravaux | fabien.quatravaux@lemans.happy-dev.fr |
+
+Usernames will be generated automatically from first and last name by converting capitals and accents and replacing any forbidden character by a dash (-). Any already existing email will be skipped.
+
+```bash
+python manage.py import_csv example-accounts.csv 
+```
+
