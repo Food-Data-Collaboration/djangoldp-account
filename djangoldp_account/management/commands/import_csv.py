@@ -13,6 +13,7 @@ class Command(BaseCommand):
         nb = 0
         for row in csv.reader(open(options['csv_file'], 'rt')):
             # limit field size
+            # strip to 30 letters because database field is limited to that size
             first_name = row[0][:min(len(row[0]), 30)]
             last_name = row[1][:min(len(row[1]), 30)]
 
@@ -28,6 +29,7 @@ class Command(BaseCommand):
             # compute username from first and last name (make sure there is no strange characters)
             username = unicodedata.normalize('NFD', first_name + '.' + last_name).encode('ascii', 'ignore').decode().lower().strip('.')
             username = re.sub(r'[\s\!#\$%&\'\*\^`\|~:\[\]\(\)\{\}=@\\/]+', r'-', username).strip('-')
+            # strip to 50 letter because database field is limited to that size
             username = username[:min(len(username), 50)]
 
             # verify username and email uniqueness
