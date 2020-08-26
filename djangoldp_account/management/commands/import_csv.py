@@ -50,7 +50,7 @@ class Command(BaseCommand):
 
             # save the user
             self.stdout.write(first_name + ', ' + last_name + ', ' + username + ', ' + email)
-            user = LDPUser(first_name=first_name, last_name=last_name, username=username, email=row[2])
+            user = LDPUser(first_name=first_name, last_name=last_name, username=username, email=email)
             user.save()
             nb += 1
 
