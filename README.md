@@ -165,10 +165,11 @@ DISTANT_LOGIN = True
 
 To create a huge number of accounts from an existing database, you can use the `import_csv` command. The imported CSV file must contain user first name in the first column, user last name in the second column and user email in the third column. For example ; 
 
-| Alex          | Bourlier   | alex@startinblox.com                  |
-| ------------- | ---------- | ------------------------------------- |
-| Jean-Baptiste | Pasquier   | jb@startinblox.com                    |
-| Fabien        | Quatravaux | fabien.quatravaux@lemans.happy-dev.fr |
+| First name    | Last Name  | Email           |
+| ------------- | ---------- | --------------- |
+| Dummy         | Dude       | dummy@email.co  |
+| John          | Doe        | john@email.co   |
+| Doe           | Minic      | doe@email.co    |
 
 Usernames will be generated automatically from first and last name by converting capitals and accents and replacing any forbidden character by a dash (-). Any already existing email will be skipped.
 
