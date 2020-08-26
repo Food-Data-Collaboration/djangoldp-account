@@ -40,15 +40,16 @@ class Command(BaseCommand):
 
             existing = LDPUser.objects.filter(username=username)
             if existing:
-                # try to use email domain to differenciate users
-                (login, domain) = email.split('@')
-                second_try = username+'.'+domain
-                second_try = second_try[:min(len(second_try), 50)]
-                if LDPUser.objects.filter(username=second_try):
+                done = False
+                # try to add an integer at the end of the username
+                for i in range(2,9):
+                    second_try = username[:min(len(username), 49)] + str(i)
+                    if not LDPUser.objects.filter(username=second_try):
+                        username = second_try
+                        break
+                else:
                     self.stdout.write(self.style.ERROR(username + ' username is already taken by user ' + existing[0].first_name + ' ' + existing[0].last_name + ' (' + existing[0].email + ')' ))
                     continue
-                else:
-                    username = second_try
 
             # save the user
             self.stdout.write(first_name + ', ' + last_name + ', ' + username + ', ' + email)
