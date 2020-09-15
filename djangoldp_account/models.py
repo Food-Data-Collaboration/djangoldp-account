@@ -117,7 +117,6 @@ class Account(Model):
     class Meta:
         auto_author = 'user'
         permissions = (
-            ('view_account', 'Read'),
             ('control_account', 'Control'),
         )
         rdf_context = {'picture': 'foaf:depiction'}
@@ -140,7 +139,6 @@ class ChatProfile(Model):
     class Meta:
         auto_author = 'user'
         permissions = (
-            ('view_chatprofile', 'Read'),
             ('control_chatprofile', 'Control'),
         )
         lookup_field = 'slug'

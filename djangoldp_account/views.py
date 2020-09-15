@@ -38,7 +38,7 @@ def check_user(request, *args, **kwargs):
 
         return response
 
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         response = JsonResponse(settings.userinfo({}, request.user))
         try:
             response['User'] = request.user.webid()
