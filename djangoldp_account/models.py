@@ -194,7 +194,8 @@ def send_email(sender, instance, created, **kwargs):
                 fail_silently=True,
                 html_message=html_message
             )
-
+        except: 
+            pass
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_account(sender, instance, created, **kwargs):
