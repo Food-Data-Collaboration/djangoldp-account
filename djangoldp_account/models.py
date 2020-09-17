@@ -175,22 +175,25 @@ def pre_create_account(sender, instance, **kwargs):
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def send_email(sender, instance, created, **kwargs):
     if created and not Model.is_external(instance) and instance.email and settings.EMAIL_ON_ACCOUNT_CREATION:
-        html_message = loader.render_to_string(
-            'password/email.html',
-            {
-                'on': (settings.INSTANCE_DEFAULT_CLIENT or settings.JABBER_DEFAULT_HOST),
-                'instance': instance
-            }
-        )
+        try:
+            on_server = getattr(settings, 'INSTANCE_DEFAULT_CLIENT', getattr(settings, 'JABBER_DEFAULT_HOST', ''))
+            html_message = loader.render_to_string(
+                'password/email.html',
+                {
+                    'on': on_server,
+                    'password_link': getattr(settings, 'SITE_URL', '') + "/auth/password_reset/"
+                    'instance': instance
+                }
+            )
 
-        send_mail(
-            'Création de compte sur ' + (settings.INSTANCE_DEFAULT_CLIENT or settings.JABBER_DEFAULT_HOST),
-            'Compte créé sur ' + (settings.INSTANCE_DEFAULT_CLIENT or settings.JABBER_DEFAULT_HOST),
-            settings.EMAIL_HOST_USER or "noreply@" + settings.JABBER_DEFAULT_HOST,
-            [instance.email],
-            fail_silently=True,
-            html_message=html_message
-        )
+            send_mail(
+                'Création de compte sur ' + on_server,
+                'Compte créé sur ' + on_server,
+                settings.EMAIL_HOST_USER or "noreply@" + settings.JABBER_DEFAULT_HOST,
+                [instance.email],
+                fail_silently=True,
+                html_message=html_message
+            )
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
