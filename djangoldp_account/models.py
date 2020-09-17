@@ -181,7 +181,7 @@ def send_email(sender, instance, created, **kwargs):
                 'password/email.html',
                 {
                     'on': on_server,
-                    'password_link': getattr(settings, 'SITE_URL', '') + "/auth/password_reset/"
+                    'password_link': getattr(settings, 'SITE_URL', '') + "/auth/password_reset/",
                     'instance': instance
                 }
             )
