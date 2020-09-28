@@ -174,7 +174,7 @@ def pre_create_account(sender, instance, **kwargs):
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def send_email(sender, instance, created, **kwargs):
-    if created and not Model.is_external(instance) and instance.email and settings.EMAIL_ON_ACCOUNT_CREATION:
+    if created and not Model.is_external(instance) and instance.email and getattr(settings, 'EMAIL_ON_ACCOUNT_CREATION', False):
         try:
             on_server = getattr(settings, 'INSTANCE_DEFAULT_CLIENT', getattr(settings, 'JABBER_DEFAULT_HOST', ''))
             html_message = loader.render_to_string(
