@@ -177,3 +177,30 @@ Usernames will be generated automatically from first and last name by converting
 python manage.py import_csv example-accounts.csv 
 ```
 
+## Apply i18n
+Default translation files are embedded with the packages with support for English and French for now. More coming.
+To use them, you should activate the feature by adding both the proper i18n context processor and LocaleMiddleware:
+
+```
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                # ... Your context processors ...
+                'django.template.context_processors.i18n',
+            ],
+        },
+    },
+]
+
+MIDDLEWARE = [
+        #... Your Middlewares ...
+        'django.middleware.locale.LocaleMiddleware',
+]
+
+USE_L10N = True
+```
+

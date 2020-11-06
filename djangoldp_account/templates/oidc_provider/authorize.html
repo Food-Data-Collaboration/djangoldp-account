@@ -30,8 +30,8 @@
             <li><strong>{{ scope.name }}</strong><br><i>{{ scope.description }}</i></li>
             {% endfor %}
         </ul>
-        <input class="sib-oidc-authorization-page-button decline-button" type="submit" value="Refuser"/>
-        <input class="sib-oidc-authorization-page-button accept-button" name="allow" type="submit" value="Autoriser"/>
+        <input class="sib-oidc-authorization-page-button decline-button" type="submit" value="{% trans 'Refuser' %}"/>
+        <input class="sib-oidc-authorization-page-button accept-button" name="allow" type="submit" value="{% trans 'Autoriser' %}"/>
     </form>
 </div>
 {% endblock %}
