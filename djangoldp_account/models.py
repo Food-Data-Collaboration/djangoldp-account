@@ -72,6 +72,7 @@ class LDPUser(AbstractUser, Model):
     default_redirect_uri = models.CharField(max_length=5000, blank=True, null=True, help_text='A URL to redirect to (home page) when none other is provided in a request, e.g. on forgot password. This will be automatically updated on login')
 
     class Meta:
+        depth = 1
         verbose_name = _('user')
         verbose_name_plural = _('users')
         rdf_type = 'foaf:user'
