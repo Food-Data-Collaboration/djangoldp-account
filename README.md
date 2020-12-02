@@ -149,6 +149,12 @@ USER_AUTHENTICATED_PERMISSIONS=['inherit']
 USER_OWNER_PERMISSIONS=['inherit', 'control', 'update']
 ```
 
+Finally, to expand on the `empty_containers` setting ([see DjangoLDP docs](https://git.startinblox.com/djangoldp-packages/djangoldp#custom-meta-options-on-models)) you can use `USER_EMPTY_CONTAINERS`:
+
+```
+USER_EMPTY_CONTAINERS = ['skills']
+```
+
 On the server settings (should be overriden only one time)
 
 ## Federation

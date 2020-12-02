@@ -20,11 +20,14 @@ from djangoldp.permissions import LDPPermissions
 djangoldp_modules = list(settings.DJANGOLDP_PACKAGES)
 user_fields = ['@id', 'first_name', 'groups', 'last_name', 'username', 'email', 'account', 'chatProfile', 'name']
 user_nested_fields = ['account', 'groups', 'chatProfile']
+user_empty_containers = []
 for dldp_module in djangoldp_modules:
     try:
-        module_user_nested_fields = import_module(dldp_module + '.settings').USER_NESTED_FIELDS
+        module_settings = import_module(dldp_module + '.settings')
+        module_user_nested_fields = module_settings.USER_NESTED_FIELDS
         user_fields += module_user_nested_fields
         user_nested_fields += module_user_nested_fields
+        user_empty_containers += module_settings.USER_EMPTY_CONTAINERS
     except:
         pass
 
@@ -69,6 +72,7 @@ class LDPUser(AbstractUser, Model):
     default_redirect_uri = models.CharField(max_length=5000, blank=True, null=True, help_text='A URL to redirect to (home page) when none other is provided in a request, e.g. on forgot password. This will be automatically updated on login')
 
     class Meta:
+        depth = 1
         verbose_name = _('user')
         verbose_name_plural = _('users')
         rdf_type = 'foaf:user'
@@ -78,6 +82,7 @@ class LDPUser(AbstractUser, Model):
         permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES', [LDPPermissions])
         nested_fields = user_nested_fields
         serializer_fields = s_fields
+        empty_containers = user_empty_containers
         anonymous_perms = getattr(settings, 'USER_ANONYMOUS_PERMISSIONS', ['view'])
         authenticated_perms = getattr(settings, 'USER_AUTHENTICATED_PERMISSIONS', ['inherit'])
         owner_perms = getattr(settings, 'USER_OWNER_PERMISSIONS', ['inherit'])
