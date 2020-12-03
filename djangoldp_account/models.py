@@ -192,8 +192,8 @@ def send_email(sender, instance, created, **kwargs):
             )
 
             send_mail(
-                'Création de compte sur ' + on_server,
-                'Compte créé sur ' + on_server,
+                _('Création de compte sur ') + on_server,
+                _('Compte créé sur ') + on_server,
                 settings.EMAIL_HOST_USER or "noreply@" + settings.JABBER_DEFAULT_HOST,
                 [instance.email],
                 fail_silently=True,

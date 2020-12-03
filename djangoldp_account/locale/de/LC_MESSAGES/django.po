@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-02 19:15+0100\n"
+"POT-Creation-Date: 2020-12-03 16:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,40 +18,48 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: djangoldp_account/models.py:40
+#: djangoldp_account/models.py:43
 msgid ""
 "Entre un nom d'utilisateur valide. Il ne peut contenir que des lettres, des "
 "chiffres, et les caractères ./+/-/_"
 msgstr ""
 
-#: djangoldp_account/models.py:50
+#: djangoldp_account/models.py:53
 msgid "username"
 msgstr ""
 
-#: djangoldp_account/models.py:53
+#: djangoldp_account/models.py:56
 msgid ""
 "Requiert 150 caractères ou moins. Seulement des lettres, chiffres et les "
 "caractères ./+/-/_"
 msgstr ""
 
-#: djangoldp_account/models.py:56
+#: djangoldp_account/models.py:59
 msgid "Ce nom d'utilisateur est déjà pris."
 msgstr ""
 
-#: djangoldp_account/models.py:60
+#: djangoldp_account/models.py:63
 msgid "email address"
 msgstr ""
 
-#: djangoldp_account/models.py:65
+#: djangoldp_account/models.py:68
 msgid "Un utilisateur avec cette adresse mail existe déjà."
 msgstr ""
 
-#: djangoldp_account/models.py:72
+#: djangoldp_account/models.py:76
 msgid "user"
 msgstr ""
 
-#: djangoldp_account/models.py:73
+#: djangoldp_account/models.py:77
 msgid "users"
+msgstr ""
+
+#: djangoldp_account/models.py:195
+msgid "Création de compte sur "
+msgstr ""
+
+#: djangoldp_account/models.py:196
+msgid "Compte créé sur "
 msgstr ""
 
 #: djangoldp_account/templates/django_registration/activation_complete.html:3
