@@ -95,21 +95,6 @@ msgstr ""
 
 #: djangoldp_account/templates/django_registration/activation_email_body.txt:3
 #, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "Tu (ou une autre personne se faisant passer pour toi) as demandé à "
-#| "enregistrer un compte sur %(sitename)s.\n"
-#| "Si ce n'était pas toi, ignore cet e-mail et ton adresse s'effacera de "
-#| "notre banque de données.\n"
-#| "\n"
-#| "Pour activer ce compte, tu peux cliquer sur le lien suivant dans un délai "
-#| "de \n"
-#| "%(expiration_days)s jours :\n"
-#| "\n"
-#| "http://%(siteurl)s%(activation_key_url)s\n"
-#| "\n"
-#| "Bonne journée,\n"
-#| "L'équipe %(sitename)s\n"
 msgid ""
 "\n"
 "Tu (ou une autre personne se faisant passer pour toi) as demandé à "
@@ -183,9 +168,7 @@ msgid "Enregistrer un compte"
 msgstr "Register an account"
 
 #: djangoldp_account/templates/django_registration/registration_form.html:16
-#, fuzzy
-#| msgid "Envoyer un e-mail d'activation"
-msgid "Envoyer un e-mail d\\"
+msgid "Envoyer un e-mail d'activation"
 msgstr "Send an activation e-mail"
 
 #: djangoldp_account/templates/oidc_provider/authorize.html:6

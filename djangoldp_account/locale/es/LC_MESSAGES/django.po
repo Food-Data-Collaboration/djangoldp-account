@@ -141,7 +141,7 @@ msgid "Enregistrer un compte"
 msgstr ""
 
 #: djangoldp_account/templates/django_registration/registration_form.html:16
-msgid "Envoyer un e-mail d\\"
+msgid "Envoyer un e-mail d'activation"
 msgstr ""
 
 #: djangoldp_account/templates/oidc_provider/authorize.html:6
