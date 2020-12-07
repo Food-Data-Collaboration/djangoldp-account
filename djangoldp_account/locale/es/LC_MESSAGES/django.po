@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-03 16:25+0000\n"
+"POT-Creation-Date: 2020-12-03 18:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,52 +23,60 @@ msgid ""
 "Entre un nom d'utilisateur valide. Il ne peut contenir que des lettres, des "
 "chiffres, et les caractères ./+/-/_"
 msgstr ""
+"Ingresa un nombre de usuario válido. Solo puede contener letras, números "
+"y los caracteres ./+/-/_"
 
 #: djangoldp_account/models.py:53
 msgid "username"
-msgstr ""
+msgstr "nombre de usuario"
 
 #: djangoldp_account/models.py:56
 msgid ""
 "Requiert 150 caractères ou moins. Seulement des lettres, chiffres et les "
 "caractères ./+/-/_"
 msgstr ""
+"Requiere 150 caracteres o menos. Solo letras, números y los caracteres ./+/-/_"
+""
 
 #: djangoldp_account/models.py:59
 msgid "Ce nom d'utilisateur est déjà pris."
-msgstr ""
+msgstr "Ese nombre de usuario ya fue utilizado."
 
 #: djangoldp_account/models.py:63
 msgid "email address"
-msgstr ""
+msgstr "dirección de correo electrónico"
 
 #: djangoldp_account/models.py:68
 msgid "Un utilisateur avec cette adresse mail existe déjà."
-msgstr ""
+msgstr "Ya existe un usuario con esa dirección de correo electrónico."
 
 #: djangoldp_account/models.py:76
 msgid "user"
-msgstr ""
+msgstr "usuario"
 
 #: djangoldp_account/models.py:77
 msgid "users"
-msgstr ""
+msgstr "usuarios"
 
 #: djangoldp_account/models.py:195
+#, fuzzy
+#| msgid "Activation du compte sur"
 msgid "Création de compte sur "
-msgstr ""
+msgstr "Crear una cuenta en "
 
 #: djangoldp_account/models.py:196
+#, fuzzy
+#| msgid "Un compte a été créé pour toi"
 msgid "Compte créé sur "
-msgstr ""
+msgstr "Cuenta creada en "
 
 #: djangoldp_account/templates/django_registration/activation_complete.html:3
 msgid "Activation terminée"
-msgstr ""
+msgstr "Activación completa"
 
 #: djangoldp_account/templates/django_registration/activation_complete.html:6
 msgid "Merci, l'activation est terminée !"
-msgstr ""
+msgstr "¡Gracias, la activación está completa!"
 
 #: djangoldp_account/templates/django_registration/activation_complete.html:8
 #, python-format
@@ -79,6 +87,11 @@ msgid ""
 "            que tu as définis lors de ton enregistrement.\n"
 "        "
 msgstr ""
+"\n"
+"            Ahora puedes <a href='%(auth_login_url)s'>conectarte</a> "
+"usando el nombre de usuario y la contraseña\n"
+"            que definiste al registrarte.\n"
+"        "
 
 #: djangoldp_account/templates/django_registration/activation_email_body.txt:3
 #, python-format
@@ -98,124 +111,138 @@ msgid ""
 "Bonne journée,\n"
 "l'équipe %(sitename)s\n"
 msgstr ""
+"\n"
+"Tú (o alguien más haciéndose pasar por ti) has iniciado "
+"el registro de una cuenta en %(sitename)s.\n"
+"Si no fuiste tú, ignora este e-mail y tu dirección será borrada de nuestro "
+"banco de datos.\n"
+"\n"
+"Para activar esta cuenta, puedes hacer clic en el siguiente enlace dentro del plazo "
+"de \n"
+"%(expiration_days)s días :\n"
+"\n"
+"http://%(siteurl)s%(activation_key_url)s\n"
+"\n"
+"Que tengas un buen día,\n"
+"El equipo de %(sitename)s\n"
 
 #: djangoldp_account/templates/django_registration/activation_email_subject.txt:1
 #, python-format
 msgid "Enregistrement du compte pour %(sitename)s"
-msgstr ""
+msgstr "Registro de la cuenta para %(sitename)s"
 
 #: djangoldp_account/templates/django_registration/activation_failed.html:3
 msgid "Echec de l'activation"
-msgstr ""
+msgstr "Falló la activación"
 
 #: djangoldp_account/templates/django_registration/activation_failed.html:5
 msgid "Échec de l'activation de l'utilisateur."
-msgstr ""
+msgstr "Falló la activación del usuario."
 
 #: djangoldp_account/templates/django_registration/activation_failed.html:6
 msgid "Contacte ton administrateur pour plus d'informations."
-msgstr ""
+msgstr "Contáctate con tu administrador para obtener más información."
 
 #: djangoldp_account/templates/django_registration/registration_closed.html:3
 msgid "Inscription terminée"
-msgstr ""
+msgstr "Registro cerrado"
 
 #: djangoldp_account/templates/django_registration/registration_closed.html:5
 msgid "L'inscription est fermée pour ce site."
-msgstr ""
+msgstr "El registro está cerrado para este sitio."
 
 #: djangoldp_account/templates/django_registration/registration_complete.html:3
 msgid "E-mail d'activation envoyé"
-msgstr ""
+msgstr "Correo electrónico de activación enviado"
 
 #: djangoldp_account/templates/django_registration/registration_complete.html:5
 msgid "Un e-mail d'activation a été envoyé."
-msgstr ""
+msgstr "Se ha enviado un correo electrónico de activación."
 
 #: djangoldp_account/templates/django_registration/registration_complete.html:6
 msgid "Vérifie ta boite mail et clique sur le lien pour activer ton compte."
-msgstr ""
+msgstr "Revisa tu buzón de correo y haz clic en el enlace para activar tu cuenta."
 
 #: djangoldp_account/templates/django_registration/registration_form.html:5
 msgid "Enregistrer un compte"
-msgstr ""
+msgstr "Registrar una cuenta"
 
 #: djangoldp_account/templates/django_registration/registration_form.html:16
 msgid "Envoyer un e-mail d'activation"
-msgstr ""
+msgstr "Enviar un correo electrónico de activación"
 
 #: djangoldp_account/templates/oidc_provider/authorize.html:6
 msgid "Demande d'accès aux informations"
-msgstr ""
+msgstr "Solicitud de acceso a la información"
 
 #: djangoldp_account/templates/oidc_provider/authorize.html:17
 msgid "Demande d'autorisation"
-msgstr ""
+msgstr "Solicitud de autorización"
 
 #: djangoldp_account/templates/oidc_provider/authorize.html:20
 #: djangoldp_account/templates/oidc_provider/authorize.html:22
 msgid "Le client"
-msgstr ""
+msgstr "El cliente"
 
 #: djangoldp_account/templates/oidc_provider/authorize.html:20
 msgid "voudrait accéder à ces informations te concernant :"
-msgstr ""
+msgstr "quisiera acceder a esta información sobre ti:"
 
 #: djangoldp_account/templates/oidc_provider/authorize.html:22
 msgid "voudrait accéder à ton compte."
-msgstr ""
+msgstr "quisiera tener acceso a tu cuenta."
 
 #: djangoldp_account/templates/oidc_provider/authorize.html:33
 msgid "Refuser"
-msgstr ""
+msgstr "Rechazar"
 
 #: djangoldp_account/templates/oidc_provider/authorize.html:34
 msgid "Autoriser"
-msgstr ""
+msgstr "Autorizar"
 
 #: djangoldp_account/templates/password/email.html:7
 msgid "Un compte a été créé pour toi"
-msgstr ""
+msgstr "Se ha creado una cuenta para ti"
 
 #: djangoldp_account/templates/password/email.html:8
 msgid "Crée ton mot de passe en "
-msgstr ""
+msgstr "Crea tu contraseña en "
 
 #: djangoldp_account/templates/password/email.html:8
 msgid "suivant ce lien."
-msgstr ""
+msgstr "siguiendo este enlace."
 
 #: djangoldp_account/templates/password/email.html:14
 msgid "Ne réponds pas directement à cet e-mail, à la place rends-toi sur"
-msgstr ""
+msgstr "No respondas a este correo electrónico directamente, pero ve a"
 
 #: djangoldp_account/templates/registration/activate.html:6
 msgid "Échec de l'activation du compte."
-msgstr ""
+msgstr "Falló la activación de la cuenta."
 
 #: djangoldp_account/templates/registration/activation_complete.html:5
 msgid "Ton compte est maintenant activé."
-msgstr ""
+msgstr "Tu cuenta está ahora activada."
 
 #: djangoldp_account/templates/registration/activation_email.txt:2
 msgid "Active ton compte sur"
-msgstr ""
+msgstr "Activa tu cuenta en"
 
 #: djangoldp_account/templates/registration/activation_email.txt:6
 #, python-format
 msgid "Ce lien est valide pendant %(expiration_days)s jours."
-msgstr ""
+msgstr "Enlace válido por %(expiration_days)s días."
 
 #: djangoldp_account/templates/registration/activation_email_subject.txt:1
 msgid "Activation du compte sur"
-msgstr ""
+msgstr "Activación de la cuenta en"
 
 #: djangoldp_account/templates/registration/login.html:6
 #: djangoldp_account/templates/registration/login.html:44
 #: djangoldp_account/templates/registration/login.html:58
 #: djangoldp_account/templates/registration/password_reset_complete.html:8
 msgid "Se connecter"
-msgstr ""
+msgstr "Ingresa a"
 
 #: djangoldp_account/templates/registration/login.html:18
 msgid ""
@@ -225,48 +252,53 @@ msgid ""
 "accès.\n"
 "                    "
 msgstr ""
+"\n"
+"                        Tu cuenta no tiene acceso a esta página. \n"
+"                        Para continuar, inicia sesión con una cuenta que tenga "
+"acceso.\n"
+"                    "
 
 #: djangoldp_account/templates/registration/login.html:24
 msgid "Connecte-toi pour voir cette page."
-msgstr ""
+msgstr "Inicie sesión para ver esta página."
 
 #: djangoldp_account/templates/registration/login.html:32
 msgid ""
 "Ton nom d'utilisateur et ton mot de passe ne correspondent pas. Réessaye."
-msgstr ""
+msgstr "Tu nombre de usuario y contraseña no coinciden. Inténtalo de nuevo."
 
 #: djangoldp_account/templates/registration/login.html:37
 msgid "Nom d'utilisateur ou e-mail:"
-msgstr ""
+msgstr "Nombre de usuario o correo electrónico:"
 
 #: djangoldp_account/templates/registration/login.html:47
 #: djangoldp_account/templates/registration/password_reset_form.html:6
 msgid "Mot de passe oublié ?"
-msgstr ""
+msgstr "¿Olvidaste tu contraseña?"
 
 #: djangoldp_account/templates/registration/login.html:52
 msgid "Se connecter avec un autre fournisseur d'identité"
-msgstr ""
+msgstr "Conectarse con otro proveedor de identidad"
 
 #: djangoldp_account/templates/registration/login.html:56
 msgid "Webfinger :"
-msgstr ""
+msgstr "Webfinger :"
 
 #: djangoldp_account/templates/registration/login.html:66
 msgid "Tu n'as pas encore de compte ?"
-msgstr ""
+msgstr "¿Todavía no tienes una cuenta?"
 
 #: djangoldp_account/templates/registration/login.html:67
 msgid "S'inscrire !"
-msgstr ""
+msgstr "¡Inscríbete!"
 
 #: djangoldp_account/templates/registration/logout.html:5
 msgid "Déconnecté"
-msgstr ""
+msgstr "Desconectado"
 
 #: djangoldp_account/templates/registration/lost_user.html:6
 msgid "Perdu"
-msgstr ""
+msgstr "Perdido"
 
 #: djangoldp_account/templates/registration/lost_user.html:16
 msgid ""
@@ -276,6 +308,11 @@ msgid ""
 "                    vers ton application préférée.\n"
 "                "
 msgstr ""
+"\n"
+"                    Lo sentimos, no pudimos encontrar una página para redirigirte."
+"Navega manualmente \n"
+"                    a tu aplicación favorita.\n"
+" "
 
 #: djangoldp_account/templates/registration/lost_user.html:22
 msgid ""
@@ -283,71 +320,78 @@ msgid ""
 "                    Si tu n'es pas sûr, contacte un administrateur système.\n"
 "                "
 msgstr ""
+"\n"
+"                    Si no estás seguro/a, pónte en contacto con un administrador del sistema.\n"
+"                "
 
 #: djangoldp_account/templates/registration/password_change_done.html:5
 msgid "Mot de passe modifié"
-msgstr ""
+msgstr "Cambió la contraseña"
 
 #: djangoldp_account/templates/registration/password_change_form.html:9
 #: djangoldp_account/templates/registration/password_reset_confirm.html:12
 #: djangoldp_account/templates/registration/registration_form.html:9
 msgid "Envoyer"
-msgstr ""
+msgstr "Envíar"
 
 #: djangoldp_account/templates/registration/password_reset_complete.html:6
 msgid "Mot de passe réinitialisé avec succès"
-msgstr ""
+msgstr "La contraseña se ha restablecido con éxito"
 
 #: djangoldp_account/templates/registration/password_reset_confirm.html:17
 msgid "Échec de la réinitialisation du mot de passe"
-msgstr ""
+msgstr "Falló el restablecimiento de la contraseña"
 
 #: djangoldp_account/templates/registration/password_reset_done.html:3
 msgid "E-mail envoyé"
-msgstr ""
+msgstr "Correo electrónico enviado"
 
 #: djangoldp_account/templates/registration/password_reset_done.html:5
 msgid "Vérifie ta boite mail."
-msgstr ""
+msgstr "Revisa tu correo electrónico."
 
 #: djangoldp_account/templates/registration/password_reset_done.html:6
 msgid ""
 "Nous t'avons envoyé des instructions pour définir ton mot de passe. Tu "
 "devrais recevoir cet e-mail dans peu de temps !"
 msgstr ""
+"Te hemos enviado instrucciones sobre cómo establecer tu contraseña. ¡Tú "
+"deberías recibir un correo electrónico en breve!"
 
 #: djangoldp_account/templates/registration/password_reset_email.html:2
 #, python-format
 msgid "Réinitialiser le mot de passe sur %(site_name)s"
-msgstr ""
+msgstr "Reset password on %(site_name)s"
 
 #: djangoldp_account/templates/registration/password_reset_form.html:11
 msgid "Tu as oublié ton mot de passe ?"
-msgstr ""
+msgstr "¿Olvidaste tu contraseña?"
 
 #: djangoldp_account/templates/registration/password_reset_form.html:12
 msgid ""
 "Indique ton adresse e-mail ci-dessous et nous t'enverrons des instructions "
 "par e-mail pour en définir un nouveau."
 msgstr ""
+"Escribe debajo tu dirección de correo electrónico y te enviaremos instrucciones "
+"para crear una nueva."
 
 #: djangoldp_account/templates/registration/password_reset_form.html:20
 msgid "Envoyez-moi les instructions !"
-msgstr ""
+msgstr "¡Envíame las instrucciones!"
 
 #: djangoldp_account/templates/registration/password_reset_form.html:24
 msgid "Ton adresse e-mail est invalide."
-msgstr ""
+msgstr "Tu dirección de correo electrónico no es válida."
 
 #: djangoldp_account/templates/registration/password_reset_subject.txt:3
 #, python-format
 msgid "Mot de passe réinitialisé sur %(site_name)s"
-msgstr ""
+msgstr "Restablecer la contraseña en %(site_name)s"
 
 #: djangoldp_account/templates/registration/registration_closed.html:5
 msgid "Les inscriptions sont actuellement fermées."
-msgstr ""
+msgstr "Las inscripciones están actualmente cerradas."
 
 #: djangoldp_account/templates/registration/registration_complete.html:5
 msgid "Tu es désormais enregistré. Un e-mail d'activation t'a été envoyé."
-msgstr ""
+msgstr "Ahora estás registrado/a. Se te envió un correo electrónico de activación."
