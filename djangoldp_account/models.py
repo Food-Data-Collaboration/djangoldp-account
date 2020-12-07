@@ -19,6 +19,10 @@ from djangoldp.permissions import LDPPermissions
 
 djangoldp_modules = list(settings.DJANGOLDP_PACKAGES)
 user_fields = ['@id', 'first_name', 'groups', 'last_name', 'username', 'email', 'account', 'chatProfile', 'name']
+
+if 'djangoldp_uploader' in settings.DJANGOLDP_PACKAGES:
+    user_fields += ['uploadURL']
+
 user_nested_fields = ['account', 'groups', 'chatProfile']
 user_empty_containers = []
 for dldp_module in djangoldp_modules:
@@ -89,6 +93,9 @@ class LDPUser(AbstractUser, Model):
 
     def name(self):
         return self.get_full_name()
+    
+    def uploadURL(self):
+        return {"@id": settings.BASE_URL + "/upload/"}
 
     def webid(self):
         # remote user
