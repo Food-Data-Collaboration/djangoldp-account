@@ -215,7 +215,7 @@ def create_account(sender, instance, created, **kwargs):
         if created:
             Account.objects.create(user=instance, slug=instance.username)
             chat_profile = ChatProfile.objects.create(user=instance, slug=instance.username)
-            if settings.JABBER_DEFAULT_HOST:
+            if isinstance(getattr(settings, 'JABBER_DEFAULT_HOST', False), str):
                 chat_profile.jabberID = '{}@{}'.format(instance.username, settings.JABBER_DEFAULT_HOST)
                 chat_profile.save()
         else:

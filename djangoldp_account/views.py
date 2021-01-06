@@ -29,6 +29,7 @@ def userinfocustom(request, *args, **kwargs):
 
 
 def check_user(request, *args, **kwargs):
+    '''Returns user if they are authenticated with this server, else 404'''
     if request.method == 'OPTIONS':
         response = HttpResponse({}, status=200)
         response['Access-Control-Allow-Origin'] = '*'
