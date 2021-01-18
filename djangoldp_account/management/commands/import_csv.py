@@ -27,7 +27,7 @@ class Command(BaseCommand):
                 continue
 
             # compute username from first and last name (make sure there is no strange characters)
-            username = unicodedata.normalize('NFD', first_name + '.' + last_name).encode('ascii', 'ignore').decode().lower().strip('.')
+            username = unicodedata.normalize('NFD', first_name + last_name).encode('ascii', 'ignore').decode().lower().strip('.')
             username = re.sub(r'[\s\!#\$%&\'\*\^`\|~:\[\]\(\)\{\}=@\\/]+', r'-', username).strip('-')
             # strip to 50 letter because database field is limited to that size
             username = username[:min(len(username), 50)]
