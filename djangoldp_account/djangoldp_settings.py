@@ -34,3 +34,4 @@ USER_OWNER_PERMISSIONS = ['view', 'add', 'change']
 GROUP_ANONYMOUS_PERMISSIONS = ['view']
 GROUP_AUTHENTICATED_PERMISSIONS = ['view', 'add', 'change']
 GROUP_OWNER_PERMISSIONS = ['view', 'add', 'change']
+ACCOUNT_ACTIVATION_DAYS = 7
