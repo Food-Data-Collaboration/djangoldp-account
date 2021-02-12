@@ -32,7 +32,6 @@ class UpdateTestCase(APITestCase):
                          "mentorProfile": "http://happy-dev.fr/owl/#mentor_profile", "account": "hd:account",
                          "messageSet": "http://happy-dev.fr/owl/#message_set",
                          "author": "http://happy-dev.fr/owl/#author_user", "title": "http://happy-dev.fr/owl/#title"},
-                         #"picture": "foaf:depiction"},
             '@id': settings.SITE_URL + "/accounts/{}/".format(self.user.account.slug),
             'picture': test_picture,
             'slug': self.user.slug

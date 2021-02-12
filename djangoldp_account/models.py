@@ -131,7 +131,6 @@ class Account(Model):
         permissions = (
             ('control_account', 'Control'),
         )
-        rdf_context = {'picture': 'foaf:depiction'}
         lookup_field = 'slug'
         owner_field = 'user'
         permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES', [LDPPermissions])
