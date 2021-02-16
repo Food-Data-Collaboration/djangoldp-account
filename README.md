@@ -167,6 +167,14 @@ AUTH_USER_MODEL = 'djangoldp_account.LDPUser'
 DISTANT_LOGIN = True
 ```
 
+### Create an administrator account for a distant user
+
+You can create an administrator account for a distant user with the `create_distant_admin` command:
+
+```bash
+./manage.py create_distant_admin --urlid="http://server/users/xyz/"
+```
+
 ## Import users in batch mode
 
 To create a huge number of accounts from an existing database, you can use the `import_csv` command. The imported CSV file must contain user first name in the first column, user last name in the second column and user email in the third column. For example ; 
