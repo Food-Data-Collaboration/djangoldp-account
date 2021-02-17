@@ -1,4 +1,4 @@
-import re
+import re, unicodedata
 import uuid
 from urllib.parse import urlparse
 from django.conf import settings
@@ -108,6 +108,16 @@ class LDPUser(AbstractUser, Model):
     def save(self, *args, **kwargs):
         if self.username == "hubl-workaround-493":
             return
+        
+        '''
+        This is a workaround for the LDPSerializer which enforce the user to post an username when creating a new one
+        By setting the username to `generate-an-username` we ensure that the user will have an username in conformity
+        with slugify & the federation requirement
+        '''
+        if self.username == "generate-an-username" and self.first_name + self.last_name != "":
+            username = unicodedata.normalize('NFD', self.first_name + self.last_name).encode('ascii', 'ignore').decode().lower().strip('.')
+            username = re.sub(r'[\s\!#\$%&\'\*\^`\|~:\[\]\(\)\{\}=@\\/]+', r'-', username).strip('-')
+            self.username = username[:min(len(username), 50)]
 
         if self.password == "":
             self.set_password(uuid.uuid4().hex.upper()[0:8])
