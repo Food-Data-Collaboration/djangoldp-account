@@ -7,6 +7,8 @@ from django.urls import reverse
 from django.utils.http import (
     is_safe_url, urlsafe_base64_decode,
 )
+from django.contrib.auth import authenticate, get_user_model, login
+from django_registration import signals
 from django_registration.backends.activation.views import RegistrationView
 from djangoldp_account import settings
 
@@ -163,6 +165,23 @@ class LDPAccountRegistrationView(SuccessURLAllowedHostsMixin, RegistrationView):
         _set_default_redirect_uri(user, next)
 
         return return_value
+
+    def register(self, form):
+        from django.conf import settings
+        if getattr(settings, 'SIMPLE_REGISTRATION', False):
+            new_user = form.save()
+            new_user = authenticate(
+                **{
+                    get_user_model().USERNAME_FIELD: new_user.get_username(),
+                    "password": form.cleaned_data["password1"],
+                }
+            )
+            login(self.request, new_user)
+            signals.user_registered.send(
+                sender=self.__class__, user=new_user, request=self.request
+            )
+            return new_user
+        return super.register(form)
 
 
 class RPLoginView(View):
