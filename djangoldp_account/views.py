@@ -3,7 +3,7 @@ from django.views import View
 from django.contrib.auth import get_user_model
 from django.contrib.auth.views import LoginView, SuccessURLAllowedHostsMixin
 from django.shortcuts import redirect, render
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.utils.http import (
     is_safe_url, urlsafe_base64_decode,
 )
@@ -169,6 +169,7 @@ class LDPAccountRegistrationView(SuccessURLAllowedHostsMixin, RegistrationView):
     def register(self, form):
         from django.conf import settings
         if getattr(settings, 'SIMPLE_REGISTRATION', False):
+            self.success_url = reverse_lazy("redirect-default")
             new_user = form.save()
             new_user = authenticate(
                 **{
@@ -181,7 +182,7 @@ class LDPAccountRegistrationView(SuccessURLAllowedHostsMixin, RegistrationView):
                 sender=self.__class__, user=new_user, request=self.request
             )
             return new_user
-        return super.register(form)
+        return super().register(form)
 
 
 class RPLoginView(View):
