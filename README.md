@@ -68,6 +68,14 @@ The workflow starts at : http://127.0.0.1:8000/accounts/register/
 
 Then, override template by copying the directory `djangoldp_account/templates/django_registration/` to your project and modify them.
 
+## Enabling account activation without mail
+
+You can also enable the user account activation directly, without sending the activation mail, by setting `SIMPLE_REGISTRATION` to `True` in settings.yml
+
+```python
+SIMPLE_REGISTRATION: True
+```
+
 ## Enabling login by email and username
 
 Modify the `AUTHENTICATION_BACKENDS` variable in `settings.py` to replace 
