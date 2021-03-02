@@ -50,6 +50,7 @@ To use it :
 Firts, add these settings on settings.py :
 
 ```python
+REGISTRATION_OPEN=True
 ACCOUNT_ACTIVATION_DAYS=7 #Number of days you want to keep the activation token valid
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
@@ -60,6 +61,7 @@ EMAIL_PORT = 587
 ```
 
 Optionally you can configure which user fields which you would like to include on the registration form by including `REGISTRATION_FIELDS` in settings.py
+
 ```python
 REGISTRATION_FIELDS = ('username', 'email', 'password1', 'password2')
 ```
@@ -68,9 +70,9 @@ The workflow starts at : http://127.0.0.1:8000/accounts/register/
 
 Then, override template by copying the directory `djangoldp_account/templates/django_registration/` to your project and modify them.
 
-## Enabling account activation without mail
+### Enabling account activation without mail
 
-You can also enable the user account activation directly, without sending the activation mail, by setting `SIMPLE_REGISTRATION` to `True` in settings.yml
+Optionally, you can also enable the user account activation without sending the activation mail, by setting:
 
 ```python
 SIMPLE_REGISTRATION: True
