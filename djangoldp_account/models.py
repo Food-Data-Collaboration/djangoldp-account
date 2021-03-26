@@ -129,6 +129,9 @@ class LDPUser(AbstractUser, Model):
 
         super(LDPUser, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return self.urlid
+
 
 class Account(Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
