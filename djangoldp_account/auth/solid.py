@@ -15,6 +15,30 @@ from djangoldp_account.errors import LDPLoginError
 class Solid(object):
 
     @classonlymethod
+    def check_htu_claim(cls, request, claims):
+        if 'htu' not in claims:
+            raise LDPLoginError('htu_claim_missing')
+        if not isinstance(claims['htu'], str):
+            raise LDPLoginError('htu_claim_invalid')
+
+        htu = urlparse(claims['htu'])
+        request_url = urlparse(request.build_absolute_uri())
+
+        # reject if the htu does not match the protocol, origin and path of the request
+        if htu.scheme != request_url.scheme or htu.hostname != request_url.hostname or htu.path != request_url.path:
+            raise LDPLoginError('htu_claim_not_matching_request')
+
+    @classonlymethod
+    def check_htm_claim(cls, request, claims):
+        if 'htm' not in claims or claims['htm'] != request.method:
+            raise LDPLoginError('htm_claim_invalid')
+
+    @classonlymethod
+    def check_aud_claim(cls, claims):
+        if not 'aud' in claims or claims['aud'] != 'solid':
+            raise LDPLoginError('aud_claim_invalid')
+
+    @classonlymethod
     def check_id_token_exp(cls, exp):
         """raises LDPLoginError if parameterised expiry time has passed"""
         if exp < time.time():

@@ -8,7 +8,7 @@ from djangoldp.conf.ldpsettings import LDPSettings
 # create a test configuration
 config = {
     # add the packages to the reference list
-    'ldppackages': ['djangoldp_account'],
+    'ldppackages': ['djangoldp_account', 'djangoldp_account.tests'],
 
     # required values for server
     'server': {
@@ -25,6 +25,7 @@ from django.test.runner import DiscoverRunner
 test_runner = DiscoverRunner(verbosity=1)
 
 failures = test_runner.run_tests([
+    'djangoldp_account.tests.tests_auth_backends',
     'djangoldp_account.tests.tests_update',
 ])
 if failures:

@@ -11,7 +11,10 @@ from django.contrib.auth import authenticate, get_user_model, login
 from django_registration import signals
 from django_registration.backends.activation.views import RegistrationView
 from djangoldp_account import settings
+from django.conf import settings as django_settings
 
+from oidc_provider import settings as oidc_settings
+from oidc_provider.lib.utils.common import cors_allow_any
 from djangoldp_account.endpoints.rp_login import RPLoginCallBackEndpoint, RPLoginEndpoint
 from djangoldp_account.errors import LDPLoginError
 from oidc_provider.views import userinfo
@@ -32,21 +35,36 @@ def userinfocustom(request, *args, **kwargs):
 
 def check_user(request, *args, **kwargs):
     '''Returns user if they are authenticated with this server, else 404'''
+    response = HttpResponse({}, status=200)
+    if request.method in ['GET', 'HEAD', 'OPTIONS']:
+        response['Access-Control-Allow-Origin'] = request.META.get('HTTP_ORIGIN')
+        response["Access-Control-Allow-Headers"] = \
+            oidc_settings.get('OIDC_ACCESS_CONTROL_ALLOW_HEADERS')
+        response["Access-Control-Allow-Credentials"] = 'true'
+        response["Access-Control-Expose-Headers"] = "Location, User"
     if request.method == 'OPTIONS':
-        response = HttpResponse({}, status=200)
-        response['Access-Control-Allow-Origin'] = '*'
-        response['Access-Control-Allow-Headers'] = 'Authorization'
-        response['Cache-Control'] = 'no-store'
-        response['Pragma'] = 'no-cache'
-
         return response
 
     if request.user.is_authenticated:
-        response = JsonResponse(settings.userinfo({}, request.user))
+        response_body = {}
+        if 'Authorization' in request.headers:
+            response_body['Authorization'] = request.headers['Authorization']
+
+        if 'Dpop' in request.headers:
+            response_body['dpop'] = request.headers['Dpop']
+
+        response = JsonResponse(settings.userinfo(response_body, request.user))
+        response['Access-Control-Allow-Origin'] = request.META.get('HTTP_ORIGIN')
+        response["Access-Control-Allow-Headers"] = \
+            oidc_settings.get('OIDC_ACCESS_CONTROL_ALLOW_HEADERS')
+        response["Access-Control-Expose-Headers"] = "Location, User"
+        response["Access-Control-Allow-Credentials"] = 'true'
+
         try:
             response['User'] = request.user.webid()
         except AttributeError:
             pass
+
         return response
     else :
         return HttpResponseNotFound()
