@@ -120,6 +120,8 @@ class ExternalUserBackend(ModelBackend):
     def validate_dpop_token(self, request, token):
         # the RS first checks that the DPoP token was signed by the public key from the header jwk
         dpop_proof = request.headers.get('dpop')
+        if dpop_proof is None:
+            raise PermissionDenied('DPoP proof missing')
         try:
             jwk = verify_dpop_proof(dpop_proof)
         except TokenError:

@@ -126,6 +126,23 @@ class AuthBackendTestCase(APITestCase):
         response = self.client.get(self.request_url, **headers)
         self.assertEqual(response.status_code, 200)
 
+    def test_missing_dpop_proof(self):
+        # confirm that this is a request which requires my authorization
+        self.setUpResource()
+
+        request = self.factory.get(self.request_url)
+        response = self.client.get(self.request_url)
+        self.assertEqual(response.status_code, 403)
+
+        # get DPoP authorization headers
+        headers = self._get_dpop_headers(htu=request.build_absolute_uri(), htm=request.method)
+        # NO DPoP proof
+        headers.pop('HTTP_DPOP')
+
+        # make a request that requires my authorization
+        response = self.client.get(self.request_url, **headers)
+        self.assertEqual(response.status_code, 403)
+
     # testing the HTU/HTM claims in the DPoP header
 
     def test_invalid_htu_claim_url_mismatch(self):
