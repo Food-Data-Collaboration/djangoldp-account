@@ -3,7 +3,9 @@ import requests
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import ModelBackend
-from django.core.exceptions import PermissionDenied, ValidationError
+from django.core.exceptions import ValidationError
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework import status
 from django.core.validators import validate_email
 from django.conf import settings
 from jwkest import BadSyntax
@@ -36,8 +38,6 @@ class ExternalUserBackend(ModelBackend):
 
         if self.user_can_authenticate(user):
             return user
-        else:
-            print('cannot authenticate ' + str(user))
 
     def validate_bearer_token(self, token):
         _jwt = JWT()
@@ -53,7 +53,7 @@ class ExternalUserBackend(ModelBackend):
             Solid.check_id_token_exp(id_token['exp'])
             Solid.confirm_webid(id_token['sub'], id_token['iss'])
         except LDPLoginError as e:
-            raise PermissionDenied(e.description)
+            raise AuthenticationFailed(detail=e.description, code=status.HTTP_401_UNAUTHORIZED)
 
         userinfo = {
             'sub': id_token['sub']
@@ -121,11 +121,11 @@ class ExternalUserBackend(ModelBackend):
         # the RS first checks that the DPoP token was signed by the public key from the header jwk
         dpop_proof = request.headers.get('dpop')
         if dpop_proof is None:
-            raise PermissionDenied('DPoP proof missing')
+            raise AuthenticationFailed(detail='DPoP proof missing', code=status.HTTP_401_UNAUTHORIZED)
         try:
             jwk = verify_dpop_proof(dpop_proof)
         except TokenError:
-            raise PermissionDenied('DPoP proof invalid')
+            raise AuthenticationFailed(detail='DPoP proof invalid', code=status.HTTP_401_UNAUTHORIZED)
 
         # DPoP proof signature confirmed. Extract the DPoP header claims
         body = dpop_proof.split('.')[1]
@@ -139,7 +139,7 @@ class ExternalUserBackend(ModelBackend):
             # The RS checks if the public key in the DPoP header corresponds to the thumbprint in the access token
             verify_thumbprint(jwk, jwt['cnf']['jkt'])
         except KeyError:
-            raise PermissionDenied('missing thumbprint claim')
+            raise AuthenticationFailed(detail='missing thumbprint claim', code=status.HTTP_401_UNAUTHORIZED)
 
         try:
             # verify claims
@@ -151,7 +151,7 @@ class ExternalUserBackend(ModelBackend):
 
         except (LDPLoginError, KeyError) as e:
             print('error validating claims ' + str(e))
-            raise PermissionDenied()
+            raise AuthenticationFailed(detail='unable to validate claims', code=status.HTTP_401_UNAUTHORIZED)
 
         # validation complete, we can complete the authentication
         return self._get_or_create_then_authenticate({}, jwt['webid'])

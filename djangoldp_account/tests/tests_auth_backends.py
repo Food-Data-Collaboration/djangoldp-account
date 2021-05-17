@@ -141,7 +141,7 @@ class AuthBackendTestCase(APITestCase):
 
         # make a request that requires my authorization
         response = self.client.get(self.request_url, **headers)
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 401)
 
     # testing the HTU/HTM claims in the DPoP header
 
@@ -153,7 +153,7 @@ class AuthBackendTestCase(APITestCase):
         headers = self._get_dpop_headers(htu=None, htm=request.method)
 
         response = self.client.get(self.request_url, **headers)
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 401)
 
     def test_invalid_htu_claim_invalid_url(self):
         self.setUpResource()
@@ -163,7 +163,7 @@ class AuthBackendTestCase(APITestCase):
         headers = self._get_dpop_headers(htu='not a url', htm=request.method)
 
         response = self.client.get(self.request_url, **headers)
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 401)
 
     def test_invalid_htu_claim_error_url(self):
         self.setUpResource()
@@ -173,7 +173,7 @@ class AuthBackendTestCase(APITestCase):
         headers = self._get_dpop_headers(htu=100, htm=request.method)
 
         response = self.client.get(self.request_url, **headers)
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 401)
 
     def test_invalid_htm_claim_none(self):
         self.setUpResource()
@@ -183,7 +183,18 @@ class AuthBackendTestCase(APITestCase):
         headers = self._get_dpop_headers(htu=request.build_absolute_uri(), htm=None)
 
         response = self.client.get(self.request_url, **headers)
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 401)
+
+    # if I claim authorization then it should be rejected regardless of the view's permissions
+    def test_invalid_auth_rejects_on_unauthenticated_view(self):
+        self.setUpResource()
+
+        # get DPoP authorization headers - HTM is None
+        request = self.factory.get('/users/')
+        headers = self._get_dpop_headers(htu=request.build_absolute_uri(), htm=None)
+
+        response = self.client.get('/users/', **headers)
+        self.assertEqual(response.status_code, 401)
 
     # TODO (optional)
     #  The RS can optionally keep track of all DPoP jti claims it received. Because a new DPoP token must be generated
