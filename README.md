@@ -80,10 +80,10 @@ SIMPLE_REGISTRATION: True
 
 ### Sending email on account activation
 
-When the user is created, an email will be sent notifying them that their account has been created. To disable this, you can use the setting:
+When the user is created, you can optionally send a notification by email using the setting:
 
 ```yaml
-EMAIL_ON_ACCOUNT_CREATION: False
+EMAIL_ON_ACCOUNT_CREATION: True
 ```
 
 ## Enabling login by email and username
