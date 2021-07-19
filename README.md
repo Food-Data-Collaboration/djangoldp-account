@@ -74,8 +74,16 @@ Then, override template by copying the directory `djangoldp_account/templates/dj
 
 Optionally, you can also enable the user account activation without sending the activation mail, by setting:
 
-```python
+```yaml
 SIMPLE_REGISTRATION: True
+```
+
+### Sending email on account activation
+
+When the user is created, an email will be sent notifying them that their account has been created. To disable this, you can use the setting:
+
+```yaml
+EMAIL_ON_ACCOUNT_CREATION: False
 ```
 
 ## Enabling login by email and username
