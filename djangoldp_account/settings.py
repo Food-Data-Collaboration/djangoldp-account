@@ -10,6 +10,7 @@ def userinfo(claims, user):
     claims['email'] = user.email
     claims['website'] = user.webid()
     claims['webid'] = user.webid()
+    claims['preferred_username'] = user.username
     return claims
 
 
