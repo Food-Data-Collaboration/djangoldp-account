@@ -1,4 +1,5 @@
 import validators
+from urllib.parse import urlparse
 from django.conf import settings
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
@@ -10,7 +11,7 @@ def userinfo(claims, user):
     claims['email'] = user.email
     claims['website'] = user.webid()
     claims['webid'] = user.webid()
-    claims['preferred_username'] = user.username
+    claims['preferred_username'] = '{}_{}'.format(user.username, str(urlparse(settings.BASE_URL).netloc))
     return claims
 
 
