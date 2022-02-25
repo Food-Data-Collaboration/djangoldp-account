@@ -15,6 +15,7 @@ from django.utils.translation import ugettext_lazy as _
 from importlib import import_module
 from djangoldp.models import Model
 from djangoldp.permissions import LDPPermissions
+from djangoldp_account.permissions import LDPUserPermissions
 
 
 djangoldp_modules = list(settings.DJANGOLDP_PACKAGES)
@@ -83,7 +84,7 @@ class LDPUser(AbstractUser, Model):
         lookup_field = 'slug'
         container_path = 'users'
         owner_field = 'urlid'
-        permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES', [LDPPermissions])
+        permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES', [LDPUserPermissions])
         nested_fields = user_nested_fields
         serializer_fields = s_fields
         empty_containers = user_empty_containers
