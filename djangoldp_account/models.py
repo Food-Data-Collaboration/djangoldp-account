@@ -88,7 +88,7 @@ class LDPUser(AbstractUser, Model):
         nested_fields = user_nested_fields
         serializer_fields = s_fields
         empty_containers = user_empty_containers
-        anonymous_perms = getattr(settings, 'USER_ANONYMOUS_PERMISSIONS', ['view'])
+        anonymous_perms = getattr(settings, 'USER_ANONYMOUS_PERMISSIONS', [])
         authenticated_perms = getattr(settings, 'USER_AUTHENTICATED_PERMISSIONS', ['inherit'])
         owner_perms = getattr(settings, 'USER_OWNER_PERMISSIONS', ['inherit'])
 
