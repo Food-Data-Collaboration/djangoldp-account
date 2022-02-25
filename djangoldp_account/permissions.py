@@ -18,6 +18,17 @@ def get_client_ip(request):
 
 
 class LDPUserPermissions(LDPPermissions):
+    def has_permission(self, request, view):
+        if get_client_ip(request) in XMPP_SERVERS:
+            return True
+
+        return super().has_permission(request, view)
+
+    def has_container_permission(self, request, view, obj):
+        if get_client_ip(request) in XMPP_SERVERS:
+            return True
+
+        return super().has_object_permission(request, view, obj)
 
     def has_object_permission(self, request, view, obj):
         if get_client_ip(request) in XMPP_SERVERS:
