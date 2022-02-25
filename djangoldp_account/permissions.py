@@ -28,7 +28,7 @@ class LDPUserPermissions(LDPPermissions):
         if get_client_ip(request) in XMPP_SERVERS:
             return True
 
-        return super().has_object_permission(request, view, obj)
+        return super().has_container_permission(request, view)
 
     def has_object_permission(self, request, view, obj):
         if get_client_ip(request) in XMPP_SERVERS:
