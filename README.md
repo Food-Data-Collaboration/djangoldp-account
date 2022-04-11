@@ -66,9 +66,15 @@ Optionally you can configure which user fields which you would like to include o
 REGISTRATION_FIELDS = ('username', 'email', 'password1', 'password2')
 ```
 
-The workflow starts at : http://127.0.0.1:8000/accounts/register/
+This will be sufficient to change the user fields on display on the form. If you want to customise the form (for example by [adding a model relationship to the user](https://stackoverflow.com/questions/14726725/python-django-django-registration-add-an-extra-field/14879316#14879316)), then you can override the setting `REGISTRATION_USER_FORM` to replace it altogether. The form you supply should extend `djangoldp_account.forms.LDPUserForm` or at minimum `django_registration.forms.RegistrationForm`
 
-Then, override template by copying the directory `djangoldp_account/templates/django_registration/` to your project and modify them.
+```
+REGISTRATION_USER_FORM: "djangoldp_hiphopcommunity.forms.HipHopUserForm"
+```
+
+In either case, at a minimum the registration form fields must include the fields `('username', 'email', 'password1', 'password2')`
+
+Visit http://127.0.0.1:8000/auth/register/ to access the registration form
 
 ### Enabling account activation without mail
 

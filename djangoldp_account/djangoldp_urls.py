@@ -1,5 +1,6 @@
 """djangoldp project URL Configuration"""
 
+from pydoc import locate
 from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib.auth.models import Group
@@ -17,6 +18,9 @@ Group._meta.anonymous_perms = getattr(settings, 'GROUP_ANONYMOUS_PERMISSIONS', [
 Group._meta.authenticated_perms = getattr(settings, 'GROUP_AUTHENTICATED_PERMISSIONS', ['inherit'])
 Group._meta.owner_perms = getattr(settings, 'GROUP_OWNER_PERMISSIONS', ['inherit'])
 
+user_form_override = getattr(settings, 'REGISTRATION_USER_FORM', None)
+user_form = LDPUserForm if user_form_override is None else locate(user_form_override)
+
 urlpatterns = [
     url(r'^groups/',
         LDPViewSet.urls(model=Group, fields=['@id', 'name', 'user_set'],
@@ -25,7 +29,7 @@ urlpatterns = [
     ),
     url(r'^auth/register/$',
         LDPAccountRegistrationView.as_view(
-            form_class=LDPUserForm
+            form_class=user_form
         ),
         name='django_registration_register',
     ),
