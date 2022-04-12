@@ -147,6 +147,8 @@ class LDPAccountRegistrationView(SuccessURLAllowedHostsMixin, RegistrationView):
     """
     Extension of django-registration's RegistrationView for managing user's default_redirect_uri
     """
+    template_name = getattr(django_settings, 'REGISTRATION_TEMPLATE_PATH', 'django_registration/registration_form.html')
+
     def get_redirect_url(self):
         """Return the user-originating redirect URL if it's safe."""
         redirect_to = self.request.POST.get(

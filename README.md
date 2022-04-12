@@ -68,11 +68,17 @@ REGISTRATION_FIELDS = ('username', 'email', 'password1', 'password2')
 
 This will be sufficient to change the user fields on display on the form. If you want to customise the form (for example by [adding a model relationship to the user](https://stackoverflow.com/questions/14726725/python-django-django-registration-add-an-extra-field/14879316#14879316)), then you can override the setting `REGISTRATION_USER_FORM` to replace it altogether. The form you supply should extend `djangoldp_account.forms.LDPUserForm` or at minimum `django_registration.forms.RegistrationForm`
 
-```
+```yaml
 REGISTRATION_USER_FORM: "djangoldp_hiphopcommunity.forms.HipHopUserForm"
 ```
 
 In either case, at a minimum the registration form fields must include the fields `('username', 'email', 'password1', 'password2')`
+
+the setting `REGISTRATION_TEMPLATE_PATH` changes the path of the template serving the form, e.g.
+
+```yaml
+REGISTRATION_TEMPLATE_PATH: "hiphopcommunity/registration_form.html"
+```
 
 Visit http://127.0.0.1:8000/auth/register/ to access the registration form
 
