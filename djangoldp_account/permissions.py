@@ -1,6 +1,7 @@
 from django.conf import settings
 
 from djangoldp.permissions import LDPPermissions
+from djangoldp.utils import is_anonymous_user
 
 
 XMPP_SERVERS = set({'51.15.243.248', '212.47.234.179', '2001:bc8:47b0:2711::1'})
@@ -24,9 +25,44 @@ class LDPUserPermissions(LDPPermissions):
 
         return super().has_permission(request, view)
 
+    def get_container_permissions(self, request, view, obj=None):
+        # print("ModelConfiguredPermissions has_permission", request.method, view.model)
+        '''analyses the Model's set anonymous, authenticated and owner_permissions and returns these'''
+        from djangoldp.models import Model
+
+        model = view.model
+        anonymous_perms, authenticated_perms, owner_perms, superuser_perms = self.get_permission_settings(model)
+
+        perms = super().get_container_permissions(request, view, obj)
+        if is_anonymous_user(request.user):
+            perms = perms.union(set(anonymous_perms))
+            print("LDPUserPermissions Anonymous perms", perms)
+            if get_client_ip(request) in XMPP_SERVERS:
+                perms = perms.union(set(['view']))
+            print("LDPUserPermissions Anonymous perms", perms)
+        else:
+            if obj is not None and Model.is_owner(view.model, request.user, obj):
+                perms = perms.union(set(owner_perms))
+            else:
+                perms = perms.union(set(authenticated_perms))
+
+            if request.user.is_superuser:
+                perms = perms.union(set(superuser_perms))
+        return perms
+
     def has_container_permission(self, request, view):
+        print("LDPUserPermission has_container_permission", request.method, view.model)
+
         if get_client_ip(request) in XMPP_SERVERS:
+            print("The client IP is our XMPP_SERVER")
             return True
+        else:
+            print("The client IP is not one of our XMPP_SERVER")
+
+        print("LDPUserPermission", request.method, view.model)
+
+        required_perms = self.get_required_permissions(request.method, view.model)
+        print("LDPUserPermission Required perms", required_perms)
 
         return super().has_container_permission(request, view)
 
