@@ -19,7 +19,6 @@ def get_client_ip(request):
 
 
 class LDPUserPermissions(LDPPermissions):
-    filter_backends = []
 
     def has_permission(self, request, view):
         if get_client_ip(request) in XMPP_SERVERS:
