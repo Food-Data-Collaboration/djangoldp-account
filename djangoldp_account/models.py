@@ -149,7 +149,7 @@ class Account(Model):
         lookup_field = 'slug'
         owner_field = 'user'
         permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES', [LDPUserPermissions])
-        anonymous_perms = getattr(settings, 'USER_ANONYMOUS_PERMISSIONS', ['view'])
+        anonymous_perms = getattr(settings, 'USER_ANONYMOUS_PERMISSIONS', [])
         authenticated_perms = getattr(settings, 'USER_AUTHENTICATED_PERMISSIONS', ['inherit'])
         owner_perms = getattr(settings, 'USER_OWNER_PERMISSIONS', ['inherit'])
 
@@ -170,7 +170,7 @@ class ChatProfile(Model):
         lookup_field = 'slug'
         owner_field = 'user'
         permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES', [LDPUserPermissions])
-        anonymous_perms = getattr(settings, 'USER_ANONYMOUS_PERMISSIONS', ['view'])
+        anonymous_perms = getattr(settings, 'USER_ANONYMOUS_PERMISSIONS', [])
         authenticated_perms = getattr(settings, 'USER_AUTHENTICATED_PERMISSIONS', ['inherit'])
         owner_perms = getattr(settings, 'USER_OWNER_PERMISSIONS', ['inherit'])
 
