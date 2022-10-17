@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-19 20:39+0200\n"
+"POT-Creation-Date: 2022-10-17 19:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,51 +18,59 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: models.py:48
+#: models.py:49
+#, fuzzy
+#| msgid ""
+#| "Entre un nom d'utilisateur valide. Il ne peut contenir que des lettres, "
+#| "des chiffres, et les caractères ./-/_"
 msgid ""
 "Entre un nom d'utilisateur valide. Il ne peut contenir que des lettres, des "
-"chiffres, et les caractères ./+/-/_"
+"chiffres, et les caractères ./-/_"
 msgstr ""
 "Enter a valid username. It can only contain letters, numbers, and the "
-"characters ./+/-/_."
+"characters ./-/_."
 
-#: models.py:58
+#: models.py:59
 msgid "username"
 msgstr "username"
 
-#: models.py:61
+#: models.py:62
+#, fuzzy
+#| msgid ""
+#| "Requiert 150 caractères ou moins. Seulement des lettres, chiffres et les "
+#| "caractères ./-/_"
 msgid ""
 "Requiert 150 caractères ou moins. Seulement des lettres, chiffres et les "
-"caractères ./+/-/_"
+"caractères ./-/_"
 msgstr ""
 "Requires 150 characters or less. Only letters, numbers and the characters ./"
-"+/-/_."
+"-/_."
 
-#: models.py:64
+#: models.py:65
 msgid "Ce nom d'utilisateur est déjà pris."
 msgstr "This username is already taken."
 
-#: models.py:68
+#: models.py:69
 msgid "email address"
 msgstr "email address"
 
-#: models.py:73
+#: models.py:74
 msgid "Un utilisateur avec cette adresse mail existe déjà."
 msgstr "A user with this email address already exists."
 
-#: models.py:81
+#: models.py:82
 msgid "user"
 msgstr "user"
 
-#: models.py:82
+#: models.py:83
 msgid "users"
 msgstr "users"
 
-#: models.py:215
+#: models.py:216
 msgid "Création de compte sur "
 msgstr "Account creation on "
 
-#: models.py:216
+#: models.py:217
 msgid "Compte créé sur "
 msgstr "Account created on "
 
