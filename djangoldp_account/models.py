@@ -44,10 +44,10 @@ s_fields.extend(user_nested_fields)
 
 @deconstructible
 class UsernameValidator(RegexValidator):
-    regex = r'^[\w.+-]+$'
+    regex = r'^[\w._-]+$'
     message = _(
         "Entre un nom d'utilisateur valide. Il ne peut contenir que des lettres, "
-        'des chiffres, et les caractères ./+/-/_'
+        'des chiffres, et les caractères ./-/_'
     )
     flags = re.UNICODE
 
@@ -59,7 +59,7 @@ class LDPUser(AbstractUser, Model):
         _('username'),
         max_length=150,
         unique=True,
-        help_text=_('Requiert 150 caractères ou moins. Seulement des lettres, chiffres et les caractères ./+/-/_'),
+        help_text=_('Requiert 150 caractères ou moins. Seulement des lettres, chiffres et les caractères ./-/_'),
         validators=[username_validator],
         error_messages={
             'unique': _("Ce nom d'utilisateur est déjà pris."),
