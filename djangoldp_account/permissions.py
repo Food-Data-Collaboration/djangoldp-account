@@ -12,7 +12,7 @@ if hasattr(settings, 'XMPP_SERVER_IP'):
 def check_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
-        ip = x_forwarded_for.split(',')
+        ip = x_forwarded_for.replace(' ', '').split(',')
     else:
         ip = request.META.get('REMOTE_ADDR')
 
