@@ -9,19 +9,26 @@ XMPP_SERVERS = set({'51.15.243.248', '212.47.234.179', '2001:bc8:47b0:2711::1'})
 if hasattr(settings, 'XMPP_SERVER_IP'):
     XMPP_SERVERS = XMPP_SERVERS.union(getattr(settings, 'XMPP_SERVER_IP'))
 
-def get_client_ip(request):
+def check_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
+        ip = x_forwarded_for.split(',')
     else:
         ip = request.META.get('REMOTE_ADDR')
-    return ip
+
+    if isinstance(ip, list):
+        if any(i in ip for i in XMPP_SERVERS):
+            return True
+    elif ip in XMPP_SERVERS:
+        return True
+
+    return False
 
 
 class LDPUserPermissions(LDPPermissions):
 
     def has_permission(self, request, view):
-        if get_client_ip(request) in XMPP_SERVERS:
+        if check_client_ip(request):
             return True
 
         return super().has_permission(request, view)
@@ -34,7 +41,7 @@ class LDPUserPermissions(LDPPermissions):
         anonymous_perms, authenticated_perms, owner_perms, superuser_perms = self.get_permission_settings(model)
         perms = super().get_container_permissions(request, view, obj)
         if is_anonymous_user(request.user):
-            if get_client_ip(request) in XMPP_SERVERS:
+            if check_client_ip(request):
                 perms = perms.union(set(['view']))
             else:
                 perms = perms.union(set(anonymous_perms))
@@ -50,7 +57,7 @@ class LDPUserPermissions(LDPPermissions):
 
     def has_container_permission(self, request, view):
 
-        if get_client_ip(request) in XMPP_SERVERS:
+        if check_client_ip(request):
             return True
 
         return super().has_container_permission(request, view)
@@ -64,7 +71,7 @@ class LDPUserPermissions(LDPPermissions):
         return True
 
     def has_object_permission(self, request, view, obj):
-        if get_client_ip(request) in XMPP_SERVERS:
+        if check_client_ip(request):
             return True
 
         return super().has_object_permission(request, view, obj)
