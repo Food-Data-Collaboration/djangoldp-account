@@ -248,3 +248,12 @@ MIDDLEWARE = [
 USE_L10N = True
 ```
 
+## ACCOUNT DEFAULT PICTURE
+
+There is a way to set a profile picture in the account section of every created user by default, and it is using the following settings key:
+
+```
+ACCOUNT_DEFAULT_PICTURE = 'https://example.com/profile.jpg'
+```
+
+That allows to avoid having an empty picture client side.

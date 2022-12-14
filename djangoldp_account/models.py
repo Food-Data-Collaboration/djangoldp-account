@@ -138,7 +138,7 @@ class LDPUser(AbstractUser, Model):
 class Account(Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     slug = models.SlugField(unique=True)
-    picture = models.URLField(blank=True, null=True, default=getattr(settings, 'PROFILE_DEFAULT_PICTURE', None))
+    picture = models.URLField(blank=True, null=True, default=getattr(settings, 'ACCOUNT_DEFAULT_PICTURE', None))
     issuer = models.URLField(blank=True, null=True)
 
     class Meta:
