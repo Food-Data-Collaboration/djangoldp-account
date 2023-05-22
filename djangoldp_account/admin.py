@@ -41,7 +41,7 @@ class LDPUserAdmin(DjangoLDPUserAdmin):
         (None, {'fields': ('default_redirect_uri',)}),
     )
     add_fieldsets = DjangoLDPUserAdmin.add_fieldsets + (
-        (None, {'fields': ('email',)}),
+        (None, {'fields': ('email', 'first_name', 'last_name')}),
     )
 
 
