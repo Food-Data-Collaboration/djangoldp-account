@@ -32,10 +32,10 @@ class LDPUserAdmin(DjangoLDPUserAdmin):
     exclude = ('is_backlink', 'allow_create_backlink')
     form = LDPUserChangeForm
 
-    inlines = DjangoLDPUserAdmin.inlines + [
+    inlines = DjangoLDPUserAdmin.inlines + (
         AccountInline,
         ChatProfileInline
-    ]
+    )
 
     fieldsets = DjangoLDPUserAdmin.fieldsets + (
         (None, {'fields': ('default_redirect_uri',)}),

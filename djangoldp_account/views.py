@@ -1,11 +1,11 @@
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.views import View
 from django.contrib.auth import get_user_model
-from django.contrib.auth.views import LoginView, SuccessURLAllowedHostsMixin
+from django.contrib.auth.views import LoginView, RedirectURLMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils.http import (
-    is_safe_url, urlsafe_base64_decode,
+    url_has_allowed_host_and_scheme, urlsafe_base64_decode,
 )
 from django.contrib.auth import authenticate, get_user_model, login
 from django_registration import signals
@@ -143,7 +143,7 @@ class LDPAccountLoginView(LoginView):
         return return_value
 
 
-class LDPAccountRegistrationView(SuccessURLAllowedHostsMixin, RegistrationView):
+class LDPAccountRegistrationView(RedirectURLMixin, RegistrationView):
     """
     Extension of django-registration's RegistrationView for managing user's default_redirect_uri
     """
@@ -155,7 +155,7 @@ class LDPAccountRegistrationView(SuccessURLAllowedHostsMixin, RegistrationView):
             'next',
             self.request.GET.get('next', '')
         )
-        url_is_safe = is_safe_url(
+        url_is_safe = url_has_allowed_host_and_scheme(
             url=redirect_to,
             allowed_hosts=self.get_success_url_allowed_hosts(),
             require_https=self.request.is_secure(),

@@ -12,7 +12,7 @@ from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.urls import reverse_lazy
 from django.utils.deconstruct import deconstructible
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from importlib import import_module
 from djangoldp.models import Model
 from djangoldp.permissions import LDPPermissions
