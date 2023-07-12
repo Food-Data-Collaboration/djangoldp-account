@@ -37,7 +37,7 @@ def check_user(request, *args, **kwargs):
     '''Returns user if they are authenticated with this server, else 404'''
     response = HttpResponse({}, status=200)
     if request.method in ['GET', 'HEAD', 'OPTIONS']:
-        response['Access-Control-Allow-Origin'] = request.META.get('HTTP_ORIGIN')
+        response['Access-Control-Allow-Origin'] = request.headers.get('origin')
         response["Access-Control-Allow-Headers"] = \
             oidc_settings.get('OIDC_ACCESS_CONTROL_ALLOW_HEADERS')
         response["Access-Control-Allow-Credentials"] = 'true'
@@ -54,7 +54,7 @@ def check_user(request, *args, **kwargs):
             response_body['dpop'] = request.headers['Dpop']
 
         response = JsonResponse(settings.userinfo(response_body, request.user))
-        response['Access-Control-Allow-Origin'] = request.META.get('HTTP_ORIGIN')
+        response['Access-Control-Allow-Origin'] = request.headers.get('origin')
         response["Access-Control-Allow-Headers"] = \
             oidc_settings.get('OIDC_ACCESS_CONTROL_ALLOW_HEADERS')
         response["Access-Control-Expose-Headers"] = "Location, User"

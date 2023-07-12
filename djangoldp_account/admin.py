@@ -6,6 +6,7 @@ from djangoldp_account.models import LDPUser
 from .models import Account, ChatProfile
 
 
+@admin.register(Account, ChatProfile)
 class EmptyAdmin(admin.ModelAdmin):
     def get_model_perms(self, request):
         return {}
@@ -28,6 +29,7 @@ class ChatProfileInline(admin.StackedInline):
     extra = 0
 
 
+@admin.register(LDPUser)
 class LDPUserAdmin(DjangoLDPUserAdmin):
     exclude = ('is_backlink', 'allow_create_backlink')
     form = LDPUserChangeForm
@@ -45,6 +47,3 @@ class LDPUserAdmin(DjangoLDPUserAdmin):
     )
 
 
-admin.site.register(LDPUser, LDPUserAdmin)
-admin.site.register(Account, EmptyAdmin)
-admin.site.register(ChatProfile, EmptyAdmin)

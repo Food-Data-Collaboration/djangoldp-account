@@ -34,16 +34,16 @@ urlpatterns = [
         name='django_registration_register',
     ),
     path('auth/login/', LDPAccountLoginView.as_view(),name='login'),
-    re_path(r'^auth/', include('django_registration.backends.activation.urls')),
-    re_path(r'^auth/', include('django.contrib.auth.urls')),
-    re_path(r'^accounts/', LDPViewSet.urls(model=Account, permission_classes=[LDPPermissions], model_prefix='pk_lookup',
+    path('auth/', include('django_registration.backends.activation.urls')),
+    path('auth/', include('django.contrib.auth.urls')),
+    path('accounts/', LDPViewSet.urls(model=Account, permission_classes=[LDPPermissions], model_prefix='pk_lookup',
                                        lookup_field='pk')),
-    re_path(r'^chat-profile/', LDPViewSet.urls(model=ChatProfile, permission_classes=[LDPPermissions],
+    path('chat-profile/', LDPViewSet.urls(model=ChatProfile, permission_classes=[LDPPermissions],
                                            model_prefix='pk_lookup', lookup_field='pk')),
     re_path(r'^oidc/login/callback/?$', RPLoginCallBackView.as_view(), name='oidc_login_callback'),
     re_path(r'^oidc/login/?$', RPLoginView.as_view(), name='oidc_login'),
     re_path(r'^userinfo/?$', csrf_exempt(userinfocustom)),
     re_path(r'^check-user/?$', csrf_exempt(check_user)),
-    re_path(r'^redirect-default/$', RedirectView.as_view(),name='redirect-default'),
-    re_path(r'^', include('oidc_provider.urls', namespace='oidc_provider'))
+    path('redirect-default/', RedirectView.as_view(),name='redirect-default'),
+    path('', include('oidc_provider.urls', namespace='oidc_provider'))
 ]

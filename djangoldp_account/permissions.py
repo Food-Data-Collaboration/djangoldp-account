@@ -10,7 +10,7 @@ if hasattr(settings, 'XMPP_SERVER_IP'):
     XMPP_SERVERS = XMPP_SERVERS.union(getattr(settings, 'XMPP_SERVER_IP'))
 
 def check_client_ip(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    x_forwarded_for = request.headers.get('x-forwarded-for')
     if x_forwarded_for:
         ip = x_forwarded_for.replace(' ', '').split(',')
     else:

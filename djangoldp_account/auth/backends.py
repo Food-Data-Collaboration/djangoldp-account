@@ -157,8 +157,8 @@ class ExternalUserBackend(ModelBackend):
         return self._get_or_create_then_authenticate({}, jwt['webid'])
 
     def authenticate(self, request, username=None, password=None, **kwargs):
-        if 'HTTP_AUTHORIZATION' in request.META:
-            jwt = request.META['HTTP_AUTHORIZATION']
+        if 'authorization' in request.headers:
+            jwt = request.headers['authorization']
             if jwt.lower().startswith("dpop"):
                 jwt = jwt[5:]
                 return self.validate_dpop_token(request, jwt)
