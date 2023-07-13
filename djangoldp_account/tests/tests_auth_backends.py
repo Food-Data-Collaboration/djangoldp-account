@@ -18,7 +18,7 @@ from oidc_provider.tests.app.utils import create_fake_client, FAKE_NONCE, create
 from djangoldp_account.models import LDPUser
 from djangoldp_account.tests.models import OwnedResource
 
-
+#TODO: catch warnings
 class AuthBackendTestCase(APITestCase):
     def setUp(self):
         call_command('creatersakey')
