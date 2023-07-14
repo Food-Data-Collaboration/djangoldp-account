@@ -16,7 +16,7 @@ from django.utils.translation import gettext_lazy as _
 from importlib import import_module
 from djangoldp.models import Model
 from djangoldp.permissions import LDPPermissions
-from djangoldp_account.permissions import LDPUserPermissions
+from djangoldp_account.permissions import IPOpenPermissions
 
 
 djangoldp_modules = list(settings.DJANGOLDP_PACKAGES)
@@ -85,7 +85,7 @@ class LDPUser(AbstractUser, Model):
         lookup_field = 'slug'
         container_path = 'users'
         owner_field = 'urlid'
-        permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES', [LDPUserPermissions])
+        permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES', [IPOpenPermissions])
         nested_fields = user_nested_fields
         serializer_fields = s_fields
         empty_containers = user_empty_containers
@@ -148,7 +148,7 @@ class Account(Model):
         )
         lookup_field = 'slug'
         owner_field = 'user'
-        permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES', [LDPUserPermissions])
+        permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES', [IPOpenPermissions])
         anonymous_perms = getattr(settings, 'USER_ANONYMOUS_PERMISSIONS', [])
         authenticated_perms = getattr(settings, 'USER_AUTHENTICATED_PERMISSIONS', ['inherit'])
         owner_perms = getattr(settings, 'USER_OWNER_PERMISSIONS', ['inherit'])
@@ -169,7 +169,7 @@ class ChatProfile(Model):
         )
         lookup_field = 'slug'
         owner_field = 'user'
-        permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES', [LDPUserPermissions])
+        permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES', [IPOpenPermissions])
         anonymous_perms = getattr(settings, 'USER_ANONYMOUS_PERMISSIONS', [])
         authenticated_perms = getattr(settings, 'USER_AUTHENTICATED_PERMISSIONS', ['inherit'])
         owner_perms = getattr(settings, 'USER_OWNER_PERMISSIONS', ['inherit'])
