@@ -1,6 +1,6 @@
 import time
 import uuid
-from urllib.parse import urlparse
+from urllib.parse import urlparse, unquote
 
 from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
@@ -25,7 +25,7 @@ class Solid(object):
         request_url = urlparse(request.build_absolute_uri())
 
         # reject if the htu does not match the protocol, origin and path of the request
-        if htu.scheme != request_url.scheme or htu.hostname != request_url.hostname or htu.path != request_url.path:
+        if htu.scheme != request_url.scheme or htu.hostname != request_url.hostname or unquote(htu.path) != unquote(request_url.path):
             raise LDPLoginError('htu_claim_not_matching_request')
 
     @classonlymethod
