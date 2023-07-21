@@ -84,7 +84,7 @@ class LDPUser(AbstractUser, Model):
         rdf_type = 'foaf:user'
         lookup_field = 'slug'
         container_path = 'users'
-        owner_field = 'urlid'
+        owner_urlid_field = 'urlid'
         permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES', [IPOpenPermissions])
         nested_fields = user_nested_fields
         serializer_fields = s_fields
@@ -101,7 +101,7 @@ class LDPUser(AbstractUser, Model):
 
     def webid(self):
         # remote user
-        if self.urlid is not None and urlparse(self.urlid).netloc != urlparse(settings.BASE_URL).netloc:
+        if Model.is_external(self.urlid):
             webid = self.urlid
         else:
             webid = '{0}{1}'.format(settings.BASE_URL, reverse_lazy('ldpuser-detail', kwargs={'slug': self.slug}))
