@@ -1,14 +1,10 @@
 ---
 image: python:3.11
 
-stages:
-  - release
-  - test
-
 include:
-  - project: 'infra/platform'
-    ref: master
-    file: '/templates/python.ci.yml'
+  project: infra/gitlab
+  ref: master
+  file: templates/python.ci.yml
 
 test:
   stage: test
@@ -20,3 +16,7 @@ test:
     - tags
   tags:
     - test
+
+publish:
+  cache: []
+  extends: .publish_pypi
