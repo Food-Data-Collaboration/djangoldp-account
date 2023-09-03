@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from djangoldp.permissions import LDPPermissions
+from djangoldp.permissions import LDPBasePermission
 from djangoldp.utils import is_anonymous_user
 
 
@@ -24,35 +24,20 @@ def check_client_ip(request):
 
     return False
 
-
-class IPOpenPermissions(LDPPermissions):
+#TODO: Handle '&'-case for this one
+class IPOpenPermissions(LDPBasePermission):
     def has_permission(self, request, view):
         if check_client_ip(request):
             return True
         return super().has_permission(request, view)
 
-    def get_container_permissions(self, request, view, obj=None):
+    def get_permissions(self, request, view, obj=None):
         '''analyses the Model's set anonymous, authenticated and owner_permissions and returns these'''
-        from djangoldp.models import Model
-        perms = super().get_container_permissions(request, view, obj)
-        if is_anonymous_user(request.user):
-            if check_client_ip(request):
-                perms = perms.union(set(['view']))
-        return perms
+        if check_client_ip(request):
+            return self.permissions
+        return super().get_container_permissions(request, view, obj)
 
     def has_container_permission(self, request, view):
         if check_client_ip(request):
             return True
         return super().has_container_permission(request, view)
-
-    def has_permission(self, request, view):
-        """concerned with the permissions to access the _view_"""
-        if is_anonymous_user(request.user):
-            if not self.has_container_permission(request, view):
-                return False
-        return True
-
-    def has_object_permission(self, request, view, obj):
-        if check_client_ip(request):
-            return True
-        return super().has_object_permission(request, view, obj)

@@ -15,7 +15,7 @@ from django.utils.deconstruct import deconstructible
 from django.utils.translation import gettext_lazy as _
 from importlib import import_module
 from djangoldp.models import Model
-from djangoldp.permissions import LDPPermissions
+from djangoldp.permissions import AnonymousReadOnly, ReadAndCreate, LDPPermissions, OwnerPermissions
 from djangoldp_account.permissions import IPOpenPermissions
 
 
@@ -85,13 +85,12 @@ class LDPUser(AbstractUser, Model):
         lookup_field = 'slug'
         container_path = 'users'
         owner_urlid_field = 'urlid'
-        permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES', [IPOpenPermissions])
+        permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES',
+                                     [AnonymousReadOnly|LDPPermissions])
+                                    #  [IPOpenPermissions, AnonymousCreate, AuthenticatedCreate, OwnerPermissions])
         nested_fields = user_nested_fields
         serializer_fields = s_fields
         empty_containers = user_empty_containers
-        anonymous_perms = getattr(settings, 'USER_ANONYMOUS_PERMISSIONS', [])
-        authenticated_perms = getattr(settings, 'USER_AUTHENTICATED_PERMISSIONS', ['inherit'])
-        owner_perms = getattr(settings, 'USER_OWNER_PERMISSIONS', ['inherit'])
 
     def name(self):
         return self.get_full_name()
@@ -143,15 +142,11 @@ class Account(Model):
 
     class Meta:
         auto_author = 'user'
-        permissions = (
-            ('control_account', 'Control'),
-        )
+        permissions = (('control_account', 'Control'),)
         lookup_field = 'slug'
         owner_field = 'user'
-        permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES', [IPOpenPermissions])
-        anonymous_perms = getattr(settings, 'USER_ANONYMOUS_PERMISSIONS', [])
-        authenticated_perms = getattr(settings, 'USER_AUTHENTICATED_PERMISSIONS', ['inherit'])
-        owner_perms = getattr(settings, 'USER_OWNER_PERMISSIONS', ['inherit'])
+        permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES', 
+                                     [IPOpenPermissions, ReadAndCreate])
 
     def __str__(self):
         return '{} ({})'.format(self.user.get_full_name(), self.user.username)
@@ -164,15 +159,11 @@ class ChatProfile(Model):
 
     class Meta:
         auto_author = 'user'
-        permissions = (
-            ('control_chatprofile', 'Control'),
-        )
+        permissions = (('control_chatprofile', 'Control'),)
         lookup_field = 'slug'
         owner_field = 'user'
-        permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES', [IPOpenPermissions])
-        anonymous_perms = getattr(settings, 'USER_ANONYMOUS_PERMISSIONS', [])
-        authenticated_perms = getattr(settings, 'USER_AUTHENTICATED_PERMISSIONS', ['inherit'])
-        owner_perms = getattr(settings, 'USER_OWNER_PERMISSIONS', ['inherit'])
+        permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES', 
+                                     [IPOpenPermissions, ReadAndCreate, OwnerPermissions])
 
     def __str__(self):
         return '{} (jabberID: {})'.format(self.user.get_full_name(), self.jabberID)
@@ -184,9 +175,7 @@ class OPClient(Model):
     client_secret = models.CharField(max_length=255)
 
     class Meta(Model.Meta):
-        anonymous_perms = []
-        authenticated_perms = []
-        owner_perms = []
+        permission_classes = [LDPPermissions]
 
     def __str__(self):
         return '{} ({})'.format(self.issuer, self.client_id)
