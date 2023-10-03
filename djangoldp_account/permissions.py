@@ -26,11 +26,6 @@ def check_client_ip(request):
 
 
 class IPOpenPermissions(LDPPermissions):
-    def has_permission(self, request, view):
-        if check_client_ip(request):
-            return True
-        return super().has_permission(request, view)
-
     def get_container_permissions(self, request, view, obj=None):
         '''analyses the Model's set anonymous, authenticated and owner_permissions and returns these'''
         from djangoldp.models import Model
@@ -46,11 +41,15 @@ class IPOpenPermissions(LDPPermissions):
         return super().has_container_permission(request, view)
 
     def has_permission(self, request, view):
+        if check_client_ip(request):
+            return True
+
         """concerned with the permissions to access the _view_"""
         if is_anonymous_user(request.user):
             if not self.has_container_permission(request, view):
                 return False
-        return True
+
+        return super().has_permission(request, view)
 
     def has_object_permission(self, request, view, obj):
         if check_client_ip(request):
