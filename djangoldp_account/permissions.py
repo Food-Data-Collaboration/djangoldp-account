@@ -26,6 +26,7 @@ def check_client_ip(request):
 
 
 class IPOpenPermissions(LDPPermissions):
+
     def get_container_permissions(self, request, view, obj=None):
         '''analyses the Model's set anonymous, authenticated and owner_permissions and returns these'''
         from djangoldp.models import Model
