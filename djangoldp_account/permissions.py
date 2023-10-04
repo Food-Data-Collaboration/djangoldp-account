@@ -30,9 +30,3 @@ class IPOpenPermissions(LDPBasePermission):
 
     def has_object_permission(self, request, view, obj):
         return check_client_ip(request)
-
-    def get_permissions(self, request, view, obj=None):
-        '''analyses the Model's set anonymous, authenticated and owner_permissions and returns these'''
-        if check_client_ip(request):
-            return super().get_permissions(request, view, obj)
-        return {}
