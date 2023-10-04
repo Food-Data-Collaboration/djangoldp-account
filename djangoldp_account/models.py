@@ -15,7 +15,7 @@ from django.utils.deconstruct import deconstructible
 from django.utils.translation import gettext_lazy as _
 from importlib import import_module
 from djangoldp.models import Model
-from djangoldp.permissions import AnonymousReadOnly, ReadAndCreate, LDPPermissions, OwnerPermissions
+from djangoldp.permissions import AuthenticatedOnly, ReadOnly, OwnerPermissions, ACLPermissions
 from djangoldp_account.permissions import IPOpenPermissions
 
 
@@ -36,11 +36,6 @@ for dldp_module in djangoldp_modules:
         user_empty_containers += module_settings.USER_EMPTY_CONTAINERS
     except:
         pass
-
-s_fields = []
-s_fields.extend(user_fields)
-s_fields.extend(user_nested_fields)
-
 
 @deconstructible
 class UsernameValidator(RegexValidator):
@@ -85,11 +80,9 @@ class LDPUser(AbstractUser, Model):
         lookup_field = 'slug'
         container_path = 'users'
         owner_urlid_field = 'urlid'
-        permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES',
-                                     [AnonymousReadOnly|LDPPermissions])
-                                    #  [IPOpenPermissions, AnonymousCreate, AuthenticatedCreate, OwnerPermissions])
+        permission_classes = [IPOpenPermissions|AuthenticatedOnly&ReadOnly|OwnerPermissions]
         nested_fields = user_nested_fields
-        serializer_fields = s_fields
+        serializer_fields = user_fields + user_nested_fields
         empty_containers = user_empty_containers
 
     def name(self):
@@ -107,20 +100,20 @@ class LDPUser(AbstractUser, Model):
         return webid
 
     def save(self, *args, **kwargs):
-        if self.username == "hubl-workaround-493":
-            return
-        
         '''
         This is a workaround for the LDPSerializer which enforce the user to post an username when creating a new one
         By setting the username to `generate-an-username` we ensure that the user will have an username in conformity
         with slugify & the federation requirement
         '''
+        #TODO: remove this 'generate-an-username' patch as soon as the client stops using it
         if self.username == "generate-an-username" and self.first_name + self.last_name != "":
             username = unicodedata.normalize('NFD', self.first_name + self.last_name).encode('ascii', 'ignore').decode().lower().strip('.')
             username = re.sub(r'[\s\!#\$%&\'\*\^`\|~:\[\]\(\)\{\}=@\\/]+', r'-', username).strip('-')
             self.username = username[:min(len(username), 50)]
 
-        if self.password == "":
+        if not self.username:
+            self.username = self.email
+        if not self.password:
             self.set_password(uuid.uuid4().hex.upper()[0:8])
 
         # an unforgivable sin so that I could meet my deadline
@@ -145,8 +138,7 @@ class Account(Model):
         permissions = (('control_account', 'Control'),)
         lookup_field = 'slug'
         owner_field = 'user'
-        permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES', 
-                                     [IPOpenPermissions, ReadAndCreate])
+        permission_classes = [IPOpenPermissions|AuthenticatedOnly&ReadOnly|OwnerPermissions]
 
     def __str__(self):
         return '{} ({})'.format(self.user.get_full_name(), self.user.username)
@@ -162,8 +154,7 @@ class ChatProfile(Model):
         permissions = (('control_chatprofile', 'Control'),)
         lookup_field = 'slug'
         owner_field = 'user'
-        permission_classes = getattr(settings, 'USER_PERMISSION_CLASSES', 
-                                     [IPOpenPermissions, ReadAndCreate, OwnerPermissions])
+        permission_classes = [IPOpenPermissions|AuthenticatedOnly&ReadOnly|OwnerPermissions]
 
     def __str__(self):
         return '{} (jabberID: {})'.format(self.user.get_full_name(), self.jabberID)
@@ -175,7 +166,7 @@ class OPClient(Model):
     client_secret = models.CharField(max_length=255)
 
     class Meta(Model.Meta):
-        permission_classes = [LDPPermissions]
+        permission_classes = [ACLPermissions]
 
     def __str__(self):
         return '{} ({})'.format(self.issuer, self.client_id)

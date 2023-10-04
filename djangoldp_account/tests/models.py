@@ -11,9 +11,6 @@ class OwnedResource(Model):
                              on_delete=models.CASCADE)
 
     class Meta(Model.Meta):
-        anonymous_perms = []
-        authenticated_perms = []
-        owner_perms = ['view', 'delete', 'add', 'change', 'control']
         owner_field = 'user'
         serializer_fields = ['@id', 'description', 'user']
         depth = 1

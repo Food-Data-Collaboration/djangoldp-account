@@ -24,20 +24,15 @@ def check_client_ip(request):
 
     return False
 
-#TODO: Handle '&'-case for this one
 class IPOpenPermissions(LDPBasePermission):
     def has_permission(self, request, view):
-        if check_client_ip(request):
-            return True
-        return super().has_permission(request, view)
+        return check_client_ip(request)
+
+    def has_object_permission(self, request, view, obj):
+        return check_client_ip(request)
 
     def get_permissions(self, request, view, obj=None):
         '''analyses the Model's set anonymous, authenticated and owner_permissions and returns these'''
         if check_client_ip(request):
-            return self.permissions
-        return super().get_container_permissions(request, view, obj)
-
-    def has_container_permission(self, request, view):
-        if check_client_ip(request):
-            return True
-        return super().has_container_permission(request, view)
+            return super().get_permissions(request, view, obj)
+        return {}
