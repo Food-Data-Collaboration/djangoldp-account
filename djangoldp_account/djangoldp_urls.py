@@ -18,17 +18,7 @@ user_form_override = getattr(settings, 'REGISTRATION_USER_FORM', None)
 user_form = LDPUserForm if user_form_override is None else locate(user_form_override)
 
 urlpatterns = [
-    path('groups/',
-        LDPViewSet.urls(model=Group, fields=['@id', 'name', 'user_set'],
-                        permission_classes=getattr(settings, 'GROUP_PERMISSION_CLASSES', [ACLPermissions]),
-        )
-    ),
-    path('auth/register/',
-        LDPAccountRegistrationView.as_view(
-            form_class=user_form
-        ),
-        name='django_registration_register',
-    ),
+    path('auth/register/', LDPAccountRegistrationView.as_view(form_class=user_form), name='django_registration_register'),
     path('auth/login/', LDPAccountLoginView.as_view(),name='login'),
     path('auth/', include('django_registration.backends.activation.urls')),
     path('auth/', include('django.contrib.auth.urls')),
