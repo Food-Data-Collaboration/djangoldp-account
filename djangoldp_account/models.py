@@ -25,7 +25,7 @@ user_fields = ['@id', 'first_name', 'groups', 'last_name', 'username', 'email', 
 if 'djangoldp_uploader' in settings.DJANGOLDP_PACKAGES:
     user_fields += ['uploadURL']
 
-user_nested_fields = ['account', 'groups', 'chatProfile']
+user_nested_fields = ['account', 'chatProfile']
 user_empty_containers = []
 for dldp_module in djangoldp_modules:
     try:
