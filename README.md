@@ -167,19 +167,6 @@ If you need to extend it with you own relation use `USER_NESTED_FIELDS` on setti
 USER_NESTED_FIELDS=['skills']
 ```
 
-Also, if you need to override the default permissions on User or Group use :
-
-```
-GROUP_PERMISSION_CLASSES=[CustomGroupPermission]
-GROUP_ANONYMOUS_PERMISSIONS=['view']
-GROUP_AUTHENTICATED_PERMISSIONS=['inherit']
-GROUP_OWNER_PERMISSIONS=['view', 'control', 'update']
-
-USER_ANONYMOUS_PERMISSIONS=['add', 'view']
-USER_AUTHENTICATED_PERMISSIONS=['inherit']
-USER_OWNER_PERMISSIONS=['inherit', 'control', 'update']
-```
-
 Finally, to expand on the `empty_containers` setting ([see DjangoLDP docs](https://git.startinblox.com/djangoldp-packages/djangoldp#custom-meta-options-on-models)) you can use `USER_EMPTY_CONTAINERS`:
 
 ```
