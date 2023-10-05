@@ -1,6 +1,6 @@
-from django.conf import settings
 from django.db import models
 from djangoldp.models import Model
+from djangoldp.permissions import AuthenticatedOnly, OwnerPermissions
 from djangoldp_account.models import LDPUser
 
 
@@ -12,5 +12,6 @@ class OwnedResource(Model):
 
     class Meta(Model.Meta):
         owner_field = 'user'
+        permission_classes = [AuthenticatedOnly, OwnerPermissions]
         serializer_fields = ['@id', 'description', 'user']
         depth = 1

@@ -3,10 +3,7 @@ import uuid
 from urllib.parse import urlencode
 from jwkest.jwk import KEYS
 
-try:
-    from django.urls import reverse
-except ImportError:
-    from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.test import RequestFactory
 from django.core.management import call_command
 
