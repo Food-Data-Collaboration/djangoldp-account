@@ -1,8 +1,6 @@
 from django.conf import settings
-
 from djangoldp.permissions import LDPBasePermission
-from djangoldp.utils import is_anonymous_user
-
+from .filters import IPFilterBackend
 
 XMPP_SERVERS = set({'51.15.243.248', '212.47.234.179', '2001:bc8:47b0:2711::1'})
 
@@ -25,6 +23,7 @@ def check_client_ip(request):
     return False
 
 class IPOpenPermissions(LDPBasePermission):
+    filter_backend = IPFilterBackend
     def has_permission(self, request, view):
         return check_client_ip(request)
 
