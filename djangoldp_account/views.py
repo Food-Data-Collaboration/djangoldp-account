@@ -149,12 +149,26 @@ class LDPAccountRegistrationView(RedirectURLMixin, RegistrationView):
     """
     template_name = getattr(django_settings, 'REGISTRATION_TEMPLATE_PATH', 'django_registration/registration_form.html')
 
-    def get_redirect_url(self):
+    def get_success_url(self, user=None):  # pylint: disable=unused-argument
+        """
+        Return the URL to redirect to after successful redirection.
+
+        """
+        # This is overridden solely to allow django-registration to
+        # support passing the user account as an argument; otherwise,
+        # the base FormMixin implementation, which accepts no
+        # arguments, could be called and end up raising a TypeError.
+        self.success_url = reverse_lazy("django_registration_complete")
+
+        return self.success_url
+
+    def get_redirect_url(self, user=None):
         """Return the user-originating redirect URL if it's safe."""
         redirect_to = self.request.POST.get(
             'next',
             self.request.GET.get('next', '')
         )
+
         url_is_safe = url_has_allowed_host_and_scheme(
             url=redirect_to,
             allowed_hosts=self.get_success_url_allowed_hosts(),
