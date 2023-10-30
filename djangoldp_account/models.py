@@ -91,14 +91,6 @@ class LDPUser(AbstractUser, Model):
     def uploadURL(self):
         return {"@id": settings.BASE_URL + "/upload/"}
 
-    def webid(self):
-        # remote user
-        if Model.is_external(self.urlid):
-            webid = self.urlid
-        else:
-            webid = '{0}{1}'.format(settings.BASE_URL, reverse_lazy('ldpuser-detail', kwargs={'slug': self.slug}))
-        return webid
-
     def save(self, *args, **kwargs):
         '''
         This is a workaround for the LDPSerializer which enforce the user to post an username when creating a new one

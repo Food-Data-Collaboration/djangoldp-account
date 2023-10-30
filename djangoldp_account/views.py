@@ -61,7 +61,7 @@ def check_user(request, *args, **kwargs):
         response["Access-Control-Allow-Credentials"] = 'true'
 
         try:
-            response['User'] = request.user.webid()
+            response['User'] = request.user.urlid
         except AttributeError:
             pass
 
