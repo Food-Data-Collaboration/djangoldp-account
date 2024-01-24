@@ -6,7 +6,7 @@ PASSTHROUGH_IPS = getattr(settings, 'PASSTHROUGH_IPS', '')
 def check_client_ip(request):
     x_forwarded_for = request.headers.get('x-forwarded-for')
     if x_forwarded_for:
-        if any(i in x_forwarded_for.replace(' ', '').split(',') for i in PASSTHROUGH_IPS):
+        if any(ip in x_forwarded_for.replace(' ', '').split(',') for ip in PASSTHROUGH_IPS):
             return True
     elif request.META.get('REMOTE_ADDR') in PASSTHROUGH_IPS:
         return True
