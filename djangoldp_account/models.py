@@ -80,7 +80,7 @@ class LDPUser(AbstractUser, Model):
         lookup_field = 'slug'
         container_path = 'users'
         owner_urlid_field = 'urlid'
-        permission_classes = [IPOpenPermissions|AuthenticatedOnly&ReadOnly|OwnerPermissions]
+        permission_classes = [IPOpenPermissions|AuthenticatedOnly&(ReadOnly|OwnerPermissions)]
         nested_fields = user_nested_fields
         serializer_fields = user_fields + user_nested_fields
         empty_containers = user_empty_containers
@@ -130,7 +130,7 @@ class Account(Model):
         permissions = (('control_account', 'Control'),)
         lookup_field = 'slug'
         owner_field = 'user'
-        permission_classes = [IPOpenPermissions|AuthenticatedOnly&ReadOnly|OwnerPermissions]
+        permission_classes = [IPOpenPermissions|AuthenticatedOnly&(ReadOnly|OwnerPermissions)]
 
     def __str__(self):
         return '{} ({})'.format(self.user.get_full_name(), self.user.username)
@@ -146,7 +146,7 @@ class ChatProfile(Model):
         permissions = (('control_chatprofile', 'Control'),)
         lookup_field = 'slug'
         owner_field = 'user'
-        permission_classes = [IPOpenPermissions|AuthenticatedOnly&ReadOnly|OwnerPermissions]
+        permission_classes = [IPOpenPermissions|AuthenticatedOnly&(ReadOnly|OwnerPermissions)]
 
     def __str__(self):
         return '{} (jabberID: {})'.format(self.user.get_full_name(), self.jabberID)
