@@ -20,7 +20,7 @@ from djangoldp_account.permissions import IPOpenPermissions
 
 
 djangoldp_modules = list(settings.DJANGOLDP_PACKAGES)
-user_fields = ['@id', 'first_name', 'groups', 'last_name', 'username', 'email', 'account', 'chatProfile', 'name']
+user_fields = ['@id', 'first_name', 'last_name', 'username', 'email', 'account', 'chatProfile', 'name']
 
 if 'djangoldp_uploader' in settings.DJANGOLDP_PACKAGES:
     user_fields += ['uploadURL']
