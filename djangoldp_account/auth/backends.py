@@ -2,7 +2,7 @@ import json
 import requests
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.backends import ModelBackend
+from django.contrib.auth.backends import AllowAllUsersModelBackend, ModelBackend
 from django.core.exceptions import ValidationError
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework import status
