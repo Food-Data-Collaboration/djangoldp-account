@@ -84,6 +84,7 @@ class LDPUser(AbstractUser, Model):
         nested_fields = user_nested_fields
         serializer_fields = user_fields + user_nested_fields
         empty_containers = user_empty_containers
+        active_field = 'is_active'
 
     def name(self):
         return self.get_full_name()
