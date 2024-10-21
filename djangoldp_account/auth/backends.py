@@ -13,6 +13,7 @@ from jwkest.jwt import JWT
 from jwt.utils import (base64url_decode, base64url_encode)
 from oidc_provider.lib.utils.dpop import verify_signature, verify_dpop_proof, verify_thumbprint
 from oidc_provider.lib.errors import TokenError
+from oidc_provider.models import Token
 from oidc_provider.views import JwksView
 
 from djangoldp_account.auth.solid import Solid
