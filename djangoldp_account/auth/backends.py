@@ -168,3 +168,30 @@ class ExternalUserBackend(ModelBackend):
 
             # make an attempt assuming Bearer token if not recognised or not specified
             return self.validate_bearer_token(jwt)
+
+
+class BearerAuthBackend(AllowAllUsersModelBackend):
+    def validate_bearer_token(self, token):
+        try:
+            token = Token.objects.get(access_token=token)
+            if token:
+                owner = token.client.owner
+
+                if self.user_can_authenticate(owner):
+                    return owner
+        except Exception as e:
+            raise e
+
+        return None
+
+    def authenticate(self, request, *args, **kwargs):
+        if "HTTP_AUTHORIZATION" in request.META:
+            jwt = request.META["HTTP_AUTHORIZATION"]
+
+            if jwt.lower().startswith("bearer"):
+                jwt = jwt[7:]
+
+                # make an attempt assuming Bearer token if not recognised or not specified
+                return self.validate_bearer_token(jwt)
+
+        return ModelBackend().authenticate(request, *args, **kwargs)
