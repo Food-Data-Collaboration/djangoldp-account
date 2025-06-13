@@ -7,7 +7,7 @@ from django.urls import path, re_path, include
 from django.views.decorators.csrf import csrf_exempt
 
 from djangoldp.permissions import ACLPermissions
-from djangoldp.views import LDPViewSet
+from djangoldp.views.ldp_viewset import LDPViewSet
 from djangoldp_account.forms import LDPUserForm
 from .models import ChatProfile, Account
 from .views import userinfocustom, RPLoginView, RPLoginCallBackView, check_user, LDPAccountLoginView, RedirectView, \
