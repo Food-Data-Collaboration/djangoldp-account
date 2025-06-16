@@ -8,7 +8,7 @@ from djangoldp.conf.ldpsettings import LDPSettings
 # create a test configuration
 config = {
     # add the packages to the reference list
-    'ldppackages': ['djangoldp_account', 'djangoldp_account.tests'],
+    'ldppackages': ['oidc_provider', 'djangoldp_account', 'djangoldp_account.tests'],
 
     # required values for server
     'server': {
