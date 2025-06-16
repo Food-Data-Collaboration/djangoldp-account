@@ -5,7 +5,7 @@ This module is an add-on for Django that provides WebID-OIDC accounts management
 - The Authentification provider
 
 ## Requirements
-* djangoldp~=3.0
+* djangoldp~=4.0
 * django_registration~=3.4
 * validators~=0.20
 * oic~=1.6
