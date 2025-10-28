@@ -9,17 +9,22 @@ from rest_framework import status
 class JWTUserMiddleware(MiddlewareMixin):
     def process_request(self, request):
         # AuthenticationMiddleware is required so that request.user exists.
-        if not hasattr(request, 'user'):
+        if not hasattr(request, "user"):
             raise ImproperlyConfigured(
                 "The Django remote user auth middleware requires the"
                 " authentication middleware to be installed.  Edit your"
                 " MIDDLEWARE setting to insert"
                 " 'django.contrib.auth.middleware.AuthenticationMiddleware'"
-                " before the JWTUserMiddleware class.")
+                " before the JWTUserMiddleware class."
+            )
         # If the user is already authenticated and that user is the user we are
         # getting passed in the headers, then the correct user is already
         # persisted in the session and we don't need to continue.
         if request.user.is_authenticated:
+            return
+
+        # Flag which can be set to prevent this middleware from running.
+        if getattr(request, "disable_jwt_middleware", False):
             return
 
         # We are seeing this user for the first time in this session, attempt
